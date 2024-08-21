@@ -32,8 +32,10 @@ export class AuthService {
     }
 
     async signIn(data: any) {
-        const { _id } = data.user;
-        const token = await this.generateToken(_id);
+        const { _id } = data.user._doc;
+        const token = await this.generateToken(_id.toString());
+
+        console.log(token);
 
         return token;
     }
