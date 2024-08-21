@@ -6,25 +6,25 @@ export type UserDocument = HydratedDocument<User>;
 @Schema()
 export class User {
     @Prop({ required: true, unique: true })
-    email: String;
+    email: string;
 
     @Prop({ required: true })
-    firstName: String;
+    firstName: string;
 
     @Prop({ required: true })
-    secondName: String;
+    secondName: string;
 
     @Prop()
-    passwordHash?: String;
+    passwordHash?: string;
     
     @Prop()
-    avatar?: String;
+    avatar?: string;
 
     @Prop()
-    bio?: String;
+    bio?: string;
 
     @Prop()
-    coverImage?: String;
+    coverImage?: string;
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
     followers: User[];

@@ -31,12 +31,29 @@ export class AuthService {
         return token;
     }
 
-    async signIn(data: unknown) {
+    async signIn(data: any) {
+        const { _id } = data.user;
+        const token = await this.generateToken(_id);
 
+        return token;
     }
 
-    async validateUser(data: unknown) {
+    async validateUser(email: string, password: string) {
+        const user = await this.usersService.findOneByEmail(email);
 
+        if (!user) {
+            return null;
+        }
+
+        const isValidPass = await bcrypt.compare(password, user.passwordHash);
+
+        if (!isValidPass) {
+            return null;
+        }
+
+        const { passwordHash, ...data } = user;
+
+        return data;
     }
 
     private async generateToken(data: Types.ObjectId) {
