@@ -15,6 +15,11 @@ async function bootstrap() {
     { prefix: "/avatars" }
   );
 
+  app.useStaticAssets(
+    join(__dirname, "..", "uploads/covers"), 
+    { prefix: "/covers" }
+  );
+
   await app.listen(configService.get<number>("PORT") || 3000);
 }
 bootstrap();

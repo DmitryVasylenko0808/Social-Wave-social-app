@@ -1,6 +1,9 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards, Request, HttpStatus, ParseFilePipeBuilder, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { EditUserDto } from './dto/edit.user.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { avatarsStorage, coversStorage } from 'src/multer.config';
 
 @Controller('users')
 export class UsersController {
@@ -8,7 +11,23 @@ export class UsersController {
 
     @UseGuards(AuthGuard("jwt"))
     @Patch(":id")
-    async edit(@Param("id", ParseIntPipe) id: number, @Body() editUserDto: unknown) {}
+    @UseInterceptors(
+        FileInterceptor("avatar", { storage: avatarsStorage })
+    )
+    async edit(
+        @Param("id") id: string, 
+        @Body() editUserDto: EditUserDto,
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: "jpeg" })
+                .build({
+                    fileIsRequired: false,
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+                })
+        ) file?: Express.Multer.File
+    ) {
+        return await this.usersService.edit(id, editUserDto, file?.filename);
+    }
 
     @UseGuards(AuthGuard("jwt"))
     @Patch(":id/follow")

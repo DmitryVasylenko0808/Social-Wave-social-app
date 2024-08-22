@@ -9,6 +9,13 @@ export const avatarsStorage = diskStorage({
     },
 });
 
+export const coversStorage = diskStorage({
+    destination: "./uploads/covers",
+    filename(req, file, callback) {
+        callback(null, generateFilename(file))
+    },
+});
+
 const generateFilename = (file: Express.Multer.File) => {
     const name = `${v4()}${extname(file.originalname)}`;
 
