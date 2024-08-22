@@ -1,16 +1,29 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, ParseFilePipeBuilder, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/sign.up.dto';
 import { LocalAuthGuard } from './guards/local.auth.guard';
 import { JwtAuthGuard } from './guards/jwt.auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { avatarsStorage } from 'src/multer.config';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post("sign-up")
-    async signUp(@Body() signUpDto: SignUpDto) {
-        return await this.authService.signUp(signUpDto);
+    @UseInterceptors(FileInterceptor("avatar", { storage: avatarsStorage }))
+    async signUp(
+        @Body() signUpDto: SignUpDto,
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: "jpeg" })
+                .build({
+                    fileIsRequired: false,
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+                })
+        ) file?: Express.Multer.File
+    ) {
+        return await this.authService.signUp(signUpDto, file?.filename);
     }
 
     @UseGuards(LocalAuthGuard)

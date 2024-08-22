@@ -12,7 +12,7 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    async signUp(data: SignUpDto) {
+    async signUp(data: SignUpDto, filename?: string) {
         const existingUser = await this.usersService.findOneByEmail(data.email);
 
         if (existingUser) {
@@ -23,7 +23,8 @@ export class AuthService {
 
         const createdUser = await this.usersService.create({
             ...data,
-            passwordHash: hash
+            passwordHash: hash,
+            avatar: filename
         });
         const { passwordHash, _id } = createdUser;
         const token = await this.generateToken(_id);
@@ -34,8 +35,6 @@ export class AuthService {
     async signIn(data: any) {
         const { _id } = data.user._doc;
         const token = await this.generateToken(_id.toString());
-
-        console.log(token);
 
         return token;
     }
