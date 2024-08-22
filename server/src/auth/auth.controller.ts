@@ -5,6 +5,7 @@ import { LocalAuthGuard } from './guards/local.auth.guard';
 import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { avatarsStorage } from 'src/multer.config';
+import { GoogleAuthGuard } from './guards/google.auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +30,16 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post("sign-in") 
     async signIn(@Request() req: any) {
+        return await this.authService.signIn(req);
+    }
+
+    @UseGuards(GoogleAuthGuard)
+    @Get("google")
+    async googleAuth(@Request() req: any) {}
+
+    @UseGuards(GoogleAuthGuard)
+    @Get("google/redirect")
+    async googleAuthRedirect(@Request() req: any) {
         return await this.authService.signIn(req);
     }
 

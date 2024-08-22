@@ -4,6 +4,7 @@ import { SignUpDto } from './dto/sign.up.dto';
 import * as bcrypt from "bcrypt";
 import { Types } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
+import { Profile } from 'passport';
 
 @Injectable()
 export class AuthService {
@@ -55,6 +56,27 @@ export class AuthService {
         const { passwordHash, ...data } = user;
 
         return data;
+    }
+
+    async googleValidateUser(profile: Profile) {
+        const email = profile.emails[0].value;
+
+        const existingUser = await this.usersService.findOneByEmail(email);
+
+        if (existingUser) {
+            const { passwordHash, ...data } = existingUser;
+
+            return data;
+        }
+
+        const createdUser = await this.usersService.create({
+            email,
+            firstName: profile.name.givenName,
+            secondName: profile.name.familyName,
+            avatar: profile.photos[0].value
+        });
+
+        return createdUser;
     }
 
     private async generateToken(data: Types.ObjectId) {
