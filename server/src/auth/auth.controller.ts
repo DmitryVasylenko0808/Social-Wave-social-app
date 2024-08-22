@@ -1,11 +1,9 @@
-import { Body, Controller, Get, HttpStatus, ParseFilePipeBuilder, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, ParseFilePipeBuilder, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/sign.up.dto';
-import { LocalAuthGuard } from './guards/local.auth.guard';
-import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { avatarsStorage } from 'src/multer.config';
-import { GoogleAuthGuard } from './guards/google.auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -27,23 +25,24 @@ export class AuthController {
         return await this.authService.signUp(signUpDto, file?.filename);
     }
 
-    @UseGuards(LocalAuthGuard)
+    @UseGuards(AuthGuard("local"))
+    @HttpCode(HttpStatus.OK)
     @Post("sign-in") 
     async signIn(@Request() req: any) {
         return await this.authService.signIn(req);
     }
 
-    @UseGuards(GoogleAuthGuard)
+    @UseGuards(AuthGuard("google"))
     @Get("google")
     async googleAuth(@Request() req: any) {}
 
-    @UseGuards(GoogleAuthGuard)
+    @UseGuards(AuthGuard("google"))
     @Get("google/redirect")
     async googleAuthRedirect(@Request() req: any) {
         return await this.authService.signIn(req);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AuthGuard("jwt"))
     @Get("me")
     getMe(@Request() req: any) {
         return { userId: req.user.userId };

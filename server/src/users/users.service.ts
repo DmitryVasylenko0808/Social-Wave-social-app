@@ -19,15 +19,16 @@ export class UsersService {
         return createdUser.save();
     }
 
+    async findOneById(id: string) {
+        const user = await this.userModel.findById(id);
+
+        return user;
+    }
+
     async findOneByEmail(email: string) {
         const user = await this.userModel.findOne({ email });
 
         return user;
     }
 
-    async findOneById(id: string) {
-        const user = await this.userModel.findById(id);
-
-        return user;
-    }
 }

@@ -19,7 +19,12 @@ import { GoogleStrategy } from './strategies/google.strategy';
       inject: [ConfigService]
     })
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
+  providers: [
+    AuthService, 
+    LocalStrategy, 
+    JwtStrategy, 
+    GoogleStrategy
+  ],
   controllers: [AuthController]
 })
 export class AuthModule {}
