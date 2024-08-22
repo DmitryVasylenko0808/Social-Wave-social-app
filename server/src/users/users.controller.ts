@@ -31,9 +31,13 @@ export class UsersController {
 
     @UseGuards(AuthGuard("jwt"))
     @Patch(":id/follow")
-    async follow(@Param("id", ParseIntPipe) id: number, @Request() req: any) {}
+    async follow(@Param("id") id: string, @Request() req: any) {
+        await this.usersService.follow(id, req.user.userId);
+    }
 
     @UseGuards(AuthGuard("jwt"))
     @Patch(":id/unfollow")
-    async unfollow(@Param("id", ParseIntPipe) id: number, @Request() req: any) {}
+    async unfollow(@Param("id") id: string, @Request() req: any) {
+        await this.usersService.unfollow(id, req.user.userId);
+    }
 }

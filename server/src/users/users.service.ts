@@ -35,13 +35,8 @@ export class UsersService {
     async edit(id: string, data: EditUserDto, avatar?: string) {
         const user = await this.userModel.findByIdAndUpdate(
             id,
-            {
-                ...data,
-                avatar
-            },
-            {
-                new: true
-            }
+            { ...data, avatar},
+            { new: true }
         );
 
         if (!user) {
@@ -49,6 +44,50 @@ export class UsersService {
         }
 
         return user;
+    }
+
+    async follow(id: string, userId: string) {
+        const user = await this.userModel.findByIdAndUpdate(
+            id,
+            { 
+               $push: { followers: userId } 
+            },
+            { new: true }
+        );
+
+        if (!user) {
+            throw new BadRequestException("User is not found")
+        }
+
+        await this.userModel.findByIdAndUpdate(
+            userId,
+            {
+                $push: { followings: id }
+            },
+            { new: true }
+        );
+    }
+
+    async unfollow(id: string, userId: string) {
+        const user = await this.userModel.findByIdAndUpdate(
+            id,
+            { 
+               $pull: { followers: userId } 
+            },
+            { new: true }
+        );
+
+        if (!user) {
+            throw new BadRequestException("User is not found")
+        }
+
+        await this.userModel.findByIdAndUpdate(
+            userId,
+            {
+                $pull: { followings: id }
+            },
+            { new: true }
+        );
     }
 
 }
