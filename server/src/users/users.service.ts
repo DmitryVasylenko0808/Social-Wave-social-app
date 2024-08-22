@@ -3,12 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { EditUserDto } from './dto/edit.user.dto';
+import { PaginatedUsersResponse } from './types/paginated.users.response';
 
 @Injectable()
 export class UsersService {
+    private readonly limit: number;
+
     constructor(
         @InjectModel(User.name) private readonly userModel: Model<User>
-    ) {}
+    ) {
+        this.limit = 10;
+    }
 
     async create(data: Omit<User, "followers" | "followings">) {
         const createdUser = new this.userModel({
@@ -90,4 +95,51 @@ export class UsersService {
         );
     }
 
+    async getFollowers(id: string, page: number) {
+        const user = await this.userModel.findById(id)
+            .populate({
+                path: "followers",
+                select: "_id firstName secondName avatar",
+                options: {
+                    skip: (page - 1) * this.limit,
+                    limit: this.limit
+                }
+            });
+
+        const totalCount = user.followers.length;
+        const totalPages = Math.ceil(totalCount / this.limit);
+
+        const res: PaginatedUsersResponse = {
+            data: user.followers,
+            totalCount,
+            totalPages,
+            currentPage: page
+        }
+
+        return res;
+    }
+
+    async getFollowings(id: string, page: number) {
+        const user = await this.userModel.findById(id)
+            .populate({
+                path: "followings",
+                select: "_id firstName secondName avatar",
+                options: {
+                    skip: (page - 1) * this.limit,
+                    limit: this.limit
+                }
+            });
+
+        const totalCount = user.followings.length;
+        const totalPages = Math.ceil(totalCount / this.limit);
+
+        const res: PaginatedUsersResponse = {
+            data: user.followings,
+            totalCount,
+            totalPages,
+            currentPage: page
+        }
+
+        return res;
+    }
 }

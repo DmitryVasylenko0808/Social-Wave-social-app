@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards, Request, HttpStatus, ParseFilePipeBuilder, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards, Request, HttpStatus, ParseFilePipeBuilder, UploadedFile, UseInterceptors, Get, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { EditUserDto } from './dto/edit.user.dto';
@@ -39,5 +39,15 @@ export class UsersController {
     @Patch(":id/unfollow")
     async unfollow(@Param("id") id: string, @Request() req: any) {
         await this.usersService.unfollow(id, req.user.userId);
+    }
+
+    @Get(":id/followers")
+    async getFollowers(@Param("id") id: string, @Query("page", ParseIntPipe) page: number) {
+        return await this.usersService.getFollowers(id, page);
+    }
+
+    @Get(":id/followings")
+    async getFollowings(@Param("id") id: string, @Query("page", ParseIntPipe) page: number) {
+        return await this.usersService.getFollowings(id, page);
     }
 }
