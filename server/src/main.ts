@@ -20,6 +20,11 @@ async function bootstrap() {
     { prefix: "/covers" }
   );
 
+  app.useStaticAssets(
+    join(__dirname, "..", "uploads/articles"), 
+    { prefix: "/articles" }
+  );
+
   await app.listen(configService.get<number>("PORT") || 3000);
 }
 bootstrap();
