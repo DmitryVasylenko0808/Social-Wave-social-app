@@ -4,6 +4,8 @@ import { ArticlesController } from './articles.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Article, ArticleSchema } from './schemas/article.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
+import { BookmarkedArticlesService } from './bookmarked-articles.service';
+import { BookmarkedArticlesController } from './bookmarked-articles.controller';
 
 @Module({
   imports: [
@@ -12,7 +14,7 @@ import { Comment, CommentSchema } from './schemas/comment.schema';
       { name: Comment.name, schema: CommentSchema }
     ])
   ],
-  providers: [ArticlesService],
-  controllers: [ArticlesController]
+  providers: [ArticlesService, BookmarkedArticlesService],
+  controllers: [ArticlesController, BookmarkedArticlesController]
 })
 export class ArticlesModule {}
