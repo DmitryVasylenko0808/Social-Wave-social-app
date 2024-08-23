@@ -56,7 +56,7 @@ export class ArticlesService {
             throw new NotFoundException("Article is not found");
         }
 
-        return article
+        return article;
     }
 
     async unrepost(userId: string, id: string) {
@@ -72,6 +72,38 @@ export class ArticlesService {
             throw new NotFoundException("Article is not found");
         }
 
-        return article
+        return article;
+    }
+
+    async like(userId: string, id: string) {
+        const article = await this.articleModel.findByIdAndUpdate(
+            id,
+            {
+                $push: { likes: userId }
+            },
+            { new: true }
+        );
+
+        if (!article) {
+            throw new NotFoundException("Article is not found");
+        }
+
+        return article;
+    }
+
+    async unlike(userId: string, id: string) {
+        const article = await this.articleModel.findByIdAndUpdate(
+            id,
+            {
+                $pull: { likes: userId }
+            },
+            { new: true }
+        );
+
+        if (!article) {
+            throw new NotFoundException("Article is not found");
+        }
+
+        return article;
     }
 }

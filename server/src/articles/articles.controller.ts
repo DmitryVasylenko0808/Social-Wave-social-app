@@ -65,4 +65,18 @@ export class ArticlesController {
     async unrepost(@Request() req: any, @Param("id") id: string) {
         return await this.articlesService.unrepost(req.user.userId, id);
     }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Post(":id/like")
+    @HttpCode(HttpStatus.OK)
+    async like(@Request() req: any, @Param("id") id: string) {
+        return await this.articlesService.like(req.user.userId, id);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Delete(":id/like")
+    @HttpCode(HttpStatus.OK)
+    async unlike(@Request() req: any, @Param("id") id: string) {
+        return await this.articlesService.unlike(req.user.userId, id);
+    }
 }
