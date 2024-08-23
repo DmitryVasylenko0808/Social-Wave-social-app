@@ -4,6 +4,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateArticleDto } from './dto/create.article.dto';
 import { ArticlesService } from './articles.service';
 import { articlesStorage } from 'src/multer.config';
+import { EditArticleDto } from './dto/edit.artcile.dto';
 
 @Controller('articles')
 export class ArticlesController {
@@ -27,8 +28,23 @@ export class ArticlesController {
         return await this.articlesService.create(req.user.userId, createArticleDto, files);
     }
 
+    @UseGuards(AuthGuard("jwt"))
     @Patch(":id")
-    async edit() {}
+    @UseInterceptors(FilesInterceptor("images", 5, { storage: articlesStorage }))
+    async edit(
+        @Param("id") id: string,
+        @Body() editArticleDto: EditArticleDto,
+        @UploadedFiles(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: "jpeg" })
+                .build({
+                    fileIsRequired: false,
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+                })
+        ) files?: Express.Multer.File[]
+    ) {
+        return await this.articlesService.edit(id, editArticleDto, files);
+    }
 
     @UseGuards(AuthGuard("jwt"))
     @Delete(":id")

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Article } from './schemas/article.schema';
 import { Model } from 'mongoose';
@@ -21,11 +21,25 @@ export class ArticlesService {
         return article.save();
     }
 
+    async edit(id: string, data: EditArticleDto, images?: Express.Multer.File[]) {
+        const article = await this.articleModel.findByIdAndUpdate(
+            id,
+            data,
+            { new: true }
+        );
+
+        if (!article) {
+            throw new NotFoundException("Article is not found");
+        }
+
+        return article;
+    }
+
     async delete(id: string) {
         const article = await this.articleModel.findByIdAndDelete(id);
 
         if (!article) {
-            throw new BadRequestException("Article is not found")
+            throw new NotFoundException("Article is not found")
         };
     }
 }
