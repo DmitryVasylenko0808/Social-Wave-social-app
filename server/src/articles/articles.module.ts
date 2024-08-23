@@ -6,6 +6,8 @@ import { Article, ArticleSchema } from './schemas/article.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
 import { BookmarkedArticlesService } from './bookmarked-articles.service';
 import { BookmarkedArticlesController } from './bookmarked-articles.controller';
+import { FeedController } from './feed.controller';
+import { FeedService } from './feed.service';
 
 @Module({
   imports: [
@@ -14,7 +16,15 @@ import { BookmarkedArticlesController } from './bookmarked-articles.controller';
       { name: Comment.name, schema: CommentSchema }
     ])
   ],
-  providers: [ArticlesService, BookmarkedArticlesService],
-  controllers: [ArticlesController, BookmarkedArticlesController]
+  providers: [
+    ArticlesService, 
+    BookmarkedArticlesService, 
+    FeedService
+  ],
+  controllers: [
+    ArticlesController, 
+    BookmarkedArticlesController, 
+    FeedController
+  ]
 })
 export class ArticlesModule {}
