@@ -6,7 +6,7 @@ import { PaginatedArticlesResponse } from './types/paginated.articles.response';
 
 @Injectable()
 export class BookmarkedArticlesService {
-    readonly limit: number
+    private readonly limit: number
 
     constructor(
         @InjectModel(Article.name) private readonly articleModel: Model<Article>
