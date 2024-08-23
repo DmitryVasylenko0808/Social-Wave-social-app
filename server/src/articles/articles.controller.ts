@@ -61,7 +61,6 @@ export class ArticlesController {
 
     @UseGuards(AuthGuard("jwt"))
     @Delete(":id/repost")
-    @HttpCode(HttpStatus.OK)
     async unrepost(@Request() req: any, @Param("id") id: string) {
         return await this.articlesService.unrepost(req.user.userId, id);
     }
@@ -75,7 +74,6 @@ export class ArticlesController {
 
     @UseGuards(AuthGuard("jwt"))
     @Delete(":id/like")
-    @HttpCode(HttpStatus.OK)
     async unlike(@Request() req: any, @Param("id") id: string) {
         return await this.articlesService.unlike(req.user.userId, id);
     }

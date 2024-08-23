@@ -1,5 +1,4 @@
-import { Controller, Delete, HttpCode, HttpStatus, Param, Post, UseGuards, Request } from '@nestjs/common';
-import { ArticlesService } from './articles.service';
+import { Controller, Delete, HttpCode, HttpStatus, Param, Post, UseGuards, Request, Get, Query, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { BookmarkedArticlesService } from './bookmarked-articles.service';
 
@@ -16,9 +15,17 @@ export class BookmarkedArticlesController {
 
     @UseGuards(AuthGuard("jwt"))
     @Delete(":id/bookmark")
-    @HttpCode(HttpStatus.OK)
     async unbookmark(@Request() req: any, @Param("id") id: string) {
         return await this.bookmarkedArticleService.unbookmark(req.user.userId, id);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Get("user/:userId/bookmarked")
+    async getBookmarked(
+        @Param("userId") userId: string,
+        @Query("page", ParseIntPipe) page: number
+    ) {
+        return await this.bookmarkedArticleService.getBookmarked(userId, page);
     }
 
 }
