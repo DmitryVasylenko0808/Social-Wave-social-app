@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseFilePipeBuilder, Patch, Post, Request, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseFilePipeBuilder, Patch, Post, Request, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateArticleDto } from './dto/create.article.dto';
@@ -50,5 +50,19 @@ export class ArticlesController {
     @Delete(":id")
     async delete(@Param("id") id: string) {
         await this.articlesService.delete(id);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Post(":id/repost")
+    @HttpCode(HttpStatus.OK)
+    async repost(@Request() req: any, @Param("id") id: string) {
+        return await this.articlesService.repost(req.user.userId, id);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Delete(":id/repost")
+    @HttpCode(HttpStatus.OK)
+    async unrepost(@Request() req: any, @Param("id") id: string) {
+        return await this.articlesService.unrepost(req.user.userId, id);
     }
 }

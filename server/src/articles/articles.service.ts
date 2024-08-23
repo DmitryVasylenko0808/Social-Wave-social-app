@@ -42,4 +42,36 @@ export class ArticlesService {
             throw new NotFoundException("Article is not found")
         };
     }
+
+    async repost(userId: string, id: string) {
+        const article = await this.articleModel.findByIdAndUpdate(
+            id,
+            {
+                $push: { reposts: userId }
+            },
+            { new: true }
+        );
+
+        if (!article) {
+            throw new NotFoundException("Article is not found");
+        }
+
+        return article
+    }
+
+    async unrepost(userId: string, id: string) {
+        const article = await this.articleModel.findByIdAndUpdate(
+            id,
+            {
+                $pull: { reposts: userId }
+            },
+            { new: true }
+        );
+
+        if (!article) {
+            throw new NotFoundException("Article is not found");
+        }
+
+        return article
+    }
 }
