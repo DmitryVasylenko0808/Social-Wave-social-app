@@ -5,10 +5,14 @@ import { CreateArticleDto } from './dto/create.article.dto';
 import { ArticlesService } from './articles.service';
 import { articlesStorage } from 'src/multer.config';
 import { EditArticleDto } from './dto/edit.artcile.dto';
+import { CommentsService } from './comments.service';
 
 @Controller('articles')
 export class ArticlesController {
-    constructor(private readonly articlesService: ArticlesService) {}
+    constructor(
+        private readonly articlesService: ArticlesService,
+        private readonly commentsService: CommentsService
+    ) {}
 
     @Get(":id")
     async getOne(@Param("id") id: string) {
@@ -55,6 +59,7 @@ export class ArticlesController {
     @Delete(":id")
     async delete(@Param("id") id: string) {
         await this.articlesService.delete(id);
+        await this.commentsService.deleteAll(id);
     }
 
     @UseGuards(AuthGuard("jwt"))

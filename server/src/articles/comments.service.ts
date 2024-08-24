@@ -83,4 +83,8 @@ export class CommentsService {
 
         return comment;
     }
+
+    async deleteAll(articleId: string) {
+        await this.commentModel.deleteMany({ article: articleId });
+    }
 }
