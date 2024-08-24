@@ -10,6 +10,11 @@ import { EditArticleDto } from './dto/edit.artcile.dto';
 export class ArticlesController {
     constructor(private readonly articlesService: ArticlesService) {}
 
+    @Get(":id")
+    async getOne(@Param("id") id: string) {
+        return await this.articlesService.findOne(id);
+    }
+
     @UseGuards(AuthGuard("jwt"))
     @Post()
     @UseInterceptors(FilesInterceptor("images", 5, { storage: articlesStorage }))

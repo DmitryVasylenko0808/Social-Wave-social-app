@@ -11,6 +11,17 @@ export class ArticlesService {
         @InjectModel(Article.name) private readonly articleModel: Model<Article>
     ) {}
 
+    async findOne(id: string) {
+        const article = await this.articleModel.findById(id)
+            .populate("author", "_id firstName secondName avatar");
+
+        if (!article) {
+            throw new NotFoundException("Article is not found");
+        }
+
+        return article;
+    }
+
     async create(userId: string, data: CreateArticleDto, images?: Express.Multer.File[]) {
         const article = new this.articleModel({
             author: userId,
@@ -105,5 +116,9 @@ export class ArticlesService {
         }
 
         return article;
+    }
+
+    async updateCommentsCount(id: string, value: number) {
+        await this.articleModel.findByIdAndUpdate(id, { $inc: { commentsCount: value } });
     }
 }

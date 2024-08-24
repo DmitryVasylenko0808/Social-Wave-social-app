@@ -25,8 +25,8 @@ export class Article {
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
     bookmarks: User[];
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }]})
-    comment: Comment[];
+    @Prop({ default: 0 })
+    commentsCount: number;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);

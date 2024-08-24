@@ -8,6 +8,8 @@ import { BookmarkedArticlesService } from './bookmarked-articles.service';
 import { BookmarkedArticlesController } from './bookmarked-articles.controller';
 import { FeedController } from './feed.controller';
 import { FeedService } from './feed.service';
+import { CommentsController } from './comments.controller';
+import { CommentsService } from './comments.service';
 
 @Module({
   imports: [
@@ -19,12 +21,14 @@ import { FeedService } from './feed.service';
   providers: [
     ArticlesService, 
     BookmarkedArticlesService, 
-    FeedService
+    FeedService, 
+    CommentsService
   ],
   controllers: [
     ArticlesController, 
     BookmarkedArticlesController, 
-    FeedController
+    FeedController, 
+    CommentsController
   ]
 })
 export class ArticlesModule {}
