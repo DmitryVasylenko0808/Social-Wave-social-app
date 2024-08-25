@@ -14,7 +14,7 @@ export class FeedService {
         this.limit = 10;
     }
 
-    async getFeed(page: number) {
+    async getFeed(page: number) { // !
         const articles = await this.articleModel.find()
             .skip((page - 1) * this.limit)
             .limit(this.limit)
@@ -34,7 +34,7 @@ export class FeedService {
         return res;
     }
 
-    async getFeedByUserId(userId: string, page: number) {
+    async getFeedByUserId(userId: string, page: number) { // !
         const articles = await this.articleModel
             .find({ $or: [{ author: userId }, {bookmarks: userId}] })
             .skip((page - 1) * this.limit)

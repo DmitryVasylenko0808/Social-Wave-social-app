@@ -7,8 +7,8 @@ export type ArticleDocument = HydratedDocument<Article>;
 
 @Schema({ timestamps: true })
 export class Article {
-    @Prop({ required: true })
-    text: string;
+    @Prop()
+    text?: string;
 
     @Prop()
     images?: string[];
@@ -27,6 +27,9 @@ export class Article {
 
     @Prop({ default: 0 })
     commentsCount: number;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Article" })
+    repostedArticle?: Article;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);

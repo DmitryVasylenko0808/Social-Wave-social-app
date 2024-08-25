@@ -66,13 +66,13 @@ export class ArticlesController {
     @Post(":id/repost")
     @HttpCode(HttpStatus.OK)
     async repost(@Request() req: any, @Param("id") id: string) {
-        return await this.articlesService.repost(req.user.userId, id);
+        await this.articlesService.repost(req.user.userId, id);
     }
 
     @UseGuards(AuthGuard("jwt"))
     @Delete(":id/repost")
     async unrepost(@Request() req: any, @Param("id") id: string) {
-        return await this.articlesService.unrepost(req.user.userId, id);
+        await this.articlesService.unrepost(req.user.userId, id);
     }
 
     @UseGuards(AuthGuard("jwt"))

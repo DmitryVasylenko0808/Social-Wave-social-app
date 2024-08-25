@@ -52,6 +52,8 @@ export class ArticlesService {
         if (!article) {
             throw new NotFoundException("Article is not found")
         };
+
+        await this.articleModel.deleteMany({ repostedArticle: id });
     }
 
     async repost(userId: string, id: string) {
@@ -67,7 +69,12 @@ export class ArticlesService {
             throw new NotFoundException("Article is not found");
         }
 
-        return article;
+        const createdArticle = new this.articleModel({
+            author: userId,
+            repostedArticle: id
+        });
+
+        await createdArticle.save();
     }
 
     async unrepost(userId: string, id: string) {
@@ -83,7 +90,9 @@ export class ArticlesService {
             throw new NotFoundException("Article is not found");
         }
 
-        return article;
+        await this.articleModel.deleteOne({
+            $and: [{ author: userId }, { repostedArticle: id }]
+        });
     }
 
     async like(userId: string, id: string) {
