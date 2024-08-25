@@ -29,13 +29,19 @@ export class ArticlesService {
             ...data
         });
 
-        return article.save();
+        return await article.save();
     }
 
     async edit(id: string, data: EditArticleDto, images?: Express.Multer.File[]) {
+        const editData: EditArticleDto & { images?: string[] } = data;
+        
+        if (images.length) {
+            editData.images = images.map(img => img.filename);
+        }
+
         const article = await this.articleModel.findByIdAndUpdate(
             id,
-            data,
+            editData,
             { new: true }
         );
 
