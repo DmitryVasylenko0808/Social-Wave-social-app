@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
-import { CommentsService } from './comments.service';
+import { CommentsService } from '../services/comments.service';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateCommentDto } from './dto/create.comment.dto';
-import { EditCommentDto } from './dto/edit.comment.dto';
-import { ArticlesService } from './articles.service';
+import { CreateCommentDto } from '../dto/create.comment.dto';
+import { EditCommentDto } from '../dto/edit.comment.dto';
+import { ArticlesService } from '../services/articles.service';
 
 @Controller('articles/:articleId/comments')
 export class CommentsController {

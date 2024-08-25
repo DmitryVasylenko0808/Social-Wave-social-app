@@ -1,6 +1,6 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param, Post, UseGuards, Request, Get, Query, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { BookmarkedArticlesService } from './bookmarked-articles.service';
+import { BookmarkedArticlesService } from '../services/bookmarked-articles.service';
 
 @Controller('articles')
 export class BookmarkedArticlesController {

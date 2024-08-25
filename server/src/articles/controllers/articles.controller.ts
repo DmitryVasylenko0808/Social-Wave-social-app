@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseFilePipeBuilder, Patch, Post, Request, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { CreateArticleDto } from './dto/create.article.dto';
-import { ArticlesService } from './articles.service';
+import { CreateArticleDto } from '../dto/create.article.dto';
+import { ArticlesService } from '../services/articles.service';
 import { articlesStorage } from 'src/multer.config';
-import { EditArticleDto } from './dto/edit.artcile.dto';
-import { CommentsService } from './comments.service';
+import { EditArticleDto } from '../dto/edit.artcile.dto';
+import { CommentsService } from '../services/comments.service';
 
 @Controller('articles')
 export class ArticlesController {

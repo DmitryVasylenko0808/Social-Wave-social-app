@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Article } from './schemas/article.schema';
-import { PaginatedArticlesResponse } from './types/paginated.articles.response';
+import { Article } from '../schemas/article.schema';
+import { PaginatedResponse } from '../types/paginated.response';
 
 @Injectable()
 export class BookmarkedArticlesService {
@@ -55,7 +55,7 @@ export class BookmarkedArticlesService {
         const totalCount = await this.articleModel.countDocuments({ bookmarks: userId });
         const totalPages = Math.ceil(totalCount / this.limit);
 
-        const res: PaginatedArticlesResponse = {
+        const res: PaginatedResponse<Article> = {
             data: articles,
             totalCount,
             totalPages,

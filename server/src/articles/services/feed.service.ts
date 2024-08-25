@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Article } from './schemas/article.schema';
+import { Article } from '../schemas/article.schema';
 import { Model } from 'mongoose';
-import { PaginatedArticlesResponse } from './types/paginated.articles.response';
+import { PaginatedResponse } from '../types/paginated.response';
 
 @Injectable()
 export class FeedService {
@@ -19,7 +19,7 @@ export class FeedService {
             .find({ repostedArticle: null })
             .skip((page - 1) * this.limit)
             .limit(this.limit)
-            .sort({ updatedAt: "desc" })
+            .sort({ createdAt: "desc" })
             .populate("author", "_id firstName secondName avatar")
 
         const totalCount = await this.articleModel.countDocuments({ 
@@ -27,7 +27,7 @@ export class FeedService {
         });
         const totalPages = Math.ceil(totalCount / this.limit);
 
-        const res: PaginatedArticlesResponse = {
+        const res: PaginatedResponse<Article> = {
             data: articles,
             totalCount,
             totalPages,
@@ -42,6 +42,7 @@ export class FeedService {
             .find({ $or: [{ author: userId }, { reposts: userId }] })
             .skip((page - 1) * this.limit)
             .limit(this.limit)
+            .sort({ createdAt: "desc" })
             .populate({
                 path: "repostedArticle",
                 populate: {
@@ -55,7 +56,7 @@ export class FeedService {
         });
         const totalPages = Math.ceil(totalCount / this.limit);
 
-        const res: PaginatedArticlesResponse = {
+        const res: PaginatedResponse<Article> = {
             data: articles,
             totalCount,
             totalPages,

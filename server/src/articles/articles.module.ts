@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ArticlesService } from './articles.service';
-import { ArticlesController } from './articles.controller';
+import { ArticlesService } from './services/articles.service';
+import { ArticlesController } from './controllers/articles.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Article, ArticleSchema } from './schemas/article.schema';
 import { Comment, CommentSchema } from './schemas/comment.schema';
-import { BookmarkedArticlesService } from './bookmarked-articles.service';
-import { BookmarkedArticlesController } from './bookmarked-articles.controller';
-import { FeedController } from './feed.controller';
-import { FeedService } from './feed.service';
-import { CommentsController } from './comments.controller';
-import { CommentsService } from './comments.service';
+import { BookmarkedArticlesService } from './services/bookmarked-articles.service';
+import { BookmarkedArticlesController } from './controllers/bookmarked-articles.controller';
+import { FeedController } from './controllers/feed.controller';
+import { FeedService } from './services/feed.service';
+import { CommentsController } from './controllers/comments.controller';
+import { CommentsService } from './services/comments.service';
 
 @Module({
   imports: [

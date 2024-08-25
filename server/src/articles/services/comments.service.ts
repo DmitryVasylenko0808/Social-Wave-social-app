@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Comment } from './schemas/comment.schema';
+import { Comment } from '../schemas/comment.schema';
 import { Model } from 'mongoose';
-import { CreateCommentDto } from './dto/create.comment.dto';
-import { PaginatedCommentsResponse } from './types/paginated.comments.response';
-import { EditCommentDto } from './dto/edit.comment.dto';
+import { CreateCommentDto } from '../dto/create.comment.dto';
+import { PaginatedResponse } from '../types/paginated.response';
+import { EditCommentDto } from '../dto/edit.comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -25,7 +25,7 @@ export class CommentsService {
         const totalCount = await this.commentModel.countDocuments({ article: articleId });
         const totalPages = Math.ceil(totalCount / this.limit);
 
-        const res: PaginatedCommentsResponse = {
+        const res: PaginatedResponse<Comment> = {
             data: comments,
             totalCount,
             totalPages,

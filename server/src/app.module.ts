@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticlesModule } from './articles/articles.module';
-import { BookmarkedArticlesController } from './articles/bookmarked-articles.controller';
 
 @Module({
   imports: [
