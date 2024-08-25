@@ -37,10 +37,16 @@ export class UsersService {
         return user;
     }
 
-    async edit(id: string, data: EditUserDto, avatar?: string) {
+    async edit(id: string, data: EditUserDto, files?: { avatar: Express.Multer.File[], coverImage: Express.Multer.File[] }) {
+        const { avatar, coverImage } = files;
+
         const user = await this.userModel.findByIdAndUpdate(
             id,
-            { ...data, avatar},
+            { 
+                ...data, 
+                avatar: avatar && avatar[0].filename,
+                coverImage: coverImage && coverImage[0].filename
+            },
             { new: true }
         );
 
