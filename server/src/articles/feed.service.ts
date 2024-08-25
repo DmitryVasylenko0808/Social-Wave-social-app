@@ -14,14 +14,17 @@ export class FeedService {
         this.limit = 10;
     }
 
-    async getFeed(page: number) { // !
-        const articles = await this.articleModel.find()
+    async getFeed(page: number) {
+        const articles = await this.articleModel
+            .find({ repostedArticle: null })
             .skip((page - 1) * this.limit)
             .limit(this.limit)
             .sort({ updatedAt: "desc" })
             .populate("author", "_id firstName secondName avatar")
 
-        const totalCount = await this.articleModel.countDocuments();
+        const totalCount = await this.articleModel.countDocuments({ 
+            repostedArticle: null 
+        });
         const totalPages = Math.ceil(totalCount / this.limit);
 
         const res: PaginatedArticlesResponse = {
@@ -34,15 +37,21 @@ export class FeedService {
         return res;
     }
 
-    async getFeedByUserId(userId: string, page: number) { // !
+    async getFeedByUserId(userId: string, page: number) {
         const articles = await this.articleModel
-            .find({ $or: [{ author: userId }, {bookmarks: userId}] })
+            .find({ $or: [{ author: userId }, { reposts: userId }] })
             .skip((page - 1) * this.limit)
             .limit(this.limit)
-            .populate("author", "_id firstName secondName avatar");
+            .populate({
+                path: "repostedArticle",
+                populate: {
+                    path: "author",
+                    select: "_id firstName secondName avatar"
+                }
+            });
 
         const totalCount = await this.articleModel.countDocuments({ 
-            $or: [{ author: userId }, {bookmarks: userId}] 
+            $or: [{ author: userId }, { reposts: userId }] 
         });
         const totalPages = Math.ceil(totalCount / this.limit);
 
