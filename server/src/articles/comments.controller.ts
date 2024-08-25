@@ -3,16 +3,21 @@ import { CommentsService } from './comments.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { EditCommentDto } from './dto/edit.comment.dto';
+import { ArticlesService } from './articles.service';
 
 @Controller('articles/:articleId/comments')
 export class CommentsController {
-    constructor(private readonly commentsService: CommentsService) {}
+    constructor(
+        private readonly commentsService: CommentsService,
+        private readonly articlesService: ArticlesService
+    ) {}
 
     @Get()
     async getComments(
         @Param("articleId") articleId: string, 
         @Query("page", ParseIntPipe) page: number
     ) {
+        await this.articlesService.findOne(articleId);
         return await this.commentsService.getComments(articleId, page);
     }
 
@@ -23,7 +28,9 @@ export class CommentsController {
         @Param("articleId") articleId: string,
         @Body() createCommentDto: CreateCommentDto
     ) {
-        return await this.commentsService.create(req.user.userId, articleId, createCommentDto);
+        await this.articlesService.findOne(articleId);
+        await this.commentsService.create(req.user.userId, articleId, createCommentDto);
+        await this.articlesService.updateCommentsCount(articleId, 1);
     } 
 
     @UseGuards(AuthGuard("jwt"))
@@ -33,7 +40,8 @@ export class CommentsController {
         @Param("commentId") commentId: string,
         @Body() editCommentDto: EditCommentDto
     ) {
-        return await this.commentsService.edit(articleId, commentId, editCommentDto);
+        await this.articlesService.findOne(articleId);
+        await this.commentsService.edit(commentId, editCommentDto);
     }
 
     @UseGuards(AuthGuard("jwt"))
@@ -42,6 +50,8 @@ export class CommentsController {
         @Param("articleId") articleId: string,
         @Param("commentId") commentId: string
     ) {
-        return await this.commentsService.delete(articleId, commentId);
+        await this.articlesService.findOne(articleId);
+        await this.commentsService.delete(commentId);
+        await this.articlesService.updateCommentsCount(articleId, -1);
     }
 }
