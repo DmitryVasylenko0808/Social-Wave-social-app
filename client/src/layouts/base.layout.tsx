@@ -8,12 +8,14 @@ const BaseLayout = () => {
   return (
     <main>
       <Header />
-      <section>
+      <main>
         <Container className="flex">
           <SideBar />
-          <Outlet />
+          <section className="flex-auto px-6">
+            <Outlet />
+          </section>
         </Container>
-      </section>
+      </main>
     </main>
   );
 };

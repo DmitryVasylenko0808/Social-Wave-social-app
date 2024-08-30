@@ -25,7 +25,7 @@ export default {
         header: "90px"
       },
       maxWidth: {
-        container: "1440px"
+        container: "1260px"
       }
     },
   },
