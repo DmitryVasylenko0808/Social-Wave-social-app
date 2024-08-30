@@ -20,6 +20,12 @@ export default {
         label: "#7B7B7B",
         labelFill: "#F1F1F1",
         textFieldBorder: "#E4E4E4"
+      },
+      height: {
+        header: "90px"
+      },
+      width: {
+        container: "1440px"
       }
     },
   },
