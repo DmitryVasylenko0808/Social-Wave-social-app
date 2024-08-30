@@ -16,7 +16,10 @@ export default {
           100: "#9A9A9A",
           200: "#686868",
           300: "#545454"
-        }
+        },
+        label: "#7B7B7B",
+        labelFill: "#F1F1F1",
+        textFieldBorder: "#E4E4E4"
       }
     },
   },

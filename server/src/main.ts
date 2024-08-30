@@ -10,6 +10,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
 
+  app.enableCors();
+
   app.useStaticAssets(
     join(__dirname, "..", "uploads/avatars"), 
     { prefix: "/avatars" }
