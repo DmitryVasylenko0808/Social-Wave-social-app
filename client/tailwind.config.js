@@ -24,7 +24,7 @@ export default {
       height: {
         header: "90px"
       },
-      width: {
+      maxWidth: {
         container: "1440px"
       }
     },
