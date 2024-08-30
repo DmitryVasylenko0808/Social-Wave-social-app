@@ -12,3 +12,7 @@
         font-weight: 400;
     }
 }
+
+.active {
+    @apply text-secondary-200
+}
