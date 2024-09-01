@@ -1,22 +1,28 @@
-import React from "react";
 import { Heart, MessageSquare, Repeat2, Bookmark } from "lucide-react";
 import { Button } from "../ui";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { Link } from "react-router-dom";
+import { useLikeArticleMutation } from "../../api/articles/articles.api";
 
 type ArticleItemProps = {
   data: Article;
 };
 
 const ArticleItem = ({ data }: ArticleItemProps) => {
+  const [triggerLikeArticle] = useLikeArticleMutation();
+
+  const handleClickLike = async () => {
+    await triggerLikeArticle(data._id).unwrap();
+  };
+
   return (
     <article>
       <div className="mb-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Link to="/users/1">
+          <Link to={`/${data.author._id}/profile`}>
             <div className="w-[50px] h-[50px] bg-slate-600 rounded-full" />
           </Link>
-          <Link to="/users/1">
+          <Link to={`/${data.author._id}/profile`}>
             <span className="text-secondary-300 font-medium">
               {data.author.firstName} {data.author.secondName}
             </span>
@@ -27,7 +33,7 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
       <p className="mb-1">{data?.text}</p>
       <div className="flex">
         <div className="flex-1 flex justify-center">
-          <Button variant="terciary">
+          <Button variant="terciary" onClick={handleClickLike}>
             <Heart />
             <span>{data.likes.length}</span>
           </Button>

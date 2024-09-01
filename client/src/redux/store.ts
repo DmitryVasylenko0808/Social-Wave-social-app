@@ -4,16 +4,19 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "../api/auth/auth.api";
 import authSlice from "./auth.slice";
 import { articlesApi } from "../api/articles/articles.api";
+import { usersApi } from "../api/users/users.api";
 
 export const store = configureStore({
     reducer: {
         [authApi.reducerPath]: authApi.reducer,
         [articlesApi.reducerPath]: articlesApi.reducer,
+        [usersApi.reducerPath]: usersApi.reducer,
         auth: authSlice
     },
     middleware: (getDefaultMiddeware) => getDefaultMiddeware()
         .concat(authApi.middleware)
         .concat(articlesApi.middleware)
+        .concat(usersApi.middleware)
 });
 
 setupListeners(store.dispatch);

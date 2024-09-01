@@ -11,7 +11,7 @@ const BaseLayout = () => {
       <main>
         <Container className="flex">
           <SideBar />
-          <section className="flex-auto px-6">
+          <section className="flex-auto border-r border-secondary-50">
             <Outlet />
           </section>
         </Container>

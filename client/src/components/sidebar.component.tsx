@@ -5,7 +5,7 @@ import { Button } from "../common/ui";
 import { useAuth } from "../hooks/useAuth";
 
 const SideBar = () => {
-  const { isAuthenticated, logOut } = useAuth();
+  const { isAuthenticated, user, logOut } = useAuth();
 
   return (
     <aside className="min-h-screen pr-11 border-r border-secondary-50">
@@ -17,18 +17,25 @@ const SideBar = () => {
               Home
             </NavLink>
           </li>
-          <li className="block">
-            <NavLink to="/bookmarks" className="py-3 flex items-center gap-5">
-              <Bookmark />
-              Bookmarks
-            </NavLink>
-          </li>
-          <li className="block">
-            <NavLink to="/profile" className="py-3 flex items-center gap-5">
-              <UserRound />
-              My Profile
-            </NavLink>
-          </li>
+          {isAuthenticated && (
+            <li className="block">
+              <NavLink to="/bookmarks" className="py-3 flex items-center gap-5">
+                <Bookmark />
+                Bookmarks
+              </NavLink>
+            </li>
+          )}
+          {isAuthenticated && (
+            <li className="block">
+              <NavLink
+                to={`/${user.userId}/profile`}
+                className="py-3 flex items-center gap-5"
+              >
+                <UserRound />
+                My Profile
+              </NavLink>
+            </li>
+          )}
         </ul>
         <div className="my-2 w-full border border-secondary-50" />
         {isAuthenticated && (

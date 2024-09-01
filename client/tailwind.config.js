@@ -22,10 +22,14 @@ export default {
         textFieldBorder: "#E4E4E4"
       },
       height: {
-        header: "90px"
+        header: "90px",
+        cover: "230px"
       },
       maxWidth: {
         container: "1260px"
+      },
+      minWidth: {
+        btn: "100px"
       }
     },
   },

@@ -10,18 +10,20 @@ const Feed = () => {
   const nextPage = () => setPage(page + 1);
 
   return (
-    <InfiniteScroll
-      next={nextPage}
-      currentPage={page}
-      isFetching={isFetching}
-      totalPages={data?.totalPages || 0}
-    >
-      <div className="flex flex-col gap-14">
-        {data?.data.map((article) => (
-          <ArticleItem data={article} key={article._id} />
-        ))}
-      </div>
-    </InfiniteScroll>
+    <div className="px-6">
+      <InfiniteScroll
+        next={nextPage}
+        currentPage={page}
+        isFetching={isFetching}
+        totalPages={data?.totalPages || 0}
+      >
+        <div className="flex flex-col gap-14">
+          {data?.data.map((article) => (
+            <ArticleItem data={article} key={article._id} />
+          ))}
+        </div>
+      </InfiniteScroll>
+    </div>
   );
 };
 
