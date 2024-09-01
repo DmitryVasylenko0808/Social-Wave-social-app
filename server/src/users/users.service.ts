@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
@@ -26,7 +26,11 @@ export class UsersService {
     }
 
     async findOneById(id: string) {
-        const user = await this.userModel.findById(id);
+        const user = await this.userModel.findById(id, "-passwordHash");
+
+        if (!user) {
+            throw new NotFoundException("user is not found");
+        }
 
         return user;
     }

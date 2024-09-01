@@ -9,6 +9,11 @@ import { avatarsStorage, coversStorage } from 'src/multer.config';
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
+    @Get(":id")
+    async getOne(@Param("id") id: string) {
+        return await this.usersService.findOneById(id);
+    }
+
     @UseGuards(AuthGuard("jwt"))
     @Patch(":id")
     @UseInterceptors(
