@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards, Request, HttpStatus, ParseFilePipeBuilder, UploadedFile, UseInterceptors, Get, Query, UploadedFiles } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards, Request, HttpStatus, ParseFilePipeBuilder, UploadedFile, UseInterceptors, Get, Query, UploadedFiles, Post, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { EditUserDto } from './dto/edit.user.dto';
@@ -32,13 +32,13 @@ export class UsersController {
     }
 
     @UseGuards(AuthGuard("jwt"))
-    @Patch(":id/follow")
+    @Post(":id/follow")
     async follow(@Param("id") id: string, @Request() req: any) {
         await this.usersService.follow(id, req.user.userId);
     }
 
     @UseGuards(AuthGuard("jwt"))
-    @Patch(":id/unfollow")
+    @Delete(":id/unfollow")
     async unfollow(@Param("id") id: string, @Request() req: any) {
         await this.usersService.unfollow(id, req.user.userId);
     }

@@ -3,15 +3,23 @@ import { Button } from "../common/ui";
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useGetOneUserQuery } from "../api/users/users.api";
+import {
+  useFollowUserMutation,
+  useGetOneUserQuery,
+} from "../api/users/users.api";
 
 const Profile = () => {
   const { userId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetOneUserQuery(userId as string);
+  const [triggerFollowUser] = useFollowUserMutation();
 
   const handleClickBack = () => navigate(-1);
+
+  const handleClickFollow = () => {
+    triggerFollowUser(userId as string).catch((err) => alert(err.data.message));
+  };
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -46,9 +54,15 @@ const Profile = () => {
             </h2>
           </div>
           <div className="flex items-center gap-7">
-            <Button variant="secondary" className="rounded-3xl">
-              Follow
-            </Button>
+            {!isCurrentUserProfile && (
+              <Button
+                variant="secondary"
+                className="rounded-3xl"
+                onClick={handleClickFollow}
+              >
+                Follow
+              </Button>
+            )}
             {isCurrentUserProfile && (
               <Link
                 className="px-4 py-2.5 inline-flex items-center gap-3.5 bg-labelFill text-base text-primary-200 border border-primary-200 rounded-3xl"

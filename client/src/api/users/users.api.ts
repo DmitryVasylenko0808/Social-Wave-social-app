@@ -43,6 +43,20 @@ export const usersApi = createApi({
         },
         keepUnusedDataFor: 0,
         providesTags: ["Users"]
+       }),
+       followUser: builder.mutation<void, string>({
+        query: id => ({
+            url: `/${id}/follow`,
+            method: "POST"
+        }),
+        invalidatesTags: ["Users"]
+       }),
+       unfollowUser: builder.mutation<void, string>({
+        query: id => ({
+            url: `/${id}/unfollow`,
+            method: "DELETE"
+        }),
+        invalidatesTags: ["Users"]
        })
     })
 });
@@ -50,5 +64,7 @@ export const usersApi = createApi({
 export const {
     useGetOneUserQuery,
     useGetUserFollowersQuery,
-    useGetUserFollowingsQuery
+    useGetUserFollowingsQuery,
+    useFollowUserMutation,
+    useUnfollowUserMutation
 } = usersApi;
