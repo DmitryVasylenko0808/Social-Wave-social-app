@@ -17,14 +17,13 @@ export const articlesApi = createApi({
         serializeQueryArgs: ({ endpointName }) => {
           return endpointName
         },
-        // Always merge incoming data to the cache entry
         merge: (currentCache, newItems) => {
           currentCache.data.push(...newItems.data)
         },
-        // Refetch when the page arg changes
         forceRefetch({ currentArg, previousArg }) {
           return currentArg !== previousArg
         },
+        keepUnusedDataFor: 0,
       }),
       likeArticle: builder.mutation<void, string>({
         query: (id) => ({

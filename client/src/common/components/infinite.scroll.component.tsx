@@ -11,6 +11,7 @@ const InfiniteScroll = ({
   children,
   next,
   isFetching,
+  currentPage,
   totalPages,
 }: InfiniteScrollProps) => {
   useEffect(() => {
@@ -18,7 +19,8 @@ const InfiniteScroll = ({
       if (
         window.innerHeight + document.documentElement.scrollTop >=
           document.documentElement.offsetHeight - 200 &&
-        !isFetching
+        !isFetching &&
+        currentPage < totalPages
       ) {
         next();
       }
@@ -26,7 +28,7 @@ const InfiniteScroll = ({
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isFetching]);
+  }, [isFetching, totalPages]);
 
   return <>{children}</>;
 };

@@ -61,10 +61,10 @@ const Profile = () => {
           </div>
         </div>
         {data?.bio && <p className="mb-10">{data?.bio}</p>}
-        <div>
+        <div className="flex gap-7">
           <Link
-            className="mr-7 text-secondary-300 text-lg"
             to={`/${data?._id}/followers`}
+            className="px-2 text-secondary-300 text-lg inline-flex gap-2"
           >
             <span className="text-primary-200 font-medium">
               {data?.followers.length || 0}
@@ -72,8 +72,8 @@ const Profile = () => {
             followers
           </Link>
           <Link
-            className="mr-7 text-secondary-300 text-lg"
             to={`/${data?._id}/followings`}
+            className="px-2 text-secondary-300 text-lg inline-flex gap-2"
           >
             <span className="text-primary-200 font-medium">
               {data?.followings.length || 0}

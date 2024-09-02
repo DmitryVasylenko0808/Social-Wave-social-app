@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ArticleItem } from "../common/components";
 import { useGetFeedQuery } from "../api/articles/articles.api";
-import InfiniteScroll from "../common/components/infinite.scroll.component";
+import { InfiniteScroll } from "../common/components";
 
 const Feed = () => {
   const [page, setPage] = useState(1);
