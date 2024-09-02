@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import {
   useFollowUserMutation,
   useGetOneUserQuery,
+  useUnfollowUserMutation,
 } from "../api/users/users.api";
 
 const Profile = () => {
@@ -14,11 +15,18 @@ const Profile = () => {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetOneUserQuery(userId as string);
   const [triggerFollowUser] = useFollowUserMutation();
+  const [triggerUnfollowUser] = useUnfollowUserMutation();
 
   const handleClickBack = () => navigate(-1);
 
   const handleClickFollow = () => {
     triggerFollowUser(userId as string).catch((err) => alert(err.data.message));
+  };
+
+  const handleClickUnfollow = () => {
+    triggerUnfollowUser(userId as string).catch((err) =>
+      alert(err.data.message)
+    );
   };
 
   if (isLoading) {
@@ -30,6 +38,7 @@ const Profile = () => {
   }
 
   const isCurrentUserProfile = userId === user.userId;
+  const isFollowed = data?.followers.includes(user.userId as string);
 
   return (
     <div className="mb-12">
@@ -55,13 +64,25 @@ const Profile = () => {
           </div>
           <div className="flex items-center gap-7">
             {!isCurrentUserProfile && (
-              <Button
-                variant="secondary"
-                className="rounded-3xl"
-                onClick={handleClickFollow}
-              >
-                Follow
-              </Button>
+              <>
+                {!isFollowed ? (
+                  <Button
+                    variant="secondary"
+                    className="rounded-3xl"
+                    onClick={handleClickFollow}
+                  >
+                    Follow
+                  </Button>
+                ) : (
+                  <Button
+                    variant="remove"
+                    className="rounded-3xl"
+                    onClick={handleClickUnfollow}
+                  >
+                    Unfollow
+                  </Button>
+                )}
+              </>
             )}
             {isCurrentUserProfile && (
               <Link

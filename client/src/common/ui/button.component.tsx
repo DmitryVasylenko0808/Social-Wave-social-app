@@ -2,7 +2,7 @@ import { ComponentProps } from "react";
 import { cn } from "../../utils/cn";
 
 type ButtonProps = ComponentProps<"button"> & {
-  variant: "primary" | "secondary" | "terciary";
+  variant: "primary" | "secondary" | "terciary" | "remove";
 };
 
 const Button = ({ children, variant, className, ...btnProps }: ButtonProps) => {
@@ -15,6 +15,8 @@ const Button = ({ children, variant, className, ...btnProps }: ButtonProps) => {
         variant === "secondary",
       "py-3 text-base text-secondary-100 font-medium hover:text-secondary-200":
         variant === "terciary",
+      "px-5 py-4 bg-secondary-50 text-secondary-300 rounded-2xl font-medium":
+        variant === "remove",
     },
     className
   );
