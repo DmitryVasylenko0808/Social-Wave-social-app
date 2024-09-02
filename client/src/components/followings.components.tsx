@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { InfiniteScroll, UserItem } from "../common/components";
 import { Button } from "../common/ui";
 import { useParams, useNavigate } from "react-router";
-import { useGetUserFollowersQuery } from "../api/users/users.api";
+import { useGetUserFollowingsQuery } from "../api/users/users.api";
 
-const Followers = () => {
+const Followings = () => {
   const { userId } = useParams();
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
-  const { data, isFetching, isError } = useGetUserFollowersQuery({
+  const { data, isFetching, isError } = useGetUserFollowingsQuery({
     id: userId as string,
     page,
   });
@@ -32,7 +32,7 @@ const Followers = () => {
         <Button variant="terciary" onClick={handleClickBack}>
           <ArrowLeft />
         </Button>
-        <h2 className="text-xl text-primary-200 font-bold">Followers</h2>
+        <h2 className="text-xl text-primary-200 font-bold">Followings</h2>
       </div>
       <div className="">
         <InfiniteScroll
@@ -52,4 +52,4 @@ const Followers = () => {
   );
 };
 
-export default Followers;
+export default Followings;

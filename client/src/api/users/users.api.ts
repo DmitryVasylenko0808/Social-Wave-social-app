@@ -29,11 +29,26 @@ export const usersApi = createApi({
         },
         keepUnusedDataFor: 0,
         providesTags: ["Users"]
+       }),
+       getUserFollowings: builder.query<GetUsersDto, { id: string, page: number }>({
+        query: ({ id, page }) => `/${id}/followings?page=${page}`,
+        serializeQueryArgs: ({ endpointName }) => {
+            return endpointName
+        },
+        merge: (currentCache, newItems) => {
+            currentCache.data.push(...newItems.data)
+        },
+        forceRefetch({ currentArg, previousArg }) {
+            return currentArg !== previousArg
+        },
+        keepUnusedDataFor: 0,
+        providesTags: ["Users"]
        })
     })
 });
 
 export const {
     useGetOneUserQuery,
-    useGetUserFollowersQuery
+    useGetUserFollowersQuery,
+    useGetUserFollowingsQuery
 } = usersApi;
