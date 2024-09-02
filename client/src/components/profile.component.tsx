@@ -20,13 +20,15 @@ const Profile = () => {
   const handleClickBack = () => navigate(-1);
 
   const handleClickFollow = () => {
-    triggerFollowUser(userId as string).catch((err) => alert(err.data.message));
+    triggerFollowUser(userId as string)
+      .unwrap()
+      .catch((err) => alert(err.data.message));
   };
 
   const handleClickUnfollow = () => {
-    triggerUnfollowUser(userId as string).catch((err) =>
-      alert(err.data.message)
-    );
+    triggerUnfollowUser(userId as string)
+      .unwrap()
+      .catch((err) => alert(err.data.message));
   };
 
   if (isLoading) {
