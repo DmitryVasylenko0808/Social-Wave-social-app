@@ -12,4 +12,10 @@ client/node_modules
 client/dist
 client/dist-ssr
 
+client/.env
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+client/.env.local
+
 TODO.txt

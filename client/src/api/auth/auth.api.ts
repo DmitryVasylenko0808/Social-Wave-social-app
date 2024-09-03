@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiUrl } from "../constants";
 
 type SignInParams = {
     email: string;
@@ -15,7 +16,7 @@ type SignUpParams = {
 export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:4444/api/auth",
+        baseUrl: `${apiUrl}/auth`,
         prepareHeaders: headers => {
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }

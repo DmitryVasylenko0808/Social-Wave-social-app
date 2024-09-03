@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { GetOneUserDto } from "./dto/get.one.user.dto";
 import { GetUsersDto } from "./dto/get.users.dto";
+import { apiUrl } from "../constants";
 
 export const usersApi = createApi({
     reducerPath: "usersApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:4444/api/users",
+        baseUrl: `${apiUrl}/users`,
         prepareHeaders: headers => {
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }
