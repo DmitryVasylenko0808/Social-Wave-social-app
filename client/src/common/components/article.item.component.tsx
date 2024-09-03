@@ -19,10 +19,10 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
     <article>
       <div className="mb-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Link to={`/${data.author._id}/profile`}>
+          <Link to={`/users/${data.author._id}/profile`}>
             <div className="w-[50px] h-[50px] bg-slate-600 rounded-full" />
           </Link>
-          <Link to={`/${data.author._id}/profile`}>
+          <Link to={`/users/${data.author._id}/profile`}>
             <span className="text-secondary-300 font-medium">
               {data.author.firstName} {data.author.secondName}
             </span>

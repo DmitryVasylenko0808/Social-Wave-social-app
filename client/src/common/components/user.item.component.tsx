@@ -10,10 +10,10 @@ const UserItem = ({ data }: UserItemProps) => {
   return (
     <div className="py-2 flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <Link to={`/${data._id}/profile`}>
+        <Link to={`/users/${data._id}/profile`}>
           <div className="w-[50px] h-[50px] bg-slate-600 rounded-full" />
         </Link>
-        <Link to={`/${data._id}/profile`}>
+        <Link to={`/users/${data._id}/profile`}>
           <span className="text-secondary-300 font-medium">
             {data.firstName} {data.secondName}
           </span>

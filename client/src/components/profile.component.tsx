@@ -89,7 +89,7 @@ const Profile = () => {
             {isCurrentUserProfile && (
               <Link
                 className="px-4 py-2.5 inline-flex items-center gap-3.5 bg-labelFill text-base text-primary-200 border border-primary-200 rounded-3xl"
-                to={`/${data?._id}/profile/edit`}
+                to={`/users/${data?._id}/profile/edit`}
               >
                 <PenLine size={20} />
                 Edit Profile
@@ -100,7 +100,7 @@ const Profile = () => {
         {data?.bio && <p className="mb-10">{data?.bio}</p>}
         <div className="flex gap-7">
           <Link
-            to={`/${data?._id}/followers`}
+            to={`/users/${data?._id}/followers`}
             className="px-2 text-secondary-300 text-lg inline-flex gap-2"
           >
             <span className="text-primary-200 font-medium">
@@ -109,7 +109,7 @@ const Profile = () => {
             followers
           </Link>
           <Link
-            to={`/${data?._id}/followings`}
+            to={`/users/${data?._id}/followings`}
             className="px-2 text-secondary-300 text-lg inline-flex gap-2"
           >
             <span className="text-primary-200 font-medium">

@@ -28,7 +28,7 @@ const SideBar = () => {
           {isAuthenticated && (
             <li className="block">
               <NavLink
-                to={`/${user.userId}/profile`}
+                to={`/users/${user.userId}/profile`}
                 className="py-3 flex items-center gap-5"
               >
                 <UserRound />

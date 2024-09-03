@@ -23,9 +23,11 @@ function App() {
     <Routes>
       <Route path="/" element={<BaseLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="/:userId/profile" element={<ProfilePage />} />
-        <Route path="/:userId/followers" element={<FollowersPage />} />
-        <Route path="/:userId/followings" element={<FollowingsPage />} />
+        <Route path="users">
+          <Route path=":userId/profile" element={<ProfilePage />} />
+          <Route path=":userId/followers" element={<FollowersPage />} />
+          <Route path=":userId/followings" element={<FollowingsPage />} />
+        </Route>
       </Route>
       <Route path="auth" element={<AuthLayout />}>
         <Route path="sign-in" element={<SignInPage />} />
