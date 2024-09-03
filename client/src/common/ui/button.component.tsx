@@ -1,9 +1,23 @@
 import { ComponentProps } from "react";
 import { cn } from "../../utils/cn";
+import { Link } from "react-router-dom";
 
-type ButtonProps = ComponentProps<"button"> & {
+type BaseButtonProps = {
   variant: "primary" | "secondary" | "terciary" | "remove";
 };
+
+type ButtonAsButtonProps = ComponentProps<"button"> &
+  BaseButtonProps & {
+    as?: "button";
+  };
+
+type ButtonAsLinkProps = ComponentProps<"a"> &
+  BaseButtonProps & {
+    as: "link";
+    to: string;
+  };
+
+type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
 
 const Button = ({ children, variant, className, ...btnProps }: ButtonProps) => {
   const classes = cn(
@@ -20,6 +34,14 @@ const Button = ({ children, variant, className, ...btnProps }: ButtonProps) => {
     },
     className
   );
+
+  if (btnProps.as === "link") {
+    return (
+      <Link to={btnProps.to} className={classes}>
+        {children}
+      </Link>
+    );
+  }
 
   return (
     <button className={classes} {...btnProps}>
