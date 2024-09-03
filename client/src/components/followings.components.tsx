@@ -3,12 +3,16 @@ import React, { useState } from "react";
 import { InfiniteScroll, UserItem } from "../common/components";
 import { Button } from "../common/ui";
 import { useParams, useNavigate } from "react-router";
-import { useGetUserFollowingsQuery } from "../api/users/users.api";
+import {
+  useGetOneUserQuery,
+  useGetUserFollowingsQuery,
+} from "../api/users/users.api";
 
 const Followings = () => {
   const { userId } = useParams();
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
+  const { data: user } = useGetOneUserQuery(userId as string);
   const { data, isFetching, isError } = useGetUserFollowingsQuery({
     id: userId as string,
     page,
@@ -32,7 +36,9 @@ const Followings = () => {
         <Button variant="terciary" onClick={handleClickBack}>
           <ArrowLeft />
         </Button>
-        <h2 className="text-xl text-primary-200 font-bold">Followings</h2>
+        <h2 className="text-xl text-primary-200 font-bold">
+          {user?.firstName} {user?.secondName}: Followings
+        </h2>
       </div>
       <div className="">
         <InfiniteScroll
