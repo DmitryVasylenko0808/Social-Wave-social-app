@@ -11,6 +11,7 @@ type SignUpParams = {
     secondName: string;
     email: string;
     password: string;
+    avatar?: File;
 };
 
 export const authApi = createApi({

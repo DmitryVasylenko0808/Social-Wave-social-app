@@ -1,11 +1,11 @@
-import React from "react";
 import { TextField, Button } from "../common/ui";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useSignUpMutation } from "../api/auth/auth.api";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../hooks/useAuth";
+import ImageFileSelect from "../common/ui/image.file.select";
 
 const signUpSchema = z
   .object({
@@ -14,6 +14,21 @@ const signUpSchema = z
     email: z.string().min(1, "Email is required").email("Invalid email"),
     password: z.string().min(8, "Password must have at least 8 characters"),
     confirmPassword: z.string(),
+    avatar: z
+      .any()
+      .refine(
+        (files: FileList) => {
+          return (
+            !files[0] ||
+            files[0].type === "image/jpeg" ||
+            files[0].type === "image/jpg"
+          );
+        },
+        {
+          message: "Only .jpeg format is supported",
+        }
+      )
+      .optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -29,16 +44,19 @@ const SignUpForm = () => {
 
   const { authenticate } = useAuth();
   const {
+    control,
     register,
-    setError,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<SignUpFormFields>({
     resolver: zodResolver(signUpSchema),
   });
 
   const submitHandler = (data: SignUpFormFields) => {
-    const { confirmPassword, ...signUpData } = data;
+    const { confirmPassword, avatar, ...other } = data;
+
+    const signUpData = avatar ? { avatar: avatar[0] as File, ...other } : other;
 
     triggerSignUp(signUpData)
       .unwrap()
@@ -84,13 +102,29 @@ const SignUpForm = () => {
           type="password"
           error={errors.confirmPassword?.message}
         />
+        <Controller
+          name="avatar"
+          control={control}
+          render={({ field }) => (
+            <ImageFileSelect
+              {...register("avatar")}
+              label="Profile photo"
+              onFileChange={field.onChange}
+            />
+          )}
+        />
       </div>
 
       <p className="mb-2.5 text-center text-red-700 text-sm">
         {errors.root?.message}
       </p>
 
-      <Button variant="primary" className="mb-8" disabled={isLoading}>
+      <Button
+        type="submit"
+        variant="primary"
+        className="mb-8"
+        disabled={isLoading}
+      >
         Sign Up
       </Button>
 
