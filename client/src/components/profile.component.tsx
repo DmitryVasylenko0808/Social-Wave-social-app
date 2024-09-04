@@ -8,6 +8,8 @@ import {
   useGetOneUserQuery,
   useUnfollowUserMutation,
 } from "../api/users/users.api";
+import { userAvatarsUrl } from "../api/constants";
+import Avatar from "../common/ui/avatar.component";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -59,7 +61,15 @@ const Profile = () => {
       <div className="px-6">
         <div className="relative bottom-12 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <div className="w-[90px] h-[90px] bg-slate-600 rounded-full" />
+            <Avatar
+              variant="big"
+              src={
+                data?.avatar
+                  ? `${userAvatarsUrl}/${data.avatar}`
+                  : `${userAvatarsUrl}/nullavatar.jpg`
+              }
+              alt={`Avatar ${data?.firstName} ${data?.secondName}`}
+            />
             <h2 className="text-xl text-primary-200 font-bold">
               {data?.firstName} {data?.secondName}
             </h2>

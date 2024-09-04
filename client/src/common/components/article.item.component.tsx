@@ -3,6 +3,8 @@ import { Button } from "../ui";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { Link } from "react-router-dom";
 import { useLikeArticleMutation } from "../../api/articles/articles.api";
+import { userAvatarsUrl } from "../../api/constants";
+import Avatar from "../ui/avatar.component";
 
 type ArticleItemProps = {
   data: Article;
@@ -20,7 +22,15 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
       <div className="mb-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Link to={`/users/${data.author._id}/profile`}>
-            <div className="w-[50px] h-[50px] bg-slate-600 rounded-full" />
+            <Avatar
+              variant="medium"
+              src={
+                data?.author.avatar
+                  ? `${userAvatarsUrl}/${data?.author.avatar}`
+                  : `${userAvatarsUrl}/nullavatar.jpg`
+              }
+              alt={`Avatar ${data?.author.firstName} ${data?.author.secondName}`}
+            />
           </Link>
           <Link to={`/users/${data.author._id}/profile`}>
             <span className="text-secondary-300 font-medium">
