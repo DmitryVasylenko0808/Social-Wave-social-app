@@ -26,7 +26,7 @@ const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
     };
 
     const classes = cn(
-      "cursor-pointer w-[112px] h-[112px] inline-flex flex-col items-center justify-center rounded-full border border-primary-200 text-primary-200",
+      "cursor-pointer w-[112px] h-[112px] inline-flex flex-col items-center justify-center rounded-full bg-blue-50 border border-primary-200 text-primary-200",
       className
     );
 
