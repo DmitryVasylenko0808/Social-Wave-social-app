@@ -39,9 +39,7 @@ type SignUpFormFields = z.infer<typeof signUpSchema>;
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-
   const [triggerSignUp, { isLoading }] = useSignUpMutation();
-
   const { authenticate } = useAuth();
   const {
     control,

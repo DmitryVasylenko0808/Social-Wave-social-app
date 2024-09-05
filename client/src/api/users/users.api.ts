@@ -3,6 +3,16 @@ import { GetOneUserDto } from "./dto/get.one.user.dto";
 import { GetUsersDto } from "./dto/get.users.dto";
 import { apiUrl } from "../constants";
 
+type EditUserParams = {
+    _id: string;
+    firstName: string;
+    secondName: string;
+    email: string;
+    bio?: string;
+    avatar?: File;
+    coverImage?: File;
+}
+
 export const usersApi = createApi({
     reducerPath: "usersApi",
     baseQuery: fetchBaseQuery({
@@ -16,6 +26,20 @@ export const usersApi = createApi({
        getOneUser: builder.query<GetOneUserDto, string>({
         query: id => `/${id}`,
         providesTags: ["Users"]
+       }),
+       editUser: builder.mutation<void, EditUserParams>({
+        query: ({ _id, ...body }) => {
+            const formData = new FormData();
+            Object.entries(body).forEach(([key, value]) => formData.append(key, value))
+
+            return {
+                url: `/${_id}`,
+                method: "PATCH",
+                body: formData,
+                formData: true
+            }
+        },
+        invalidatesTags: ["Users"]
        }),
        getUserFollowers: builder.query<GetUsersDto, { id: string, page: number }>({
         query: ({ id, page }) => `/${id}/followers?page=${page}`,
@@ -64,6 +88,7 @@ export const usersApi = createApi({
 
 export const {
     useGetOneUserQuery,
+    useEditUserMutation,
     useGetUserFollowersQuery,
     useGetUserFollowingsQuery,
     useFollowUserMutation,

@@ -46,7 +46,12 @@ const Profile = () => {
 
   return (
     <div className="mb-12">
-      <div className="bg-blue-50 h-cover">
+      <div
+        style={{
+          backgroundImage: `url(${userAvatarsUrl}/${data!.coverImage})`,
+        }}
+        className="h-cover bg-blue-50 bg-cover bg-center"
+      >
         <div className="pt-2 px-6">
           <div className="flex items-center gap-3.5">
             <Button variant="terciary" onClick={handleClickBack}>
@@ -99,7 +104,7 @@ const Profile = () => {
             {isCurrentUserProfile && (
               <Link
                 className="px-4 py-2.5 inline-flex items-center gap-3.5 bg-labelFill text-base text-primary-200 border border-primary-200 rounded-3xl"
-                to={`/users/${data?._id}/profile/edit`}
+                to={`/users/${data?._id}/edit`}
               >
                 <PenLine size={20} />
                 Edit Profile

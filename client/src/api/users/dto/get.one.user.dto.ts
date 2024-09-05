@@ -7,7 +7,7 @@ export type UserDetails = {
     followings: string[];
     bio?: string;
     avatar?: string;
-    cover?: string;
+    coverImage?: string;
 } 
 
 export type GetOneUserDto = UserDetails;

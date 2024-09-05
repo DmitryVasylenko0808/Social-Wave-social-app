@@ -1,14 +1,16 @@
 import React, { ComponentProps, forwardRef, useEffect, useState } from "react";
 import { cn } from "../../utils/cn";
 import { Camera } from "lucide-react";
+import { userAvatarsUrl } from "../../api/constants";
 
 type ImageFileSelectProps = ComponentProps<"input"> & {
-  onFileChange: (file: File | null) => void;
   label?: string;
+  defaultImageUrl?: string;
+  onFileChange: (file: File | null) => void;
 };
 
 const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
-  ({ label, className, onFileChange, ...inputProps }, ref) => {
+  ({ label, defaultImageUrl, className, onFileChange, ...inputProps }, ref) => {
     const [preview, setPreview] = useState<string | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,20 +32,34 @@ const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
       className
     );
 
+    let content;
+
+    if (preview || defaultImageUrl) {
+      if (preview) {
+        content = (
+          <img src={preview} alt="Preview avatar" className="w-full h-full" />
+        );
+      } else {
+        content = (
+          <img
+            src={defaultImageUrl}
+            alt="Preview avatar"
+            className="w-full h-full"
+          />
+        );
+      }
+    } else {
+      content = (
+        <>
+          <Camera className="text-center" />
+          <span className="text-primary-100 text-center">{label}</span>
+        </>
+      );
+    }
+
     return (
       <label className={classes}>
-        {preview ? (
-          <img
-            src={preview}
-            alt="Preview avatar"
-            className="w-full h-full rounded-full"
-          />
-        ) : (
-          <>
-            <Camera className="text-center" />
-            <span className="text-primary-100 text-center">{label}</span>
-          </>
-        )}
+        {content}
         <input
           {...inputProps}
           type="file"
