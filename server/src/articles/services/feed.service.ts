@@ -43,6 +43,7 @@ export class FeedService {
             .skip((page - 1) * this.limit)
             .limit(this.limit)
             .sort({ createdAt: "desc" })
+            .populate("author", "_id firstName secondName avatar")
             .populate({
                 path: "repostedArticle",
                 populate: {

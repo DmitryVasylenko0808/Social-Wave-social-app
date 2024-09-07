@@ -4,5 +4,6 @@ import Feed from "./feed.component";
 import Followers from "./followers.component";
 import Followings from "./followings.components";
 import EditProfileForm from "./edit.profile.component";
+import UserFeed from "./user.feed.component";
 
-export { SignInForm, SignUpForm, Feed, Followers, Followings, EditProfileForm };
+export { SignInForm, SignUpForm, Feed, Followers, Followings, EditProfileForm, UserFeed };

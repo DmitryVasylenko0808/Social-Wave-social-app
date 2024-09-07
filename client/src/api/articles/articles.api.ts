@@ -3,6 +3,11 @@ import { GetArticlesDto } from "./dto/get.articles.dto";
 import { store } from "../../redux/store";
 import { apiUrl } from "../constants";
 
+type GetUserFeedParams = {
+  userId: string;
+  page: number;
+};
+
 export const articlesApi = createApi({
     reducerPath: "articlesApi",
     baseQuery: fetchBaseQuery({
@@ -15,6 +20,19 @@ export const articlesApi = createApi({
     endpoints: builder => ({
       getFeed: builder.query<GetArticlesDto, number>({
         query: (page) => `/feed?page=${page}`,
+        serializeQueryArgs: ({ endpointName }) => {
+          return endpointName
+        },
+        merge: (currentCache, newItems) => {
+          currentCache.data.push(...newItems.data)
+        },
+        forceRefetch({ currentArg, previousArg }) {
+          return currentArg !== previousArg
+        },
+        keepUnusedDataFor: 0,
+      }),
+      getUserFeed: builder.query<GetArticlesDto, GetUserFeedParams>({
+        query: ({ userId, page }) => `/feed/${userId}?page=${page}`,
         serializeQueryArgs: ({ endpointName }) => {
           return endpointName
         },
@@ -46,6 +64,6 @@ export const articlesApi = createApi({
 
 export const { 
     useGetFeedQuery,
-    useLazyGetFeedQuery,
+    useGetUserFeedQuery,
     useLikeArticleMutation
 } = articlesApi;
