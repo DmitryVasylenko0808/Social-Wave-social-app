@@ -4,6 +4,8 @@ import {
   Repeat2,
   Bookmark,
   EllipsisVertical,
+  PenLine,
+  Trash2,
 } from "lucide-react";
 import { Button, Menu, MenuItem } from "../ui";
 import { Article } from "../../api/articles/dto/get.articles.dto";
@@ -15,15 +17,23 @@ import {
 import { userAvatarsUrl } from "../../api/constants";
 import Avatar from "../ui/avatar.component";
 import { useAuth } from "../../hooks/useAuth";
+import { useRef, useState } from "react";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 type ArticleItemProps = {
   data: Article;
 };
 
 const ArticleItem = ({ data }: ArticleItemProps) => {
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const ref = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const [triggerDeleteArticle] = useDeleteArticleMutation();
   const [triggerLikeArticle] = useLikeArticleMutation();
+
+  useClickOutside(ref, () => setOpenMenu(false));
+
+  const handleClickOpenMenu = () => setOpenMenu(true);
 
   const handleClickDelete = async () => {
     await triggerDeleteArticle(data._id).unwrap();
@@ -61,16 +71,23 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
             {data.createdAt.toString()}
           </span>
 
-          <div className="relative">
-            <Button variant="terciary">
-              <EllipsisVertical />
-            </Button>
+          {isUserArticle && (
+            <div className="relative">
+              <Button variant="terciary" onClick={handleClickOpenMenu}>
+                <EllipsisVertical />
+              </Button>
 
-            <Menu open={true}>
-              <MenuItem>Edit</MenuItem>
-              <MenuItem>Delete</MenuItem>
-            </Menu>
-          </div>
+              <Menu open={openMenu} ref={ref}>
+                <MenuItem>
+                  <PenLine size={18} /> Edit
+                </MenuItem>
+                <MenuItem className="text-red-600" onClick={handleClickDelete}>
+                  <Trash2 size={18} />
+                  Delete
+                </MenuItem>
+              </Menu>
+            </div>
+          )}
         </div>
       </div>
       <p className="mb-1">{data?.text}</p>

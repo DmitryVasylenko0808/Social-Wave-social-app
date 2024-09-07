@@ -85,9 +85,26 @@ export const articlesApi = createApi({
       }),
       deleteArticle: builder.mutation<void, string>({
         query: id => ({
-          url: `/article/${id}`,
+          url: `/articles/${id}`,
           method: "DELETE"
         }),
+        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled;
+
+            const resultFeedUser = dispatch(
+              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
+                draft.data = draft.data.filter(item => item._id !== id);
+              })
+            );
+
+            const resultFeed = dispatch(
+              articlesApi.util.updateQueryData("getFeed", undefined, (draft) => {
+                draft.data = draft.data.filter(item => item._id !== id);
+              })
+            )
+          } catch {}
+        }
       }),
       likeArticle: builder.mutation<void, string>({
         query: (id) => ({
