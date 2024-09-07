@@ -1,21 +1,39 @@
-import { Heart, MessageSquare, Repeat2, Bookmark } from "lucide-react";
-import { Button } from "../ui";
+import {
+  Heart,
+  MessageSquare,
+  Repeat2,
+  Bookmark,
+  EllipsisVertical,
+} from "lucide-react";
+import { Button, Menu, MenuItem } from "../ui";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { Link } from "react-router-dom";
-import { useLikeArticleMutation } from "../../api/articles/articles.api";
+import {
+  useDeleteArticleMutation,
+  useLikeArticleMutation,
+} from "../../api/articles/articles.api";
 import { userAvatarsUrl } from "../../api/constants";
 import Avatar from "../ui/avatar.component";
+import { useAuth } from "../../hooks/useAuth";
 
 type ArticleItemProps = {
   data: Article;
 };
 
 const ArticleItem = ({ data }: ArticleItemProps) => {
+  const { user } = useAuth();
+  const [triggerDeleteArticle] = useDeleteArticleMutation();
   const [triggerLikeArticle] = useLikeArticleMutation();
+
+  const handleClickDelete = async () => {
+    await triggerDeleteArticle(data._id).unwrap();
+  };
 
   const handleClickLike = async () => {
     await triggerLikeArticle(data._id).unwrap();
   };
+
+  const isUserArticle = data.author._id === user.userId;
 
   return (
     <article>
@@ -38,7 +56,22 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
             </span>
           </Link>
         </div>
-        <span className="text-secondary-100">{data.createdAt.toString()}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-secondary-100">
+            {data.createdAt.toString()}
+          </span>
+
+          <div className="relative">
+            <Button variant="terciary">
+              <EllipsisVertical />
+            </Button>
+
+            <Menu open={true}>
+              <MenuItem>Edit</MenuItem>
+              <MenuItem>Delete</MenuItem>
+            </Menu>
+          </div>
+        </div>
       </div>
       <p className="mb-1">{data?.text}</p>
       <div className="flex">

@@ -13,10 +13,6 @@ const UserFeed = () => {
 
   const next = () => setPage(page + 1);
 
-  if (isFetching) {
-    return <span>Fetching...</span>;
-  }
-
   if (isError) {
     return <span>Error.</span>;
   }

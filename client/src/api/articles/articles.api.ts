@@ -83,6 +83,12 @@ export const articlesApi = createApi({
         },
         invalidatesTags: ["Articles"]
       }),
+      deleteArticle: builder.mutation<void, string>({
+        query: id => ({
+          url: `/article/${id}`,
+          method: "DELETE"
+        }),
+      }),
       likeArticle: builder.mutation<void, string>({
         query: (id) => ({
           url: `/articles/${id}/like`,
@@ -106,5 +112,6 @@ export const {
     useGetUserFeedQuery,
     useGetOneArticleQuery,
     useCreateArticleMutation,
+    useDeleteArticleMutation,
     useLikeArticleMutation
 } = articlesApi;
