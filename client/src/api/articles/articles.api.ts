@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { GetArticlesDto } from "./dto/get.articles.dto";
+import { Article, GetArticlesDto } from "./dto/get.articles.dto";
 import { store } from "../../redux/store";
 import { apiUrl } from "../constants";
 
@@ -36,13 +36,19 @@ export const articlesApi = createApi({
         serializeQueryArgs: ({ endpointName }) => {
           return endpointName
         },
-        merge: (currentCache, newItems) => {
-          currentCache.data.push(...newItems.data)
+        merge: (currentCache, newItems, { arg }) => {
+          currentCache.data.push(...newItems.data);
         },
         forceRefetch({ currentArg, previousArg }) {
           return currentArg !== previousArg
         },
         keepUnusedDataFor: 0,
+      }),
+      getOneArticle: builder.query<Article, string>({
+        query: (id) => `/articles/${id}`,
+        providesTags: (result, error, arg, meta) => {
+          return [{ type: "Articles", id: arg }]
+        },
       }),
       likeArticle: builder.mutation<void, string>({
         query: (id) => ({
@@ -53,7 +59,7 @@ export const articlesApi = createApi({
           const result = dispatch(
             articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
               draft.data = draft.data.map(item => item._id === id ? { ...item, likes: [...item.likes, store.getState().auth.userId as string] } : item)
-            })
+            }),
           )
 
           queryFulfilled.catch(result.undo);
@@ -65,5 +71,6 @@ export const articlesApi = createApi({
 export const { 
     useGetFeedQuery,
     useGetUserFeedQuery,
+    useGetOneArticleQuery,
     useLikeArticleMutation
 } = articlesApi;

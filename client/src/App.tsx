@@ -10,6 +10,7 @@ import ProfilePage from "./pages/profile.page.tsx";
 import FollowersPage from "./pages/followers.page.tsx";
 import FollowingsPage from "./pages/followings.page.tsx";
 import EditProfilePage from "./pages/edit.profile.page.tsx";
+import OneArticlePage from "./pages/one.article.page.tsx";
 
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();
@@ -24,6 +25,7 @@ function App() {
     <Routes>
       <Route path="/" element={<BaseLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="articles/:articleId" element={<OneArticlePage />} />
         <Route path="users">
           <Route path=":userId/profile" element={<ProfilePage />} />
           <Route path=":userId/edit" element={<EditProfilePage />} />

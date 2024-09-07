@@ -49,7 +49,7 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
           </Button>
         </div>
         <div className="flex-1 flex justify-center">
-          <Button variant="terciary">
+          <Button as="link" to={`/articles/${data._id}`} variant="terciary">
             <MessageSquare />
             <span>{data.commentsCount}</span>
           </Button>
