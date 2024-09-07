@@ -8,6 +8,10 @@ type GetUserFeedParams = {
   page: number;
 };
 
+type CreateArticleParams = {
+  text: string;
+}
+
 export const articlesApi = createApi({
     reducerPath: "articlesApi",
     baseQuery: fetchBaseQuery({
@@ -50,6 +54,35 @@ export const articlesApi = createApi({
           return [{ type: "Articles", id: arg }]
         },
       }),
+      createArticle: builder.mutation<Article, CreateArticleParams>({
+        query: body => {
+          const formData = new FormData();
+          Object.entries(body).forEach(([key, value]) => formData.append(key, value))
+
+          return {
+              url: `/articles`,
+              method: "POST",
+              body: formData,
+              formData: true
+          }
+        },
+        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+          try {
+            const { data } = await queryFulfilled;
+            
+            const result = dispatch(
+              articlesApi.util.updateQueryData(
+                "getUserFeed", 
+                { userId: store.getState().auth.userId as string, page: 1 }, 
+                (draft) => {
+                  draft.data.unshift(data);
+                }
+              )
+            );
+          } catch {} 
+        },
+        invalidatesTags: ["Articles"]
+      }),
       likeArticle: builder.mutation<void, string>({
         query: (id) => ({
           url: `/articles/${id}/like`,
@@ -72,5 +105,6 @@ export const {
     useGetFeedQuery,
     useGetUserFeedQuery,
     useGetOneArticleQuery,
+    useCreateArticleMutation,
     useLikeArticleMutation
 } = articlesApi;

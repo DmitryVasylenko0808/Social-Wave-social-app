@@ -29,7 +29,7 @@ export class ArticlesService {
             ...data
         });
 
-        return await article.save();
+        return (await article.save()).populate("author", "_id firstName secondName avatar");
     }
 
     async edit(id: string, data: EditArticleDto, images?: Express.Multer.File[]) {

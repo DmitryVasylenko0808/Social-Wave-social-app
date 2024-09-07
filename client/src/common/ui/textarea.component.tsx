@@ -8,16 +8,15 @@ type TextAreaProps = ComponentProps<"textarea"> & {
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, error, className, ...textAreaProps }, ref) => {
-    const classes = cn("flex flex-col", className);
+    const classes = cn(
+      "bg-labelFill border-1 border-textFieldBorder rounded text-xl",
+      className
+    );
 
     return (
-      <div className={classes}>
+      <div className="flex flex-col">
         <label className="mb-1.5 text-label text-sm">{label}</label>
-        <textarea
-          className="bg-labelFill border-1 border-TextAreaBorder rounded text-xl"
-          ref={ref}
-          {...textAreaProps}
-        />
+        <textarea className={classes} ref={ref} {...textAreaProps} />
         <p className="text-red-700 text-sm">{error}</p>
       </div>
     );
