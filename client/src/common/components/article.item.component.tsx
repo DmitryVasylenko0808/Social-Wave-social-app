@@ -25,6 +25,7 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import { cn } from "../../utils/cn";
 import { useModal } from "../../hooks/useModal";
 import DeleteArticleModal from "./delete.article.modal";
+import EditArticleModal from "./edit.article.modal";
 
 type ArticleItemProps = {
   data: Article;
@@ -35,6 +36,7 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const deleteModal = useModal();
+  const editModal = useModal();
   const [triggerLikeArticle] = useLikeArticleMutation();
   const [triggerUnlikeArticle] = useUnlikeArticleMutation();
   const [triggerBookmarkArticle] = useBookmarkArticleMutation();
@@ -43,6 +45,7 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
   useClickOutside(ref, () => setOpenMenu(false));
 
   const handleClickOpenMenu = () => setOpenMenu(true);
+  const handleClickEdit = () => editModal.onOpen();
   const handleClickDelete = () => deleteModal.onOpen();
 
   const handleClickLike = async () => {
@@ -105,7 +108,7 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
               </Button>
 
               <Menu open={openMenu} ref={ref}>
-                <MenuItem>
+                <MenuItem onClick={handleClickEdit}>
                   <PenLine size={18} /> Edit
                 </MenuItem>
                 <MenuItem className="text-red-600" onClick={handleClickDelete}>
@@ -144,6 +147,13 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
           </Button>
         </div>
       </div>
+      {data && (
+        <EditArticleModal
+          article={data}
+          open={editModal.open}
+          onClose={editModal.onClose}
+        />
+      )}
       {data && (
         <DeleteArticleModal
           article={data}

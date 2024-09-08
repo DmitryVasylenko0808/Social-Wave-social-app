@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery, QueryKeys } from "@reduxjs/toolkit/query/react";
 import { Article, GetArticlesDto } from "./dto/get.articles.dto";
 import { store } from "../../redux/store";
 import { apiUrl } from "../constants";
@@ -10,7 +10,12 @@ type GetUserFeedParams = {
 
 type CreateArticleParams = {
   text: string;
-}
+};
+
+type EditArticleParams = {
+  id: string;
+  text: string;
+};
 
 export const articlesApi = createApi({
     reducerPath: "articlesApi",
@@ -105,6 +110,36 @@ export const articlesApi = createApi({
             )
           } catch {}
         }
+      }),
+      editArticle: builder.mutation<void, EditArticleParams>({
+        query: ({ id, ...body }) => {
+          const formData = new FormData();
+          Object.entries(body).forEach(([key, value]) => formData.append(key, value))
+
+          return {
+              url: `/articles/${id}`,
+              method: "PATCH",
+              body: formData,
+              formData: true
+          }
+        },
+        onQueryStarted: async (data, { dispatch, queryFulfilled,  }) => {
+          try {
+            await queryFulfilled;
+
+            dispatch(
+              articlesApi.util.updateQueryData("getFeed", undefined, draft => {
+                draft.data = draft.data.map(item => item._id === data.id ? { ...item, ...data } : item);
+              })
+            )
+            dispatch(
+              articlesApi.util.updateQueryData("getUserFeed", undefined, draft => {
+                draft.data = draft.data.map(item => item._id === data.id ? { ...item, ...data } : item);
+              })
+            )
+          } catch {}
+        },
+        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg.id }],
       }),
       likeArticle: builder.mutation<void, string>({
         query: (id) => ({
@@ -210,6 +245,7 @@ export const {
     useGetUserFeedQuery,
     useGetOneArticleQuery,
     useCreateArticleMutation,
+    useEditArticleMutation,
     useDeleteArticleMutation,
     useLikeArticleMutation,
     useUnlikeArticleMutation,

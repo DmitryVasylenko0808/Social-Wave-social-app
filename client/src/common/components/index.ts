@@ -4,5 +4,6 @@ import ArticleItem from "./article.item.component";
 import InfiniteScroll from "./infinite.scroll.component";
 import UserItem from "./user.item.component";
 import DeleteArticleModal from "./delete.article.modal";
+import EditArticleModal from "./edit.article.modal";
 
-export { Banner, Header, ArticleItem, InfiniteScroll, UserItem, DeleteArticleModal };
+export { Banner, Header, ArticleItem, InfiniteScroll, UserItem, DeleteArticleModal, EditArticleModal };
