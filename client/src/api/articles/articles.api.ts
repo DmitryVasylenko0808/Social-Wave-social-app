@@ -111,16 +111,97 @@ export const articlesApi = createApi({
           url: `/articles/${id}/like`,
           method: "POST"
         }),
-        onQueryStarted: (id, { dispatch, queryFulfilled }) => {
-          const result = dispatch(
-            articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
-              draft.data = draft.data.map(item => item._id === id ? { ...item, likes: [...item.likes, store.getState().auth.userId as string] } : item)
-            }),
-          )
+        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled;
 
-          queryFulfilled.catch(result.undo);
+            const result = dispatch(
+              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: [...item.likes, store.getState().auth.userId as string] } : item)
+              }),
+            )
+
+            const resultFeedUser = dispatch(
+              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: [...item.likes, store.getState().auth.userId as string] } : item)
+              }),
+            )
+          } catch {}
         },
-      })  
+        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
+      }),
+      unlikeArticle: builder.mutation<void, string>({
+        query: (id) => ({
+          url: `/articles/${id}/like`,
+          method: "DELETE"
+        }),
+        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled;
+
+            const result = dispatch(
+              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: item.likes.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
+              }),
+            )
+
+            const resultFeedUser = dispatch(
+              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: item.likes.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
+              }),
+            )
+          } catch {}
+        },
+        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
+      }),
+      bookmarkArticle: builder.mutation<void, string>({
+        query: (id) => ({
+          url: `/articles/${id}/bookmark`,
+          method: "POST"
+        }),
+        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled;
+
+            const result = dispatch(
+              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: [...item.bookmarks, store.getState().auth.userId as string] } : item)
+              }),
+            )
+
+            const resultFeedUser = dispatch(
+              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: [...item.bookmarks, store.getState().auth.userId as string] } : item)
+              }),
+            )
+          } catch {}
+        },
+        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
+      }), 
+      unbookmarkArticle: builder.mutation<void, string>({
+        query: (id) => ({
+          url: `/articles/${id}/bookmark`,
+          method: "DELETE"
+        }),
+        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+          try {
+            await queryFulfilled;
+
+            const result = dispatch(
+              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: item.bookmarks.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
+              }),
+            )
+
+            const resultFeedUser = dispatch(
+              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
+                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: item.bookmarks.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
+              }),
+            )
+          } catch {}
+        },
+        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
+      }), 
     }
 )});
 
@@ -130,5 +211,8 @@ export const {
     useGetOneArticleQuery,
     useCreateArticleMutation,
     useDeleteArticleMutation,
-    useLikeArticleMutation
+    useLikeArticleMutation,
+    useUnlikeArticleMutation,
+    useBookmarkArticleMutation,
+    useUnbookmarkArticleMutation
 } = articlesApi;
