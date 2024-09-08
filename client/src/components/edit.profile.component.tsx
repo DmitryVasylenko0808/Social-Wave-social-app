@@ -1,7 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { Button, TextField } from "../common/ui";
-import ImageFileSelect from "../common/ui/image.file.select";
-import TextArea from "../common/ui/textarea.component";
+import { Button, TextField, ImageFileSelect, TextArea } from "../common/ui";
 import { useNavigate, useParams } from "react-router";
 import {
   useEditUserMutation,

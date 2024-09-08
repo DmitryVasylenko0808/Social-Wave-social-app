@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from "react";
+import React, { ComponentProps, PropsWithChildren } from "react";
 import Button from "./button.component";
 import { X } from "lucide-react";
 
-export type ModalProps = PropsWithChildren & {
+export type ModalProps = ComponentProps<"div"> & {
   open: boolean;
   title?: string;
 

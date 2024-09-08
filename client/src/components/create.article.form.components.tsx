@@ -1,5 +1,5 @@
 import { z } from "zod";
-import TextArea from "../common/ui/textarea.component";
+import { TextArea } from "../common/ui";
 import { Button } from "../common/ui";
 import { useCreateArticleMutation } from "../api/articles/articles.api";
 import { useForm } from "react-hook-form";

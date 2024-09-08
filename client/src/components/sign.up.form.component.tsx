@@ -1,11 +1,10 @@
-import { TextField, Button } from "../common/ui";
+import { TextField, Button, ImageFileSelect } from "../common/ui";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useSignUpMutation } from "../api/auth/auth.api";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../hooks/useAuth";
-import ImageFileSelect from "../common/ui/image.file.select";
 
 const signUpSchema = z
   .object({
