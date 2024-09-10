@@ -27,7 +27,7 @@ import { useToggleBookmarkArticleMutation } from "../../api/articles/bookmarked.
 
 type ArticleItemProps = {
   data: Article;
-  reposted: boolean;
+  reposted?: boolean;
 };
 
 const ArticleItem = ({ data, reposted }: ArticleItemProps) => {
