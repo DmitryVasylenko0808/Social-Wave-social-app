@@ -1,7 +1,8 @@
-import { createApi, fetchBaseQuery, QueryKeys } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Article, GetArticlesDto } from "./dto/get.articles.dto";
 import { store } from "../../redux/store";
 import { apiUrl } from "../constants";
+import { updateFeed } from "./utils";
 
 type GetUserFeedParams = {
   userId: string;
@@ -17,238 +18,250 @@ type EditArticleParams = {
   text: string;
 };
 
+type ToggleLikeArticleParams = {
+  id: string;
+  isLiked: boolean;
+};
+
 export const articlesApi = createApi({
-    reducerPath: "articlesApi",
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${apiUrl}`,
-        prepareHeaders: headers => {
-            headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
-        }
+  reducerPath: "articlesApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${apiUrl}`,
+    prepareHeaders: (headers) => {
+      headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
+    },
+  }),
+  tagTypes: ["Articles"],
+  endpoints: (builder) => ({
+    getFeed: builder.query<GetArticlesDto, number>({
+      query: (page) => `/feed?page=${page}`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        currentCache.data.push(...newItems.data);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      keepUnusedDataFor: 0,
     }),
-    tagTypes: ["Articles"],
-    endpoints: builder => ({
-      getFeed: builder.query<GetArticlesDto, number>({
-        query: (page) => `/feed?page=${page}`,
-        serializeQueryArgs: ({ endpointName }) => {
-          return endpointName
-        },
-        merge: (currentCache, newItems) => {
-          currentCache.data.push(...newItems.data)
-        },
-        forceRefetch({ currentArg, previousArg }) {
-          return currentArg !== previousArg
-        },
-        keepUnusedDataFor: 0,
-      }),
-      getUserFeed: builder.query<GetArticlesDto, GetUserFeedParams>({
-        query: ({ userId, page }) => `/feed/${userId}?page=${page}`,
-        serializeQueryArgs: ({ endpointName }) => {
-          return endpointName
-        },
-        merge: (currentCache, newItems, { arg }) => {
-          currentCache.data.push(...newItems.data);
-        },
-        forceRefetch({ currentArg, previousArg }) {
-          return currentArg !== previousArg
-        },
-        keepUnusedDataFor: 0,
-      }),
-      getOneArticle: builder.query<Article, string>({
-        query: (id) => `/articles/${id}`,
-        providesTags: (result, error, arg, meta) => {
-          return [{ type: "Articles", id: arg }]
-        },
-      }),
-      createArticle: builder.mutation<Article, CreateArticleParams>({
-        query: body => {
-          const formData = new FormData();
-          Object.entries(body).forEach(([key, value]) => formData.append(key, value))
+    getUserFeed: builder.query<GetArticlesDto, GetUserFeedParams>({
+      query: ({ userId, page }) => `/feed/${userId}?page=${page}`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems, { arg }) => {
+        currentCache.data.push(...newItems.data);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      keepUnusedDataFor: 0,
+    }),
+    getOneArticle: builder.query<Article, string>({
+      query: (id) => `/articles/${id}`,
+      providesTags: (result, error, arg, meta) => {
+        return [{ type: "Articles", id: arg }];
+      },
+    }),
+    createArticle: builder.mutation<Article, CreateArticleParams>({
+      query: (body) => {
+        const formData = new FormData();
+        Object.entries(body).forEach(([key, value]) =>
+          formData.append(key, value)
+        );
 
-          return {
-              url: `/articles`,
-              method: "POST",
-              body: formData,
-              formData: true
-          }
-        },
-        onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-          try {
-            const { data } = await queryFulfilled;
-            
-            const result = dispatch(
-              articlesApi.util.updateQueryData(
-                "getUserFeed", 
-                { userId: store.getState().auth.userId as string, page: 1 }, 
-                (draft) => {
-                  draft.data.unshift(data);
-                }
-              )
-            );
-          } catch {} 
-        },
-        invalidatesTags: ["Articles"]
+        return {
+          url: `/articles`,
+          method: "POST",
+          body: formData,
+          formData: true,
+        };
+      },
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+
+          const patchResults = updateFeed(dispatch, (draft) => {
+            draft.data.unshift(data);
+          });
+        } catch {}
+      },
+      invalidatesTags: ["Articles"],
+    }),
+    deleteArticle: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/articles/${id}`,
+        method: "DELETE",
       }),
-      deleteArticle: builder.mutation<void, string>({
-        query: id => ({
+      onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+
+          const patchResults = updateFeed(dispatch, (draft) => {
+            const article = draft.data.find((item) => item._id === id);
+            draft.data = draft.data
+              .filter((item) => item._id !== id)
+              .filter((item) => item.repostedArticle?._id !== article?._id)
+              .map((item) =>
+                item._id === article?.repostedArticle?._id
+                  ? {
+                      ...item,
+                      reposts: item.reposts.filter(
+                        (userId) => userId !== store.getState().auth.userId
+                      ),
+                    }
+                  : item
+              );
+          });
+        } catch {}
+      },
+      invalidatesTags: (result, error, arg, meta) => [
+        { type: "Articles", id: arg },
+      ],
+    }),
+    editArticle: builder.mutation<void, EditArticleParams>({
+      query: ({ id, ...body }) => {
+        const formData = new FormData();
+        Object.entries(body).forEach(([key, value]) =>
+          formData.append(key, value)
+        );
+
+        return {
           url: `/articles/${id}`,
-          method: "DELETE"
-        }),
-        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled;
+          method: "PATCH",
+          body: formData,
+          formData: true,
+        };
+      },
+      onQueryStarted: async (data, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled;
 
-            const resultFeedUser = dispatch(
-              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
-                draft.data = draft.data.filter(item => item._id !== id);
-              })
+          const patchResults = updateFeed(dispatch, (draft) => {
+            draft.data = draft.data.map((item) =>
+              item._id === data.id ? { ...item, ...data } : item
             );
-
-            const resultFeed = dispatch(
-              articlesApi.util.updateQueryData("getFeed", undefined, (draft) => {
-                draft.data = draft.data.filter(item => item._id !== id);
-              })
-            )
-          } catch {}
-        }
+          });
+        } catch {}
+      },
+      invalidatesTags: (result, error, arg, meta) => [
+        { type: "Articles", id: arg.id },
+      ],
+    }),
+    toggleLikeArticle: builder.mutation<void, ToggleLikeArticleParams>({
+      query: ({ id, isLiked }) => ({
+        url: `/articles/${id}/like`,
+        method: !isLiked ? "POST" : "DELETE",
       }),
-      editArticle: builder.mutation<void, EditArticleParams>({
-        query: ({ id, ...body }) => {
-          const formData = new FormData();
-          Object.entries(body).forEach(([key, value]) => formData.append(key, value))
+      onQueryStarted: async ({ id, isLiked }, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled;
 
-          return {
-              url: `/articles/${id}`,
-              method: "PATCH",
-              body: formData,
-              formData: true
+          if (!isLiked) {
+            const patchResults = updateFeed(dispatch, (draft) => {
+              draft.data = draft.data
+                .map((item) =>
+                  item._id === id
+                    ? {
+                        ...item,
+                        likes: [
+                          ...item.likes,
+                          store.getState().auth.userId as string,
+                        ],
+                      }
+                    : item
+                )
+                .map((item) =>
+                  item.repostedArticle?._id === id
+                    ? {
+                        ...item,
+                        repostedArticle: {
+                          ...item.repostedArticle,
+                          likes: [
+                            ...item.repostedArticle.likes,
+                            store.getState().auth.userId as string,
+                          ],
+                        },
+                      }
+                    : item
+                );
+            });
+          } else {
+            const patchResults = updateFeed(dispatch, (draft) => {
+              draft.data = draft.data
+                .map((item) =>
+                  item._id === id
+                    ? {
+                        ...item,
+                        likes: item.likes.filter(
+                          (likeItem) =>
+                            likeItem !== store.getState().auth.userId
+                        ),
+                      }
+                    : item
+                )
+                .map((item) =>
+                  item.repostedArticle?._id === id
+                    ? {
+                        ...item,
+                        repostedArticle: {
+                          ...item.repostedArticle,
+                          likes: item.repostedArticle.likes.filter(
+                            (likeItem) =>
+                              likeItem !== store.getState().auth.userId
+                          ),
+                        },
+                      }
+                    : item
+                );
+            });
           }
-        },
-        onQueryStarted: async (data, { dispatch, queryFulfilled,  }) => {
-          try {
-            await queryFulfilled;
-
-            dispatch(
-              articlesApi.util.updateQueryData("getFeed", undefined, draft => {
-                draft.data = draft.data.map(item => item._id === data.id ? { ...item, ...data } : item);
-              })
-            )
-            dispatch(
-              articlesApi.util.updateQueryData("getUserFeed", undefined, draft => {
-                draft.data = draft.data.map(item => item._id === data.id ? { ...item, ...data } : item);
-              })
-            )
-          } catch {}
-        },
-        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg.id }],
+        } catch {}
+      },
+      invalidatesTags: (result, error, arg, meta) => [
+        { type: "Articles", id: arg.id },
+      ],
+    }),
+    repostArticle: builder.mutation<Article, string>({
+      query: (id) => ({
+        url: `/articles/${id}/repost`,
+        method: "POST",
       }),
-      likeArticle: builder.mutation<void, string>({
-        query: (id) => ({
-          url: `/articles/${id}/like`,
-          method: "POST"
-        }),
-        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled;
+      onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled;
 
-            const result = dispatch(
-              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: [...item.likes, store.getState().auth.userId as string] } : item)
-              }),
-            )
+          const patchResults = updateFeed(dispatch, (draft) => {
+            draft.data = draft.data.map((item) =>
+              item._id === id
+                ? {
+                    ...item,
+                    reposts: [
+                      ...item.reposts,
+                      store.getState().auth.userId as string,
+                    ],
+                  }
+                : item
+            );
+          });
+        } catch {}
+      },
+      invalidatesTags: (result, error, arg, meta) => [
+        { type: "Articles", id: arg },
+      ],
+    }),
+  }),
+});
 
-            const resultFeedUser = dispatch(
-              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: [...item.likes, store.getState().auth.userId as string] } : item)
-              }),
-            )
-          } catch {}
-        },
-        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
-      }),
-      unlikeArticle: builder.mutation<void, string>({
-        query: (id) => ({
-          url: `/articles/${id}/like`,
-          method: "DELETE"
-        }),
-        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled;
-
-            const result = dispatch(
-              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: item.likes.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
-              }),
-            )
-
-            const resultFeedUser = dispatch(
-              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, likes: item.likes.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
-              }),
-            )
-          } catch {}
-        },
-        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
-      }),
-      bookmarkArticle: builder.mutation<void, string>({
-        query: (id) => ({
-          url: `/articles/${id}/bookmark`,
-          method: "POST"
-        }),
-        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled;
-
-            const result = dispatch(
-              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: [...item.bookmarks, store.getState().auth.userId as string] } : item)
-              }),
-            )
-
-            const resultFeedUser = dispatch(
-              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: [...item.bookmarks, store.getState().auth.userId as string] } : item)
-              }),
-            )
-          } catch {}
-        },
-        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
-      }), 
-      unbookmarkArticle: builder.mutation<void, string>({
-        query: (id) => ({
-          url: `/articles/${id}/bookmark`,
-          method: "DELETE"
-        }),
-        onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
-          try {
-            await queryFulfilled;
-
-            const result = dispatch(
-              articlesApi.util.updateQueryData("getFeed", 0, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: item.bookmarks.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
-              }),
-            )
-
-            const resultFeedUser = dispatch(
-              articlesApi.util.updateQueryData("getUserFeed", undefined, (draft) => {
-                draft.data = draft.data.map(item => item._id === id ? { ...item, bookmarks: item.bookmarks.filter(likeItem => likeItem !== store.getState().auth.userId) } : item)
-              }),
-            )
-          } catch {}
-        },
-        invalidatesTags: (result, error, arg, meta) => [{ type: "Articles", id: arg }],
-      }), 
-    }
-)});
-
-export const { 
-    useGetFeedQuery,
-    useGetUserFeedQuery,
-    useGetOneArticleQuery,
-    useCreateArticleMutation,
-    useEditArticleMutation,
-    useDeleteArticleMutation,
-    useLikeArticleMutation,
-    useUnlikeArticleMutation,
-    useBookmarkArticleMutation,
-    useUnbookmarkArticleMutation
+export const {
+  useGetFeedQuery,
+  useGetUserFeedQuery,
+  useGetOneArticleQuery,
+  useCreateArticleMutation,
+  useEditArticleMutation,
+  useDeleteArticleMutation,
+  useToggleLikeArticleMutation,
+  useRepostArticleMutation,
 } = articlesApi;

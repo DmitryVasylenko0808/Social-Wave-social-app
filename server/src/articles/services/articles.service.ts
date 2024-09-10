@@ -52,7 +52,7 @@ export class ArticlesService {
         return article;
     }
 
-    async delete(id: string) {
+    async delete(userId: string, id: string) {
         const article = await this.articleModel.findByIdAndDelete(id);
 
         if (!article) {
@@ -60,6 +60,12 @@ export class ArticlesService {
         };
 
         await this.articleModel.deleteMany({ repostedArticle: id });
+        await this.articleModel.updateOne(
+            { _id: article.repostedArticle, }, 
+            { 
+                $pull: { reposts: userId } 
+            }
+        )
     }
 
     async repost(userId: string, id: string) {
@@ -80,7 +86,15 @@ export class ArticlesService {
             repostedArticle: id
         });
 
-        await createdArticle.save();
+        const result = (await createdArticle.save()).populate("author", "_id firstName secondName avatar");
+
+        return (await result).populate({
+            path: "repostedArticle",
+            populate: {
+                path: "author",
+                select: "_id firstName secondName avatar"
+            }
+        });
     }
 
     async unrepost(userId: string, id: string) {

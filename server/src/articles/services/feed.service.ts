@@ -39,7 +39,7 @@ export class FeedService {
 
     async getFeedByUserId(userId: string, page: number) {
         const articles = await this.articleModel
-            .find({ $or: [{ author: userId }, { reposts: userId }] })
+            .find({ author: userId })
             .skip((page - 1) * this.limit)
             .limit(this.limit)
             .sort({ createdAt: "desc" })

@@ -11,11 +11,8 @@ import { Button, Menu, MenuItem } from "../ui";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { Link } from "react-router-dom";
 import {
-  useBookmarkArticleMutation,
-  useDeleteArticleMutation,
-  useLikeArticleMutation,
-  useUnbookmarkArticleMutation,
-  useUnlikeArticleMutation,
+  useRepostArticleMutation,
+  useToggleLikeArticleMutation,
 } from "../../api/articles/articles.api";
 import { userAvatarsUrl } from "../../api/constants";
 import Avatar from "../ui/avatar.component";
@@ -26,21 +23,22 @@ import { cn } from "../../utils/cn";
 import { useModal } from "../../hooks/useModal";
 import DeleteArticleModal from "./delete.article.modal";
 import EditArticleModal from "./edit.article.modal";
+import { useToggleBookmarkArticleMutation } from "../../api/articles/bookmarked.article.api";
 
 type ArticleItemProps = {
   data: Article;
+  reposted: boolean;
 };
 
-const ArticleItem = ({ data }: ArticleItemProps) => {
+const ArticleItem = ({ data, reposted }: ArticleItemProps) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
   const deleteModal = useModal();
   const editModal = useModal();
-  const [triggerLikeArticle] = useLikeArticleMutation();
-  const [triggerUnlikeArticle] = useUnlikeArticleMutation();
-  const [triggerBookmarkArticle] = useBookmarkArticleMutation();
-  const [triggerUnbookmarkArticle] = useUnbookmarkArticleMutation();
+  const { user } = useAuth();
+  const [triggerToggleLikeArticle] = useToggleLikeArticleMutation();
+  const [triggerToggleBookmarkArticle] = useToggleBookmarkArticleMutation();
+  const [triggerRepostArticle] = useRepostArticleMutation();
 
   useClickOutside(ref, () => setOpenMenu(false));
 
@@ -49,27 +47,38 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
   const handleClickDelete = () => deleteModal.onOpen();
 
   const handleClickLike = async () => {
-    if (!isLiked) {
-      await triggerLikeArticle(data._id).unwrap();
-    } else {
-      await triggerUnlikeArticle(data._id).unwrap();
+    await triggerToggleLikeArticle({
+      id: data._id,
+      isLiked,
+    }).unwrap();
+  };
+
+  const handleClickRepost = async () => {
+    if (!isReposted) {
+      await triggerRepostArticle(data._id)
+        .unwrap()
+        .then(() => alert("The article has been successfully reposted"))
+        .catch((err) => alert(err.data.message));
     }
   };
 
   const handleClickBookmark = async () => {
-    if (!isBookmarked) {
-      await triggerBookmarkArticle(data._id).unwrap();
-    } else {
-      await triggerUnbookmarkArticle(data._id).unwrap();
-    }
+    await triggerToggleBookmarkArticle({
+      id: data._id,
+      isBookmarked,
+    }).unwrap();
   };
 
   const isUserArticle = data.author._id === user.userId;
   const isLiked = data.likes.includes(user.userId as string);
+  const isReposted = data.reposts.includes(user.userId as string);
   const isBookmarked = data.bookmarks.includes(user.userId as string);
 
   const heartClasses = cn("", {
     "fill-red-500 text-red-500": isLiked === true,
+  });
+  const repostClasses = cn("", {
+    "text-primary-200": isReposted === true,
   });
   const bookmarkClasses = cn("", {
     "fill-secondary-100 hover:fill-secondary-200": isBookmarked === true,
@@ -90,18 +99,29 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
               alt={`Avatar ${data?.author.firstName} ${data?.author.secondName}`}
             />
           </Link>
-          <Link to={`/users/${data.author._id}/profile`}>
-            <span className="text-secondary-300 font-medium">
+          <span>
+            <Link
+              to={`/users/${data.author._id}/profile`}
+              className="text-secondary-300 font-medium"
+            >
               {data.author.firstName} {data.author.secondName}
-            </span>
-          </Link>
+            </Link>{" "}
+            {data.repostedArticle && (
+              <Link
+                to={`/articles/${data.repostedArticle._id}`}
+                className="text-secondary-100 hover:underline"
+              >
+                reposted article
+              </Link>
+            )}
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-secondary-100">
             {data.createdAt.toString()}
           </span>
 
-          {isUserArticle && (
+          {isUserArticle && !reposted && (
             <div className="relative">
               <Button variant="terciary" onClick={handleClickOpenMenu}>
                 <EllipsisVertical />
@@ -121,32 +141,42 @@ const ArticleItem = ({ data }: ArticleItemProps) => {
         </div>
       </div>
       <p className="mb-1">{data?.text}</p>
-      <div className="flex">
-        <div className="flex-1 flex justify-center">
-          <Button variant="terciary" onClick={handleClickLike}>
-            <Heart className={heartClasses} />
-            <span>{data.likes.length}</span>
-          </Button>
+      {data.repostedArticle ? (
+        <div className="px-6 py-3 border-2 border-secondary-50">
+          <ArticleItem
+            data={data.repostedArticle}
+            reposted={!!data.repostedArticle}
+          />
         </div>
-        <div className="flex-1 flex justify-center">
-          <Button as="link" to={`/articles/${data._id}`} variant="terciary">
-            <MessageSquare />
-            <span>{data.commentsCount}</span>
-          </Button>
+      ) : (
+        <div className="flex">
+          <div className="flex-1 flex justify-center">
+            <Button variant="terciary" onClick={handleClickLike}>
+              <Heart className={heartClasses} />
+              <span>{data.likes.length}</span>
+            </Button>
+          </div>
+          <div className="flex-1 flex justify-center">
+            <Button as="link" to={`/articles/${data._id}`} variant="terciary">
+              <MessageSquare />
+              <span>{data.commentsCount}</span>
+            </Button>
+          </div>
+          <div className="flex-1 flex justify-center">
+            <Button variant="terciary" onClick={handleClickRepost}>
+              <Repeat2 className={repostClasses} />
+              <span>{data.reposts.length}</span>
+            </Button>
+          </div>
+          <div className="flex-1 flex justify-center">
+            <Button variant="terciary" onClick={handleClickBookmark}>
+              <Bookmark className={bookmarkClasses} />
+              <span>{data.bookmarks.length}</span>
+            </Button>
+          </div>
         </div>
-        <div className="flex-1 flex justify-center">
-          <Button variant="terciary">
-            <Repeat2 />
-            <span>{data.reposts.length}</span>
-          </Button>
-        </div>
-        <div className="flex-1 flex justify-center">
-          <Button variant="terciary" onClick={handleClickBookmark}>
-            <Bookmark className={bookmarkClasses} />
-            <span>{data.bookmarks.length}</span>
-          </Button>
-        </div>
-      </div>
+      )}
+
       {data && (
         <EditArticleModal
           article={data}

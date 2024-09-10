@@ -57,8 +57,8 @@ export class ArticlesController {
 
     @UseGuards(AuthGuard("jwt"))
     @Delete(":id")
-    async delete(@Param("id") id: string) {
-        await this.articlesService.delete(id);
+    async delete(@Request() req, @Param("id") id: string) {
+        await this.articlesService.delete(req.user.userId, id);
         await this.commentsService.deleteAll(id);
     }
 
@@ -66,7 +66,7 @@ export class ArticlesController {
     @Post(":id/repost")
     @HttpCode(HttpStatus.OK)
     async repost(@Request() req: any, @Param("id") id: string) {
-        await this.articlesService.repost(req.user.userId, id);
+        return await this.articlesService.repost(req.user.userId, id);
     }
 
     @UseGuards(AuthGuard("jwt"))
