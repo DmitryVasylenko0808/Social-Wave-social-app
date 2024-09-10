@@ -67,6 +67,7 @@ const Profile = () => {
         <div className="relative bottom-12 flex items-center justify-between">
           <div className="flex items-center gap-5">
             <Avatar
+              className="border-4 border-white"
               variant="big"
               src={
                 data?.avatar
@@ -75,7 +76,7 @@ const Profile = () => {
               }
               alt={`Avatar ${data?.firstName} ${data?.secondName}`}
             />
-            <h2 className="text-xl text-primary-200 font-bold">
+            <h2 className="pt-5 text-xl text-primary-200 font-bold">
               {data?.firstName} {data?.secondName}
             </h2>
           </div>
