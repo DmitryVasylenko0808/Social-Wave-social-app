@@ -1,6 +1,12 @@
 import { store } from "../../redux/store";
 import { articlesApi } from "./articles.api";
+import { GetArticlesDto } from "./dto/get.articles.dto";
 import { updateFeed } from "./utils";
+
+type GetBookmarkedArticleParams = {
+  userId: string;
+  page: number;
+};
 
 type ToggleBookmarkArticleParams = {
   id: string;
@@ -9,6 +15,23 @@ type ToggleBookmarkArticleParams = {
 
 const bookmarkedArticleApi = articlesApi.injectEndpoints({
   endpoints: (builder) => ({
+    getBookmarkedArticles: builder.query<
+      GetArticlesDto,
+      GetBookmarkedArticleParams
+    >({
+      query: ({ userId, page }) =>
+        `/articles/user/${userId}/bookmarked?page=${page}`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        currentCache.data.push(...newItems.data);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      keepUnusedDataFor: 0,
+    }),
     toggleBookmarkArticle: builder.mutation<void, ToggleBookmarkArticleParams>({
       query: ({ id, isBookmarked }) => ({
         url: `/articles/${id}/bookmark`,
@@ -90,4 +113,7 @@ const bookmarkedArticleApi = articlesApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useToggleBookmarkArticleMutation } = bookmarkedArticleApi;
+export const {
+  useGetBookmarkedArticlesQuery,
+  useToggleBookmarkArticleMutation,
+} = bookmarkedArticleApi;
