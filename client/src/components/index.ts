@@ -8,6 +8,7 @@ import UserFeed from "./user.feed.component";
 import ArticleDetails from "./article.details.component";
 import CreateArticleForm from "./create.article.form.components";
 import BookmarksArticles from "./bookmarks.articles.components";
+import ArticleCommentForm from "./article.comment.form.component";
 import ArticleComments from "./article.comments.component";
 
 export {
@@ -21,5 +22,6 @@ export {
   ArticleDetails,
   CreateArticleForm,
   BookmarksArticles,
+  ArticleCommentForm,
   ArticleComments,
 };

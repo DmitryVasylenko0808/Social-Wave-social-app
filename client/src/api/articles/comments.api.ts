@@ -9,7 +9,7 @@ type GetCommentsParams = {
 };
 
 type CreateCommentParams = {
-  articleid: string;
+  articleId: string;
   text: string;
 };
 
@@ -30,12 +30,12 @@ const commentsApi = articlesApi.injectEndpoints({
       keepUnusedDataFor: 0,
     }),
     createComment: builder.mutation<Comment, CreateCommentParams>({
-      query: ({ articleid, ...body }) => ({
-        url: `/articles/${articleid}/comments`,
-        method: "DELETE",
+      query: ({ articleId, ...body }) => ({
+        url: `/articles/${articleId}/comments`,
+        method: "POST",
         body,
       }),
-      onQueryStarted: async ({ articleid }, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async ({ articleId }, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
 
@@ -49,9 +49,19 @@ const commentsApi = articlesApi.injectEndpoints({
             )
           );
 
+          dispatch(
+            articlesApi.util.updateQueryData(
+              "getOneArticle",
+              articleId,
+              (draft) => {
+                draft.commentsCount++;
+              }
+            )
+          );
+
           updateFeed(dispatch, (draft) => {
             draft.data = draft.data.map((item) =>
-              item._id === articleid
+              item._id === articleId
                 ? { ...item, commentsCount: item.commentsCount + 1 }
                 : item
             );
@@ -63,4 +73,4 @@ const commentsApi = articlesApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetCommentsQuery, useCreateArticleMutation } = commentsApi;
+export const { useGetCommentsQuery, useCreateCommentMutation } = commentsApi;

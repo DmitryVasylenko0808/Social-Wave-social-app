@@ -1,9 +1,14 @@
-import { ArticleComments, ArticleDetails } from "../components";
+import {
+  ArticleCommentForm,
+  ArticleComments,
+  ArticleDetails,
+} from "../components";
 
 const OneArticlePage = () => {
   return (
     <>
       <ArticleDetails />
+      <ArticleCommentForm />
       <ArticleComments />
     </>
   );

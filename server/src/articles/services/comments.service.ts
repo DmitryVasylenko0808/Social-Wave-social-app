@@ -21,6 +21,7 @@ export class CommentsService {
       .find({ article: articleId })
       .skip((page - 1) * this.limit)
       .limit(this.limit)
+      .sort({ createdAt: 'desc' })
       .populate('author', '_id firstName secondName avatar');
 
     const totalCount = await this.commentModel.countDocuments({
