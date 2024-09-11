@@ -7,6 +7,7 @@ import DeleteArticleModal from "./delete.article.modal";
 import EditArticleModal from "./edit.article.modal";
 import ArticleCommentItem from "./article.comment.item";
 import EditCommentModal from "./edit.comment.modal";
+import ArticleImagesPreview from "./article.images.preview";
 
 export {
   Banner,
@@ -18,4 +19,5 @@ export {
   EditArticleModal,
   ArticleCommentItem,
   EditCommentModal,
+  ArticleImagesPreview,
 };

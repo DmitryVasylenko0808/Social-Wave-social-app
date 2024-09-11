@@ -14,7 +14,7 @@ import {
   useRepostArticleMutation,
   useToggleLikeArticleMutation,
 } from "../../api/articles/articles.api";
-import { userAvatarsUrl } from "../../api/constants";
+import { articlesImgUrl, userAvatarsUrl } from "../../api/constants";
 import Avatar from "../ui/avatar.component";
 import { useAuth } from "../../hooks/useAuth";
 import { useRef, useState } from "react";
@@ -141,6 +141,18 @@ const ArticleItem = ({ data, reposted }: ArticleItemProps) => {
         </div>
       </div>
       <p className="mb-1">{data?.text}</p>
+      {data.images && (
+        <div className="py-4 flex flex-wrap gap-7">
+          {data.images.map((image, index) => (
+            <img
+              className="max-w-52 max-h-52 rounded-xl"
+              src={`${articlesImgUrl}/${image}`}
+              alt={`image ${index}`}
+              key={index}
+            />
+          ))}
+        </div>
+      )}
       {data.repostedArticle ? (
         <div className="px-6 py-3 border-2 border-secondary-50">
           <ArticleItem

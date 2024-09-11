@@ -1,17 +1,31 @@
 import { z } from "zod";
-import { TextArea } from "../common/ui";
+import { ArticleImageFilesSelect, TextArea } from "../common/ui";
 import { Button } from "../common/ui";
 import { useCreateArticleMutation } from "../api/articles/articles.api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { ArticleImagesPreview } from "../common/components";
 
 const createArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
+  images: z
+    .any()
+    .refine(
+      (files: FileList) => {
+        return !files.length || files.length <= 5;
+      },
+      {
+        message: "Invalid count of images.",
+      }
+    )
+    .optional(),
 });
 
 type CreateArticleFormFields = z.infer<typeof createArticleSchema>;
 
 const CreateArticleForm = () => {
+  const [preview, setPreview] = useState<string[] | null>(null);
   const [triggerCreateArticle, { isLoading }] = useCreateArticleMutation();
 
   const {
@@ -19,10 +33,36 @@ const CreateArticleForm = () => {
     setError,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<CreateArticleFormFields>({
     resolver: zodResolver(createArticleSchema),
   });
+
+  const files = watch("images") as File[];
+
+  useEffect(() => {
+    if (files?.length) {
+      const newPreviews: string[] = [];
+
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          if (reader.result) {
+            newPreviews.push(reader.result as string);
+            if (newPreviews.length === files.length) {
+              setPreview(newPreviews);
+            }
+          }
+        };
+
+        reader.readAsDataURL(file);
+      });
+    } else {
+      setPreview(null);
+    }
+  }, [files]);
 
   const submitHandler = (data: CreateArticleFormFields) => {
     triggerCreateArticle(data)
@@ -45,7 +85,9 @@ const CreateArticleForm = () => {
         error={errors.text?.message}
         {...register("text")}
       />
-      <div className="flex justify-end items-center">
+      {preview && <ArticleImagesPreview preview={preview} />}
+      <div className="flex justify-between items-center">
+        <ArticleImageFilesSelect {...register("images")} />
         <Button type="submit" variant="secondary" disabled={isLoading}>
           Create
         </Button>

@@ -11,6 +11,7 @@ type GetUserFeedParams = {
 
 type CreateArticleParams = {
   text: string;
+  images?: FileList;
 };
 
 type EditArticleParams = {
@@ -66,11 +67,20 @@ export const articlesApi = createApi({
       },
     }),
     createArticle: builder.mutation<Article, CreateArticleParams>({
-      query: (body) => {
+      query: ({ images, ...body }) => {
+        console.log(images);
+
         const formData = new FormData();
+
         Object.entries(body).forEach(([key, value]) =>
           formData.append(key, value)
         );
+
+        if (images) {
+          for (let img of images) {
+            formData.append("images", img);
+          }
+        }
 
         return {
           url: `/articles`,

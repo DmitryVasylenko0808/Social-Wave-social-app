@@ -6,5 +6,16 @@ import Menu from "./menu.component";
 import MenuItem from "./menu.item.component";
 import TextArea from "./textarea.component";
 import ImageFileSelect from "./image.file.select";
+import ArticleImageFilesSelect from "./article.image.files.select";
 
-export { Button, TextField, Container, Modal, Menu, MenuItem, TextArea, ImageFileSelect }
+export {
+  Button,
+  TextField,
+  Container,
+  Modal,
+  Menu,
+  MenuItem,
+  TextArea,
+  ImageFileSelect,
+  ArticleImageFilesSelect,
+};
