@@ -8,6 +8,7 @@ import UserFeed from "./user.feed.component";
 import ArticleDetails from "./article.details.component";
 import CreateArticleForm from "./create.article.form.components";
 import BookmarksArticles from "./bookmarks.articles.components";
+import ArticleComments from "./article.comments.component";
 
 export {
   SignInForm,
@@ -20,4 +21,5 @@ export {
   ArticleDetails,
   CreateArticleForm,
   BookmarksArticles,
+  ArticleComments,
 };

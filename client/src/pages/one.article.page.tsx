@@ -1,9 +1,10 @@
-import { ArticleDetails } from "../components";
+import { ArticleComments, ArticleDetails } from "../components";
 
 const OneArticlePage = () => {
   return (
     <>
       <ArticleDetails />
+      <ArticleComments />
     </>
   );
 };

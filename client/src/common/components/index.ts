@@ -5,5 +5,15 @@ import InfiniteScroll from "./infinite.scroll.component";
 import UserItem from "./user.item.component";
 import DeleteArticleModal from "./delete.article.modal";
 import EditArticleModal from "./edit.article.modal";
+import ArticleCommentItem from "./article.comment.item";
 
-export { Banner, Header, ArticleItem, InfiniteScroll, UserItem, DeleteArticleModal, EditArticleModal };
+export {
+  Banner,
+  Header,
+  ArticleItem,
+  InfiniteScroll,
+  UserItem,
+  DeleteArticleModal,
+  EditArticleModal,
+  ArticleCommentItem,
+};
