@@ -1,7 +1,5 @@
-import { store } from "../../redux/store";
 import { articlesApi } from "./articles.api";
 import { Comment, GetCommentsDto } from "./dto/get.comments.dto";
-import { updateFeed } from "./utils";
 
 type GetCommentsParams = {
   articleId: string;
@@ -16,6 +14,12 @@ type CreateCommentParams = {
 type DeleteCommentParams = {
   articleId: string;
   commentId: string;
+};
+
+type EditCommentParams = {
+  articleId: string;
+  commentId: string;
+  text: string;
 };
 
 const commentsApi = articlesApi.injectEndpoints({
@@ -102,6 +106,33 @@ const commentsApi = articlesApi.injectEndpoints({
         } catch {}
       },
     }),
+    editComment: builder.mutation<void, EditCommentParams>({
+      query: ({ articleId, commentId, ...body }) => ({
+        url: `/articles/${articleId}/comments/${commentId}`,
+        method: "PATCH",
+        body,
+      }),
+      onQueryStarted: async (
+        { commentId, text },
+        { dispatch, queryFulfilled }
+      ) => {
+        try {
+          await queryFulfilled;
+
+          dispatch(
+            commentsApi.util.updateQueryData(
+              "getComments",
+              undefined,
+              (draft) => {
+                draft.data = draft.data.map((item) =>
+                  item._id === commentId ? { ...item, text } : item
+                );
+              }
+            )
+          );
+        } catch {}
+      },
+    }),
   }),
   overrideExisting: false,
 });
@@ -110,4 +141,5 @@ export const {
   useGetCommentsQuery,
   useCreateCommentMutation,
   useDeleteCommentMutation,
+  useEditCommentMutation,
 } = commentsApi;

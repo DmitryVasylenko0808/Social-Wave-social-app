@@ -8,6 +8,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useDeleteCommentMutation } from "../../api/articles/comments.api";
+import { useModal } from "../../hooks/useModal";
+import EditCommentModal from "./edit.comment.modal";
 
 type ArticleCommentItemProps = {
   data: Comment;
@@ -17,12 +19,14 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const { user } = useAuth();
   const ref = useRef<HTMLDivElement>(null);
+  const editModal = useModal();
   const [triggerDeleteComment] = useDeleteCommentMutation();
 
   useClickOutside(ref, () => setOpenMenu(false));
 
   const handleClickOpenMenu = () => setOpenMenu(true);
-  const handleClickEdit = () => {};
+  const handleClickEdit = () => editModal.onOpen();
+
   const handleClickDelete = async () => {
     await triggerDeleteComment({ articleId: data.article, commentId: data._id })
       .unwrap()
@@ -79,7 +83,15 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
           )}
         </div>
       </div>
-      <p>{data?.text}</p>
+      <p>{data.text}</p>
+
+      {data && (
+        <EditCommentModal
+          comment={data}
+          open={editModal.open}
+          onClose={editModal.onClose}
+        />
+      )}
     </div>
   );
 };

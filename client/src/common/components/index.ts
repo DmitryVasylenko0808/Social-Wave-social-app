@@ -6,6 +6,7 @@ import UserItem from "./user.item.component";
 import DeleteArticleModal from "./delete.article.modal";
 import EditArticleModal from "./edit.article.modal";
 import ArticleCommentItem from "./article.comment.item";
+import EditCommentModal from "./edit.comment.modal";
 
 export {
   Banner,
@@ -16,4 +17,5 @@ export {
   DeleteArticleModal,
   EditArticleModal,
   ArticleCommentItem,
+  EditCommentModal,
 };
