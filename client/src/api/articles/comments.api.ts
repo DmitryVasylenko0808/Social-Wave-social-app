@@ -13,6 +13,11 @@ type CreateCommentParams = {
   text: string;
 };
 
+type DeleteCommentParams = {
+  articleId: string;
+  commentId: string;
+};
+
 const commentsApi = articlesApi.injectEndpoints({
   endpoints: (builder) => ({
     getComments: builder.query<GetCommentsDto, GetCommentsParams>({
@@ -58,14 +63,42 @@ const commentsApi = articlesApi.injectEndpoints({
               }
             )
           );
+        } catch {}
+      },
+    }),
+    deleteComment: builder.mutation<void, DeleteCommentParams>({
+      query: ({ articleId, commentId }) => ({
+        url: `/articles/${articleId}/comments/${commentId}`,
+        method: "DELETE",
+      }),
+      onQueryStarted: async (
+        { articleId, commentId },
+        { dispatch, queryFulfilled }
+      ) => {
+        try {
+          await queryFulfilled;
 
-          updateFeed(dispatch, (draft) => {
-            draft.data = draft.data.map((item) =>
-              item._id === articleId
-                ? { ...item, commentsCount: item.commentsCount + 1 }
-                : item
-            );
-          });
+          dispatch(
+            commentsApi.util.updateQueryData(
+              "getComments",
+              undefined,
+              (draft) => {
+                draft.data = draft.data.filter(
+                  (item) => item._id !== commentId
+                );
+              }
+            )
+          );
+
+          dispatch(
+            articlesApi.util.updateQueryData(
+              "getOneArticle",
+              articleId,
+              (draft) => {
+                draft.commentsCount--;
+              }
+            )
+          );
         } catch {}
       },
     }),
@@ -73,4 +106,8 @@ const commentsApi = articlesApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetCommentsQuery, useCreateCommentMutation } = commentsApi;
+export const {
+  useGetCommentsQuery,
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
+} = commentsApi;

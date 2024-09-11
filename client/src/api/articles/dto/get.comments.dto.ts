@@ -4,6 +4,7 @@ export type Comment = {
   _id: string;
   text: string;
   author: Author;
+  article: string;
   createdAt: Date;
   updatedAt: Date;
 };

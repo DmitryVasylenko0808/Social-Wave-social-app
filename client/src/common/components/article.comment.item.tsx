@@ -4,12 +4,33 @@ import { Button, Menu, MenuItem } from "../ui";
 import Avatar from "../ui/avatar.component";
 import { Link } from "react-router-dom";
 import { Comment } from "../../api/articles/dto/get.comments.dto";
+import { useAuth } from "../../hooks/useAuth";
+import { useRef, useState } from "react";
+import { useClickOutside } from "../../hooks/useClickOutside";
+import { useDeleteCommentMutation } from "../../api/articles/comments.api";
 
 type ArticleCommentItemProps = {
   data: Comment;
 };
 
 const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const { user } = useAuth();
+  const ref = useRef<HTMLDivElement>(null);
+  const [triggerDeleteComment] = useDeleteCommentMutation();
+
+  useClickOutside(ref, () => setOpenMenu(false));
+
+  const handleClickOpenMenu = () => setOpenMenu(true);
+  const handleClickEdit = () => {};
+  const handleClickDelete = async () => {
+    await triggerDeleteComment({ articleId: data.article, commentId: data._id })
+      .unwrap()
+      .catch((err) => alert(err.data.message));
+  };
+
+  const isUserCommnent = data.author._id === user.userId;
+
   return (
     <div>
       <div className="mb-4 flex justify-between items-center">
@@ -39,7 +60,7 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
             {data.createdAt.toString()}
           </span>
 
-          {/* {isUserArticle && (
+          {isUserCommnent && (
             <div className="relative">
               <Button variant="terciary" onClick={handleClickOpenMenu}>
                 <EllipsisVertical />
@@ -55,7 +76,7 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
                 </MenuItem>
               </Menu>
             </div>
-          )} */}
+          )}
         </div>
       </div>
       <p>{data?.text}</p>
