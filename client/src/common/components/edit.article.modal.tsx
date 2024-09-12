@@ -4,13 +4,26 @@ import {
   useEditArticleMutation,
   useGetOneArticleQuery,
 } from "../../api/articles/articles.api";
-import { Button, TextArea } from "../ui";
+import { ArticleImageFilesSelect, Button, TextArea } from "../ui";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import ArticleImagesPreview from "./article.images.preview";
 
 const editArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
+  images: z
+    .any()
+    .refine(
+      (files: FileList) => {
+        return !files.length || files.length <= 5;
+      },
+      {
+        message: "Invalid count of images.",
+      }
+    )
+    .optional(),
 });
 
 type EditArticleFormFields = z.infer<typeof editArticleSchema>;
@@ -23,6 +36,7 @@ const EditArticleModal = ({
   article,
   ...modalProps
 }: EditArticleModalProps) => {
+  const [preview, setPreview] = useState<string[] | null>(null);
   const { data, isLoading, isError } = useGetOneArticleQuery(article._id, {
     skip: !modalProps.open,
   });
@@ -33,6 +47,7 @@ const EditArticleModal = ({
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors },
   } = useForm<EditArticleFormFields>({
     resolver: zodResolver(editArticleSchema),
@@ -40,6 +55,31 @@ const EditArticleModal = ({
       text: data?.text || "",
     },
   });
+
+  const files = watch("images") as File[];
+
+  useEffect(() => {
+    if (files?.length) {
+      const newPreviews: string[] = [];
+
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          if (reader.result) {
+            newPreviews.push(reader.result as string);
+            if (newPreviews.length === files.length) {
+              setPreview(newPreviews);
+            }
+          }
+        };
+
+        reader.readAsDataURL(file);
+      });
+    } else {
+      setPreview(null);
+    }
+  }, [files]);
 
   const submitHandler = (data: EditArticleFormFields) => {
     triggerEditArticle({ id: article._id, ...data })
@@ -64,7 +104,9 @@ const EditArticleModal = ({
             error={errors.text?.message}
             {...register("text")}
           />
-          <div className="flex justify-end">
+          <ArticleImagesPreview preview={preview} defaultImages={data.images} />
+          <div className="flex justify-between items-center">
+            <ArticleImageFilesSelect {...register("images")} />
             <Button variant="secondary" type="submit" disabled={isLoadingEdit}>
               Edit
             </Button>

@@ -1,11 +1,10 @@
-import { z } from "zod";
-import { ArticleImageFilesSelect, TextArea } from "../common/ui";
-import { Button } from "../common/ui";
-import { useCreateArticleMutation } from "../api/articles/articles.api";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { ArticleImageFilesSelect, TextArea, Button } from "../common/ui";
+import { useCreateArticleMutation } from "../api/articles/articles.api";
 import { ArticleImagesPreview } from "../common/components";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const createArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -85,7 +84,7 @@ const CreateArticleForm = () => {
         error={errors.text?.message}
         {...register("text")}
       />
-      {preview && <ArticleImagesPreview preview={preview} />}
+      <ArticleImagesPreview preview={preview} />
       <div className="flex justify-between items-center">
         <ArticleImageFilesSelect {...register("images")} />
         <Button type="submit" variant="secondary" disabled={isLoading}>

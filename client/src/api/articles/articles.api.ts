@@ -17,6 +17,7 @@ type CreateArticleParams = {
 type EditArticleParams = {
   id: string;
   text: string;
+  images?: FileList;
 };
 
 type ToggleLikeArticleParams = {
@@ -68,8 +69,6 @@ export const articlesApi = createApi({
     }),
     createArticle: builder.mutation<Article, CreateArticleParams>({
       query: ({ images, ...body }) => {
-        console.log(images);
-
         const formData = new FormData();
 
         Object.entries(body).forEach(([key, value]) =>
@@ -131,12 +130,19 @@ export const articlesApi = createApi({
         { type: "Articles", id: arg },
       ],
     }),
-    editArticle: builder.mutation<void, EditArticleParams>({
-      query: ({ id, ...body }) => {
+    editArticle: builder.mutation<Article, EditArticleParams>({
+      query: ({ id, images, ...body }) => {
         const formData = new FormData();
+
         Object.entries(body).forEach(([key, value]) =>
           formData.append(key, value)
         );
+
+        if (images) {
+          for (let img of images) {
+            formData.append("images", img);
+          }
+        }
 
         return {
           url: `/articles/${id}`,
@@ -145,13 +151,13 @@ export const articlesApi = createApi({
           formData: true,
         };
       },
-      onQueryStarted: async (data, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async ({ id }, { dispatch, queryFulfilled }) => {
         try {
-          await queryFulfilled;
+          const { data } = await queryFulfilled;
 
           const patchResults = updateFeed(dispatch, (draft) => {
             draft.data = draft.data.map((item) =>
-              item._id === data.id ? { ...item, ...data } : item
+              item._id === id ? { ...item, ...data } : item
             );
           });
         } catch {}

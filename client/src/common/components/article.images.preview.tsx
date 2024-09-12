@@ -1,11 +1,24 @@
+import { articlesImgUrl } from "../../api/constants";
+
 type ArticleImagesPreviewProps = {
-  preview: string[];
+  preview?: string[] | null;
+  defaultImages?: string[] | null;
 };
 
-const ArticleImagesPreview = ({ preview }: ArticleImagesPreviewProps) => {
+const ArticleImagesPreview = ({
+  preview,
+  defaultImages,
+}: ArticleImagesPreviewProps) => {
+  if (!preview && !defaultImages) {
+    return null;
+  }
+
+  const images =
+    preview || defaultImages?.map((img) => `${articlesImgUrl}/${img}`);
+
   return (
     <div className="py-4 flex flex-wrap gap-7">
-      {preview.map((image, index) => (
+      {images?.map((image, index) => (
         <img
           className="max-w-52 max-h-52 rounded-xl"
           src={image}

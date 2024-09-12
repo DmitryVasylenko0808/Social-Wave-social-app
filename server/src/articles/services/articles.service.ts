@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Article } from '../schemas/article.schema';
 import { Model } from 'mongoose';
@@ -7,147 +11,158 @@ import { EditArticleDto } from '../dto/edit.artcile.dto';
 
 @Injectable()
 export class ArticlesService {
-    constructor(
-        @InjectModel(Article.name) private readonly articleModel: Model<Article>
-    ) {}
+  constructor(
+    @InjectModel(Article.name) private readonly articleModel: Model<Article>,
+  ) {}
 
-    async findOne(id: string) {
-        const article = await this.articleModel.findById(id)
-            .populate("author", "_id firstName secondName avatar");
+  async findOne(id: string) {
+    const article = await this.articleModel
+      .findById(id)
+      .populate('author', '_id firstName secondName avatar');
 
-        if (!article) {
-            throw new NotFoundException("Article is not found");
-        }
-
-        return article;
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async create(userId: string, data: CreateArticleDto, images?: Express.Multer.File[]) {
-        const article = new this.articleModel({
-            author: userId,
-            images: images?.map(img => img.filename),
-            ...data
-        });
+    return article;
+  }
 
-        return (await article.save()).populate("author", "_id firstName secondName avatar");
+  async create(
+    userId: string,
+    data: CreateArticleDto,
+    images?: Express.Multer.File[],
+  ) {
+    const article = new this.articleModel({
+      author: userId,
+      images: images?.map((img) => img.filename),
+      ...data,
+    });
+
+    return (await article.save()).populate(
+      'author',
+      '_id firstName secondName avatar',
+    );
+  }
+
+  async edit(id: string, data: EditArticleDto, images?: Express.Multer.File[]) {
+    const editData: EditArticleDto & { images?: string[] } = data;
+
+    if (images.length) {
+      editData.images = images.map((img) => img.filename);
     }
 
-    async edit(id: string, data: EditArticleDto, images?: Express.Multer.File[]) {
-        const editData: EditArticleDto & { images?: string[] } = data;
-        
-        if (images.length) {
-            editData.images = images.map(img => img.filename);
-        }
+    const article = await this.articleModel
+      .findByIdAndUpdate(id, editData, { new: true })
+      .populate('author', '_id firstName secondName avatar');
 
-        const article = await this.articleModel.findByIdAndUpdate(
-            id,
-            editData,
-            { new: true }
-        );
-
-        if (!article) {
-            throw new NotFoundException("Article is not found");
-        }
-
-        return article;
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async delete(userId: string, id: string) {
-        const article = await this.articleModel.findByIdAndDelete(id);
+    return article;
+  }
 
-        if (!article) {
-            throw new NotFoundException("Article is not found")
-        };
+  async delete(userId: string, id: string) {
+    const article = await this.articleModel.findByIdAndDelete(id);
 
-        await this.articleModel.deleteMany({ repostedArticle: id });
-        await this.articleModel.updateOne(
-            { _id: article.repostedArticle, }, 
-            { 
-                $pull: { reposts: userId } 
-            }
-        )
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async repost(userId: string, id: string) {
-        const article = await this.articleModel.findByIdAndUpdate(
-            id,
-            {
-                $push: { reposts: userId }
-            },
-            { new: true }
-        );
+    await this.articleModel.deleteMany({ repostedArticle: id });
+    await this.articleModel.updateOne(
+      { _id: article.repostedArticle },
+      {
+        $pull: { reposts: userId },
+      },
+    );
+  }
 
-        if (!article) {
-            throw new NotFoundException("Article is not found");
-        }
+  async repost(userId: string, id: string) {
+    const article = await this.articleModel.findByIdAndUpdate(
+      id,
+      {
+        $push: { reposts: userId },
+      },
+      { new: true },
+    );
 
-        const createdArticle = new this.articleModel({
-            author: userId,
-            repostedArticle: id
-        });
-
-        const result = (await createdArticle.save()).populate("author", "_id firstName secondName avatar");
-
-        return (await result).populate({
-            path: "repostedArticle",
-            populate: {
-                path: "author",
-                select: "_id firstName secondName avatar"
-            }
-        });
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async unrepost(userId: string, id: string) {
-        const article = await this.articleModel.findByIdAndUpdate(
-            id,
-            {
-                $pull: { reposts: userId }
-            },
-            { new: true }
-        );
+    const createdArticle = new this.articleModel({
+      author: userId,
+      repostedArticle: id,
+    });
 
-        if (!article) {
-            throw new NotFoundException("Article is not found");
-        }
+    const result = (await createdArticle.save()).populate(
+      'author',
+      '_id firstName secondName avatar',
+    );
 
-        await this.articleModel.deleteOne({
-            $and: [{ author: userId }, { repostedArticle: id }]
-        });
+    return (await result).populate({
+      path: 'repostedArticle',
+      populate: {
+        path: 'author',
+        select: '_id firstName secondName avatar',
+      },
+    });
+  }
+
+  async unrepost(userId: string, id: string) {
+    const article = await this.articleModel.findByIdAndUpdate(
+      id,
+      {
+        $pull: { reposts: userId },
+      },
+      { new: true },
+    );
+
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async like(userId: string, id: string) {
-        const article = await this.articleModel.findByIdAndUpdate(
-            id,
-            {
-                $push: { likes: userId }
-            },
-            { new: true }
-        );
+    await this.articleModel.deleteOne({
+      $and: [{ author: userId }, { repostedArticle: id }],
+    });
+  }
 
-        if (!article) {
-            throw new NotFoundException("Article is not found");
-        }
+  async like(userId: string, id: string) {
+    const article = await this.articleModel.findByIdAndUpdate(
+      id,
+      {
+        $push: { likes: userId },
+      },
+      { new: true },
+    );
 
-        return article;
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async unlike(userId: string, id: string) {
-        const article = await this.articleModel.findByIdAndUpdate(
-            id,
-            {
-                $pull: { likes: userId }
-            },
-            { new: true }
-        );
+    return article;
+  }
 
-        if (!article) {
-            throw new NotFoundException("Article is not found");
-        }
+  async unlike(userId: string, id: string) {
+    const article = await this.articleModel.findByIdAndUpdate(
+      id,
+      {
+        $pull: { likes: userId },
+      },
+      { new: true },
+    );
 
-        return article;
+    if (!article) {
+      throw new NotFoundException('Article is not found');
     }
 
-    async updateCommentsCount(id: string, value: number) {
-        await this.articleModel.findByIdAndUpdate(id, { $inc: { commentsCount: value } });
-    }
+    return article;
+  }
+
+  async updateCommentsCount(id: string, value: number) {
+    await this.articleModel.findByIdAndUpdate(id, {
+      $inc: { commentsCount: value },
+    });
+  }
 }
