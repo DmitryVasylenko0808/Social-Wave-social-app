@@ -46,27 +46,27 @@ const ArticleItem = ({ data, reposted }: ArticleItemProps) => {
   const handleClickEdit = () => editModal.onOpen();
   const handleClickDelete = () => deleteModal.onOpen();
 
-  const handleClickLike = async () => {
-    await triggerToggleLikeArticle({
+  const handleClickLike = () => {
+    triggerToggleLikeArticle({
       id: data._id,
       isLiked,
-    }).unwrap();
+    });
   };
 
-  const handleClickRepost = async () => {
+  const handleClickRepost = () => {
     if (!isReposted) {
-      await triggerRepostArticle(data._id)
+      triggerRepostArticle(data._id)
         .unwrap()
         .then(() => alert("The article has been successfully reposted"))
         .catch((err) => alert(err.data.message));
     }
   };
 
-  const handleClickBookmark = async () => {
-    await triggerToggleBookmarkArticle({
+  const handleClickBookmark = () => {
+    triggerToggleBookmarkArticle({
       id: data._id,
       isBookmarked,
-    }).unwrap();
+    });
   };
 
   const isUserArticle = data.author._id === user.userId;

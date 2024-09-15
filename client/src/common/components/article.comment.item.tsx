@@ -27,8 +27,8 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
   const handleClickOpenMenu = () => setOpenMenu(true);
   const handleClickEdit = () => editModal.onOpen();
 
-  const handleClickDelete = async () => {
-    await triggerDeleteComment({ articleId: data.article, commentId: data._id })
+  const handleClickDelete = () => {
+    triggerDeleteComment({ articleId: data.article, commentId: data._id })
       .unwrap()
       .catch((err) => alert(err.data.message));
   };
