@@ -10,6 +10,7 @@ import {
 } from "../api/users/users.api";
 import { userAvatarsUrl } from "../api/constants";
 import Avatar from "../common/ui/avatar.component";
+import { UserProfileSkeleton } from "../common/components";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -34,7 +35,7 @@ const Profile = () => {
   };
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <UserProfileSkeleton />;
   }
 
   if (isError) {

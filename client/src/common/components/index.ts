@@ -9,6 +9,8 @@ import ArticleCommentItem from "./article.comment.item";
 import EditCommentModal from "./edit.comment.modal";
 import ArticleImagesPreview from "./article.images.preview";
 import ArticleImageFilesSelect from "./article.image.files.select";
+import UserProfileSkeleton from "./user.profile.skeleton.component";
+import ArticleSkeleton from "./article.skeleton.component";
 
 export {
   Banner,
@@ -22,4 +24,6 @@ export {
   EditCommentModal,
   ArticleImagesPreview,
   ArticleImageFilesSelect,
+  UserProfileSkeleton,
+  ArticleSkeleton,
 };

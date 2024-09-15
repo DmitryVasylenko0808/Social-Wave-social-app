@@ -1,4 +1,13 @@
 import {
+  useRepostArticleMutation,
+  useToggleLikeArticleMutation,
+} from "../../api/articles/articles.api";
+import { useAuth } from "../../hooks/useAuth";
+import { useRef, useState } from "react";
+import { useClickOutside } from "../../hooks/useClickOutside";
+import { useModal } from "../../hooks/useModal";
+import { useToggleBookmarkArticleMutation } from "../../api/articles/bookmarked.article.api";
+import {
   Heart,
   MessageSquare,
   Repeat2,
@@ -7,23 +16,13 @@ import {
   PenLine,
   Trash2,
 } from "lucide-react";
-import { Button, Menu, MenuItem } from "../ui";
-import { Article } from "../../api/articles/dto/get.articles.dto";
+import { Button, Menu, MenuItem, Avatar } from "../ui";
 import { Link } from "react-router-dom";
-import {
-  useRepostArticleMutation,
-  useToggleLikeArticleMutation,
-} from "../../api/articles/articles.api";
-import { articlesImgUrl, userAvatarsUrl } from "../../api/constants";
-import Avatar from "../ui/avatar.component";
-import { useAuth } from "../../hooks/useAuth";
-import { useRef, useState } from "react";
-import { useClickOutside } from "../../hooks/useClickOutside";
-import { cn } from "../../utils/cn";
-import { useModal } from "../../hooks/useModal";
 import DeleteArticleModal from "./delete.article.modal";
 import EditArticleModal from "./edit.article.modal";
-import { useToggleBookmarkArticleMutation } from "../../api/articles/bookmarked.article.api";
+import { Article } from "../../api/articles/dto/get.articles.dto";
+import { articlesImgUrl, userAvatarsUrl } from "../../api/constants";
+import { cn } from "../../utils/cn";
 
 type ArticleItemProps = {
   data: Article;

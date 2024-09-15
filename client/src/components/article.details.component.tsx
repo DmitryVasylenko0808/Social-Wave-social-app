@@ -1,8 +1,8 @@
-import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
-import { Button } from "../common/ui";
 import { useGetOneArticleQuery } from "../api/articles/articles.api";
-import { ArticleItem } from "../common/components";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "../common/ui";
+import { ArticleItem, ArticleSkeleton } from "../common/components";
 
 const ArticleDetails = () => {
   const { articleId } = useParams();
@@ -26,7 +26,7 @@ const ArticleDetails = () => {
           <ArrowLeft />
         </Button>
       </div>
-      {isLoading && <span>Loading...</span>}
+      {isLoading && <ArticleSkeleton />}
       {article && <ArticleItem data={article} />}
     </div>
   );

@@ -7,6 +7,7 @@ import MenuItem from "./menu.item.component";
 import TextArea from "./textarea.component";
 import ImageFileSelect from "./image.file.select";
 import Loader from "./loader.component";
+import Avatar from "./avatar.component";
 
 export {
   Button,
@@ -18,4 +19,5 @@ export {
   TextArea,
   ImageFileSelect,
   Loader,
+  Avatar,
 };
