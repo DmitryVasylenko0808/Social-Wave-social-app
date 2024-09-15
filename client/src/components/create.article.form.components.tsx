@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ArticleImageFilesSelect,
-  TextArea,
-  Button,
-  Loader,
-} from "../common/ui";
+import { TextArea, Button, Loader } from "../common/ui";
 import { useCreateArticleMutation } from "../api/articles/articles.api";
-import { ArticleImagesPreview } from "../common/components";
+import {
+  ArticleImagesPreview,
+  ArticleImageFilesSelect,
+} from "../common/components";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 

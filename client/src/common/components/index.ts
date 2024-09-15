@@ -8,6 +8,7 @@ import EditArticleModal from "./edit.article.modal";
 import ArticleCommentItem from "./article.comment.item";
 import EditCommentModal from "./edit.comment.modal";
 import ArticleImagesPreview from "./article.images.preview";
+import ArticleImageFilesSelect from "./article.image.files.select";
 
 export {
   Banner,
@@ -20,4 +21,5 @@ export {
   ArticleCommentItem,
   EditCommentModal,
   ArticleImagesPreview,
+  ArticleImageFilesSelect,
 };

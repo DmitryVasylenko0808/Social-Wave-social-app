@@ -1,15 +1,15 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Modal, { ModalProps } from "../ui/modal.component";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import {
   useEditArticleMutation,
   useGetOneArticleQuery,
 } from "../../api/articles/articles.api";
-import { ArticleImageFilesSelect, Button, Loader, TextArea } from "../ui";
+import { Button, Loader, TextArea } from "../ui";
+import { ArticleImageFilesSelect, ArticleImagesPreview } from ".";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import ArticleImagesPreview from "./article.images.preview";
 
 const editArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
