@@ -37,14 +37,18 @@ const ImageFileSelect = forwardRef<HTMLInputElement, ImageFileSelectProps>(
     if (preview || defaultImageUrl) {
       if (preview) {
         content = (
-          <img src={preview} alt="Preview avatar" className="w-full h-full" />
+          <img
+            src={preview}
+            alt="Preview avatar"
+            className="w-full h-full object-cover"
+          />
         );
       } else {
         content = (
           <img
             src={defaultImageUrl}
             alt="Preview avatar"
-            className="w-full h-full"
+            className="w-full h-full object-cover"
           />
         );
       }
