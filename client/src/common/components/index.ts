@@ -11,6 +11,7 @@ import ArticleImagesPreview from "./article.images.preview";
 import ArticleImageFilesSelect from "./article.image.files.select";
 import UserProfileSkeleton from "./user.profile.skeleton.component";
 import ArticleSkeleton from "./article.skeleton.component";
+import NavigateBack from "./navigate.back.component";
 
 export {
   Banner,
@@ -26,4 +27,5 @@ export {
   ArticleImageFilesSelect,
   UserProfileSkeleton,
   ArticleSkeleton,
+  NavigateBack,
 };

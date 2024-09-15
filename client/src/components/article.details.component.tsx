@@ -1,19 +1,18 @@
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useGetOneArticleQuery } from "../api/articles/articles.api";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "../common/ui";
-import { ArticleItem, ArticleSkeleton } from "../common/components";
+import {
+  ArticleItem,
+  ArticleSkeleton,
+  NavigateBack,
+} from "../common/components";
 
 const ArticleDetails = () => {
   const { articleId } = useParams();
-  const navigate = useNavigate();
   const {
     data: article,
     isLoading,
     isError,
   } = useGetOneArticleQuery(articleId as string);
-
-  const handleClickBack = () => navigate(-1);
 
   if (isError) {
     return <span>Error.</span>;
@@ -21,11 +20,7 @@ const ArticleDetails = () => {
 
   return (
     <div className="px-6 py-2">
-      <div className="mb-10 flex items-center gap-3.5">
-        <Button variant="terciary" onClick={handleClickBack}>
-          <ArrowLeft />
-        </Button>
-      </div>
+      <NavigateBack />
       {isLoading && <ArticleSkeleton />}
       {article && <ArticleItem data={article} />}
     </div>

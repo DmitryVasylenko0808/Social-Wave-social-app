@@ -14,6 +14,7 @@ import {
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { userAvatarsUrl } from "../api/constants";
+import { NavigateBack } from "../common/components";
 
 const editUserSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -78,8 +79,6 @@ const EditProfileForm = () => {
     },
   });
 
-  const handleClickBack = () => navigate(-1);
-
   const submitHandler = (data: EditProfileFormFields) => {
     const editData = { _id: user?._id as string, ...data };
 
@@ -105,13 +104,7 @@ const EditProfileForm = () => {
 
   return (
     <div className="px-6 py-2">
-      <div className="mb-10 flex items-center gap-3.5">
-        <Button variant="terciary" onClick={handleClickBack}>
-          <ArrowLeft />
-        </Button>
-        <h2 className="text-xl text-primary-200 font-bold">Edit Profile</h2>
-      </div>
-
+      <NavigateBack title="Edit Profile" />
       <form
         className="border-[1px] border-textFieldBorder"
         onSubmit={handleSubmit(submitHandler)}

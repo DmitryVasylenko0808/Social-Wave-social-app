@@ -1,8 +1,6 @@
-import { ArrowLeft } from "lucide-react";
-import React, { useState } from "react";
-import { InfiniteScroll, UserItem } from "../common/components";
-import { Button } from "../common/ui";
-import { useParams, useNavigate } from "react-router";
+import { useState } from "react";
+import { InfiniteScroll, NavigateBack, UserItem } from "../common/components";
+import { useParams } from "react-router";
 import {
   useGetOneUserQuery,
   useGetUserFollowingsQuery,
@@ -11,14 +9,11 @@ import {
 const Followings = () => {
   const { userId } = useParams();
   const [page, setPage] = useState<number>(1);
-  const navigate = useNavigate();
   const { data: user } = useGetOneUserQuery(userId as string);
   const { data, isFetching, isError } = useGetUserFollowingsQuery({
     id: userId as string,
     page,
   });
-
-  const handleClickBack = () => navigate(-1);
 
   const nextPage = () => setPage(page + 1);
 
@@ -28,14 +23,9 @@ const Followings = () => {
 
   return (
     <div className="px-6 py-2">
-      <div className="mb-10 flex items-center gap-3.5">
-        <Button variant="terciary" onClick={handleClickBack}>
-          <ArrowLeft />
-        </Button>
-        <h2 className="text-xl text-primary-200 font-bold">
-          {user?.firstName} {user?.secondName}: Followings
-        </h2>
-      </div>
+      <NavigateBack
+        title={`${user?.firstName} ${user?.secondName}: Followings`}
+      />
       <div className="">
         <InfiniteScroll
           currentPage={page}
