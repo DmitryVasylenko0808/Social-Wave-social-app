@@ -1,5 +1,11 @@
 import { ArrowLeft } from "lucide-react";
-import { Button, TextField, ImageFileSelect, TextArea } from "../common/ui";
+import {
+  Button,
+  TextField,
+  ImageFileSelect,
+  TextArea,
+  Loader,
+} from "../common/ui";
 import { useNavigate, useParams } from "react-router";
 import {
   useEditUserMutation,
@@ -75,8 +81,6 @@ const EditProfileForm = () => {
   const handleClickBack = () => navigate(-1);
 
   const submitHandler = (data: EditProfileFormFields) => {
-    console.log(data); //
-
     const editData = { _id: user?._id as string, ...data };
 
     if (data.avatar) {
@@ -98,8 +102,6 @@ const EditProfileForm = () => {
   if (isErrorUser) {
     alert("Oops... something went wrong :(");
   }
-
-  console.log("user", user);
 
   return (
     <div className="px-6 py-2">
@@ -175,13 +177,19 @@ const EditProfileForm = () => {
             <p className="mb-2.5 text-center text-red-700 text-sm">
               {errors.root?.message}
             </p>
-            <Button
-              variant="secondary"
-              type="submit"
-              disabled={isLoadingUser || isLoading}
-            >
-              Edit
-            </Button>
+            <div className="flex justify-end">
+              <Button
+                variant="secondary"
+                type="submit"
+                disabled={isLoadingUser || isLoading}
+              >
+                {isLoading ? (
+                  <Loader size="small" variant="secondary" />
+                ) : (
+                  "Edit"
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </form>

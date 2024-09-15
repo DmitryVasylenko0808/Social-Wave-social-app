@@ -1,11 +1,10 @@
-import React from "react";
-import { TextField, Button } from "../common/ui";
+import { TextField, Button, Loader } from "../common/ui";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignInMutation } from "../api/auth/auth.api";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -65,7 +64,7 @@ const SignInForm = () => {
       </p>
 
       <Button variant="primary" className="mb-8" disabled={isLoading}>
-        Sign In
+        {isLoading ? <Loader size="small" variant="secondary" /> : "Sign In"}
       </Button>
 
       <p className="text-black">

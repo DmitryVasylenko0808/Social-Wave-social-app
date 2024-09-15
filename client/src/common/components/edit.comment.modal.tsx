@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TextArea, Button } from "../ui";
+import { TextArea, Button, Loader } from "../ui";
 import Modal, { ModalProps } from "../ui/modal.component";
 import { useEditCommentMutation } from "../../api/articles/comments.api";
 import { useForm } from "react-hook-form";
@@ -56,7 +56,7 @@ const EditCommentModal = ({
         />
         <div className="flex justify-end">
           <Button variant="secondary" type="submit" disabled={isLoading}>
-            Edit
+            {isLoading ? <Loader size="small" variant="secondary" /> : "Edit"}
           </Button>
         </div>
       </form>

@@ -4,7 +4,7 @@ import {
   useEditArticleMutation,
   useGetOneArticleQuery,
 } from "../../api/articles/articles.api";
-import { ArticleImageFilesSelect, Button, TextArea } from "../ui";
+import { ArticleImageFilesSelect, Button, Loader, TextArea } from "../ui";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -108,7 +108,11 @@ const EditArticleModal = ({
           <div className="flex justify-between items-center">
             <ArticleImageFilesSelect {...register("images")} />
             <Button variant="secondary" type="submit" disabled={isLoadingEdit}>
-              Edit
+              {isLoadingEdit ? (
+                <Loader size="small" variant="secondary" />
+              ) : (
+                "Edit"
+              )}
             </Button>
           </div>
         </form>

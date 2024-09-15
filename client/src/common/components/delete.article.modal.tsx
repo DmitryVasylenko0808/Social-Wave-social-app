@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Modal } from "../ui";
+import { Button, Loader, Modal } from "../ui";
 import { ModalProps } from "../ui/modal.component";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { useDeleteArticleMutation } from "../../api/articles/articles.api";
@@ -14,11 +13,11 @@ const DeleteArticleModal = ({
 }: DeleteArticleModalProps) => {
   const [triggerDeleteArticle, { isLoading }] = useDeleteArticleMutation();
 
-  const handleClickDelete = async () => {
-    await triggerDeleteArticle(article._id)
+  const handleClickDelete = () => {
+    triggerDeleteArticle(article._id)
       .unwrap()
+      .then(() => modalProps.onClose())
       .catch((err) => alert(err.data.message));
-    modalProps.onClose();
   };
 
   return (
@@ -33,7 +32,7 @@ const DeleteArticleModal = ({
           onClick={handleClickDelete}
           disabled={isLoading}
         >
-          Delete
+          {isLoading ? <Loader size="small" variant="secondary" /> : "Delete"}
         </Button>
       </div>
     </Modal>

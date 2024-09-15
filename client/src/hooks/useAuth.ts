@@ -3,37 +3,37 @@ import { setUser } from "../redux/auth.slice";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
 export const useAuth = () => {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-    const user = useAppSelector(state => state.auth);
+  const user = useAppSelector((state) => state.auth);
 
-    const [triggerGetMe] = useLazyGetMeQuery();
+  const [triggerGetMe] = useLazyGetMeQuery();
 
-    const token = localStorage.getItem("token");
-    const isAuthenticated = !!token;
+  const token = localStorage.getItem("token");
+  const isAuthenticated = !!token;
 
-    const setAuthData = () => {
-        triggerGetMe()
-            .unwrap()
-            .then((data) => dispatch(setUser(data.userId)))
-    }
+  const setAuthData = () => {
+    triggerGetMe()
+      .unwrap()
+      .then((data) => dispatch(setUser(data.userId)));
+  };
 
-    const authenticate = (token: string) => {
-        localStorage.setItem("token", token);
-        setAuthData();
-    };
+  const authenticate = (token: string) => {
+    localStorage.setItem("token", token);
+    setAuthData();
+  };
 
-    const logOut = () => {
-        localStorage.removeItem("token");
-        dispatch(setUser(null));
-    }
+  const logOut = () => {
+    localStorage.removeItem("token");
+    dispatch(setUser(null));
+  };
 
-    return {
-        user,
-        token,
-        isAuthenticated,
-        setAuthData,
-        authenticate,
-        logOut
-    }
+  return {
+    user,
+    token,
+    isAuthenticated,
+    setAuthData,
+    authenticate,
+    logOut,
+  };
 };

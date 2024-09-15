@@ -22,10 +22,6 @@ const Followers = () => {
 
   const nextPage = () => setPage(page + 1);
 
-  if (isFetching) {
-    return <span>Fetching...</span>;
-  }
-
   if (isError) {
     return <span>Error.</span>;
   }

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ArticleImageFilesSelect, TextArea, Button } from "../common/ui";
+import {
+  ArticleImageFilesSelect,
+  TextArea,
+  Button,
+  Loader,
+} from "../common/ui";
 import { useCreateArticleMutation } from "../api/articles/articles.api";
 import { ArticleImagesPreview } from "../common/components";
 import { z } from "zod";
@@ -88,7 +93,7 @@ const CreateArticleForm = () => {
       <div className="flex justify-between items-center">
         <ArticleImageFilesSelect {...register("images")} />
         <Button type="submit" variant="secondary" disabled={isLoading}>
-          Create
+          {isLoading ? <Loader size="small" variant="secondary" /> : "Create"}
         </Button>
       </div>
     </form>

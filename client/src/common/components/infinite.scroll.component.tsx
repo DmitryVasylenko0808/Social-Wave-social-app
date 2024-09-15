@@ -1,10 +1,12 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect } from "react";
+import { Loader } from "../ui";
 
 type InfiniteScrollProps = PropsWithChildren & {
   next: Function;
   currentPage: number;
   isFetching: boolean;
   totalPages: number;
+  loader?: React.ReactNode;
 };
 
 const InfiniteScroll = ({
@@ -13,6 +15,7 @@ const InfiniteScroll = ({
   isFetching,
   currentPage,
   totalPages,
+  loader,
 }: InfiniteScrollProps) => {
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +33,12 @@ const InfiniteScroll = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isFetching, totalPages]);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {isFetching && <Loader className="py-6" position="center" />}
+    </>
+  );
 };
 
 export default InfiniteScroll;

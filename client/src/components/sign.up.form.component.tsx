@@ -1,4 +1,4 @@
-import { TextField, Button, ImageFileSelect } from "../common/ui";
+import { TextField, Button, ImageFileSelect, Loader } from "../common/ui";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useSignUpMutation } from "../api/auth/auth.api";
@@ -122,7 +122,7 @@ const SignUpForm = () => {
         className="mb-8"
         disabled={isLoading}
       >
-        Sign Up
+        {isLoading ? <Loader size="small" variant="secondary" /> : "Sign Up"}
       </Button>
 
       <p className="text-black">

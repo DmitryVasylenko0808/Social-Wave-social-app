@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TextArea, Button } from "../common/ui";
+import { TextArea, Button, Loader } from "../common/ui";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateCommentMutation } from "../api/articles/comments.api";
@@ -50,7 +50,7 @@ const ArticleCommentForm = () => {
       />
       <div className="flex justify-end items-center">
         <Button type="submit" variant="secondary" disabled={isLoading}>
-          Comment
+          {isLoading ? <Loader size="small" variant="secondary" /> : "Comment"}
         </Button>
       </div>
     </form>
