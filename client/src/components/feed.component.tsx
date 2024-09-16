@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { ArticleItem } from "../common/components";
 import { useGetFeedQuery } from "../api/articles/articles.api";
 import { InfiniteScroll } from "../common/components";
+import { usePage } from "../hooks/usePage";
 
 const Feed = () => {
-  const [page, setPage] = useState(1);
+  const { page, nextPage } = usePage();
   const { data, isFetching } = useGetFeedQuery(page);
-
-  const nextPage = () => setPage(page + 1);
 
   return (
     <div className="px-6">

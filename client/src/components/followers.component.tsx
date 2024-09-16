@@ -1,21 +1,19 @@
-import { useState } from "react";
 import { InfiniteScroll, NavigateBack, UserItem } from "../common/components";
 import { useParams } from "react-router";
 import {
   useGetOneUserQuery,
   useGetUserFollowersQuery,
 } from "../api/users/users.api";
+import { usePage } from "../hooks/usePage";
 
 const Followers = () => {
   const { userId } = useParams();
-  const [page, setPage] = useState<number>(1);
+  const { page, nextPage } = usePage();
   const { data: user } = useGetOneUserQuery(userId as string);
   const { data, isFetching, isError } = useGetUserFollowersQuery({
     id: userId as string,
     page,
   });
-
-  const nextPage = () => setPage(page + 1);
 
   if (isError) {
     return <span>Error.</span>;

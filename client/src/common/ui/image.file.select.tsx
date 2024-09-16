@@ -1,7 +1,6 @@
-import React, { ComponentProps, forwardRef, useEffect, useState } from "react";
+import React, { ComponentProps, forwardRef, useState } from "react";
 import { cn } from "../../utils/cn";
 import { Camera } from "lucide-react";
-import { userAvatarsUrl } from "../../api/constants";
 
 type ImageFileSelectProps = ComponentProps<"input"> & {
   label?: string;

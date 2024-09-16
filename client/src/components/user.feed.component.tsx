@@ -1,17 +1,15 @@
-import React, { useState } from "react";
 import { useParams } from "react-router";
 import { useGetUserFeedQuery } from "../api/articles/articles.api";
 import { ArticleItem, InfiniteScroll } from "../common/components";
+import { usePage } from "../hooks/usePage";
 
 const UserFeed = () => {
-  const [page, setPage] = useState<number>(1);
+  const { page, nextPage } = usePage();
   const { userId } = useParams();
   const { data, isFetching, isError } = useGetUserFeedQuery({
     userId: userId as string,
     page,
   });
-
-  const next = () => setPage(page + 1);
 
   if (isError) {
     return <span>Error.</span>;
@@ -20,7 +18,7 @@ const UserFeed = () => {
   return (
     <div className="px-6 py-2">
       <InfiniteScroll
-        next={next}
+        next={nextPage}
         currentPage={page}
         isFetching={isFetching}
         totalPages={data?.totalPages || 0}
