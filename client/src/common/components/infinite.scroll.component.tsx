@@ -6,7 +6,6 @@ type InfiniteScrollProps = PropsWithChildren & {
   currentPage: number;
   isFetching: boolean;
   totalPages: number;
-  loader?: React.ReactNode;
 };
 
 const InfiniteScroll = ({
@@ -15,7 +14,6 @@ const InfiniteScroll = ({
   isFetching,
   currentPage,
   totalPages,
-  loader,
 }: InfiniteScrollProps) => {
   useEffect(() => {
     const handleScroll = () => {

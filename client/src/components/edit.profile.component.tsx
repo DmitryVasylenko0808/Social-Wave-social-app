@@ -115,6 +115,7 @@ const EditProfileForm = () => {
             <ImageFileSelect
               {...register("coverImage")}
               className="w-full h-[152px] rounded-none border-0"
+              imgClassName="rounded-none"
               label="Cover Image"
               defaultImageUrl={
                 user?.coverImage && `${userAvatarsUrl}/${user?.coverImage}`
