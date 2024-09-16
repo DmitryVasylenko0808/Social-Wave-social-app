@@ -27,9 +27,11 @@ import { cn } from "../../utils/cn";
 type ArticleItemProps = {
   data: Article;
   reposted?: boolean;
+
+  deleteAfter?: () => void;
 };
 
-const ArticleItem = ({ data, reposted }: ArticleItemProps) => {
+const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const deleteModal = useModal();
@@ -200,6 +202,7 @@ const ArticleItem = ({ data, reposted }: ArticleItemProps) => {
           article={data}
           open={deleteModal.open}
           onClose={deleteModal.onClose}
+          deleteAfter={deleteAfter}
         />
       )}
     </article>

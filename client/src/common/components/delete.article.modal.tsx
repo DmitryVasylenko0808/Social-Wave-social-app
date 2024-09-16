@@ -5,10 +5,13 @@ import { useDeleteArticleMutation } from "../../api/articles/articles.api";
 
 type DeleteArticleModalProps = ModalProps & {
   article: Article;
+
+  deleteAfter?: () => void;
 };
 
 const DeleteArticleModal = ({
   article,
+  deleteAfter,
   ...modalProps
 }: DeleteArticleModalProps) => {
   const [triggerDeleteArticle, { isLoading }] = useDeleteArticleMutation();
@@ -16,7 +19,10 @@ const DeleteArticleModal = ({
   const handleClickDelete = () => {
     triggerDeleteArticle(article._id)
       .unwrap()
-      .then(() => modalProps.onClose())
+      .then(() => {
+        modalProps.onClose();
+        deleteAfter?.();
+      })
       .catch((err) => alert(err.data.message));
   };
 

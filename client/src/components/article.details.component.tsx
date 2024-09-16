@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useGetOneArticleQuery } from "../api/articles/articles.api";
 import {
   ArticleItem,
@@ -7,12 +7,15 @@ import {
 } from "../common/components";
 
 const ArticleDetails = () => {
+  const navigate = useNavigate();
   const { articleId } = useParams();
   const {
     data: article,
     isLoading,
     isError,
   } = useGetOneArticleQuery(articleId as string);
+
+  const goBackAfterDelete = () => navigate(-1);
 
   if (isError) {
     return <span>Error.</span>;
@@ -22,7 +25,9 @@ const ArticleDetails = () => {
     <div className="px-6 py-2">
       <NavigateBack />
       {isLoading && <ArticleSkeleton />}
-      {article && <ArticleItem data={article} />}
+      {article && (
+        <ArticleItem data={article} deleteAfter={goBackAfterDelete} />
+      )}
     </div>
   );
 };
