@@ -13,6 +13,7 @@ import UserProfileSkeleton from "./user.profile.skeleton.component";
 import ArticleSkeleton from "./article.skeleton.component";
 import NavigateBack from "./navigate.back.component";
 import ScrollToTop from "./scroll.to.top.component";
+import RequireAuth from "./require.auth.component";
 
 export {
   Banner,
@@ -30,4 +31,5 @@ export {
   ArticleSkeleton,
   NavigateBack,
   ScrollToTop,
+  RequireAuth,
 };

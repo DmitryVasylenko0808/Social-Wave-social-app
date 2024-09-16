@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
-import { CreateArticleForm, UserFeed } from "../components";
-import Profile from "../components/profile.component";
 import { useAuth } from "../hooks/useAuth";
+import { CreateArticleForm, Profile, UserFeed } from "../components";
 
 const ProfilePage = () => {
   const { userId } = useParams();

@@ -10,6 +10,7 @@ import CreateArticleForm from "./create.article.form.components";
 import BookmarksArticles from "./bookmarks.articles.components";
 import ArticleCommentForm from "./article.comment.form.component";
 import ArticleComments from "./article.comments.component";
+import Profile from "./profile.component";
 
 export {
   SignInForm,
@@ -24,4 +25,5 @@ export {
   BookmarksArticles,
   ArticleCommentForm,
   ArticleComments,
+  Profile,
 };
