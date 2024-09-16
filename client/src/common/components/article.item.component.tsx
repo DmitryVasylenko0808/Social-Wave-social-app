@@ -51,7 +51,9 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
     triggerToggleLikeArticle({
       id: data._id,
       isLiked,
-    });
+    })
+      .unwrap()
+      .catch((err) => alert(err.data.message));
   };
 
   const handleClickRepost = () => {
@@ -67,7 +69,9 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
     triggerToggleBookmarkArticle({
       id: data._id,
       isBookmarked,
-    });
+    })
+      .unwrap()
+      .catch((err) => alert(err.data.message));
   };
 
   const isUserArticle = data.author._id === user.userId;
