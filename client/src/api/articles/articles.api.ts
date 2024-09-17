@@ -54,7 +54,11 @@ export const articlesApi = createApi({
         return endpointName;
       },
       merge: (currentCache, newItems, { arg }) => {
-        currentCache.data.push(...newItems.data);
+        if (currentCache.data[0]?.author._id !== arg.userId) {
+          return newItems;
+        } else {
+          currentCache.data.push(...newItems.data);
+        }
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
@@ -280,4 +284,6 @@ export const {
   useDeleteArticleMutation,
   useToggleLikeArticleMutation,
   useRepostArticleMutation,
+
+  useLazyGetUserFeedQuery,
 } = articlesApi;

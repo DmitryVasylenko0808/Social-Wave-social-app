@@ -1,15 +1,28 @@
 import { useParams } from "react-router";
-import { useGetUserFeedQuery } from "../api/articles/articles.api";
+import {
+  useGetUserFeedQuery,
+  useLazyGetUserFeedQuery,
+} from "../api/articles/articles.api";
 import { ArticleItem, InfiniteScroll } from "../common/components";
 import { usePage } from "../hooks/usePage";
+import { useEffect } from "react";
 
 const UserFeed = () => {
-  const { page, nextPage } = usePage();
+  const { page, setPage, nextPage } = usePage();
   const { userId } = useParams();
-  const { data, isFetching, isError } = useGetUserFeedQuery({
-    userId: userId as string,
-    page,
-  });
+  const [triggerGetUserFeed, { data, isFetching, isError }] =
+    useLazyGetUserFeedQuery();
+
+  useEffect(() => {
+    setPage(1);
+    triggerGetUserFeed({ userId: userId as string, page: 1 });
+  }, [userId]);
+
+  useEffect(() => {
+    if (page !== 1) {
+      triggerGetUserFeed({ userId: userId as string, page });
+    }
+  }, [page]);
 
   if (isError) {
     return <span>Error.</span>;
