@@ -8,6 +8,8 @@ import TextArea from "./textarea.component";
 import ImageFileSelect from "./image.file.select";
 import Loader from "./loader.component";
 import Avatar from "./avatar.component";
+import List from "./list.component";
+import ListItem from "./list.item.component";
 
 export {
   Button,
@@ -20,4 +22,6 @@ export {
   ImageFileSelect,
   Loader,
   Avatar,
+  List,
+  ListItem,
 };

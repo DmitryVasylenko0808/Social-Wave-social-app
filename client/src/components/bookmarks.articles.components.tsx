@@ -3,6 +3,7 @@ import {
   ArticleItem,
   NavigateBack,
 } from "../common/components";
+import { List, ListItem } from "../common/ui";
 import { useGetBookmarkedArticlesQuery } from "../api/articles/bookmarked.article.api";
 import { useAuth } from "../hooks/useAuth";
 import { usePage } from "../hooks/usePage";
@@ -28,11 +29,13 @@ const BookmarksArticles = () => {
         isFetching={isFetching}
         totalPages={data?.totalPages || 0}
       >
-        <div className="flex flex-col gap-14">
+        <List>
           {data?.data.map((article) => (
-            <ArticleItem data={article} key={article._id} />
+            <ListItem key={article._id}>
+              <ArticleItem data={article} />
+            </ListItem>
           ))}
-        </div>
+        </List>
       </InfiniteScroll>
     </div>
   );

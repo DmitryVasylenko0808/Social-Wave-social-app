@@ -6,6 +6,7 @@ import {
 import { ArticleItem, InfiniteScroll } from "../common/components";
 import { usePage } from "../hooks/usePage";
 import { useEffect } from "react";
+import { List, ListItem } from "../common/ui";
 
 const UserFeed = () => {
   const { page, setPage, nextPage } = usePage();
@@ -36,11 +37,13 @@ const UserFeed = () => {
         isFetching={isFetching}
         totalPages={data?.totalPages || 0}
       >
-        <div className="flex flex-col gap-14">
+        <List>
           {data?.data.map((article) => (
-            <ArticleItem data={article} key={article._id} />
+            <ListItem key={article._id}>
+              <ArticleItem data={article} />
+            </ListItem>
           ))}
-        </div>
+        </List>
       </InfiniteScroll>
     </div>
   );

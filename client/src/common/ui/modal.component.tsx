@@ -1,4 +1,4 @@
-import React, { ComponentProps, PropsWithChildren } from "react";
+import { ComponentProps } from "react";
 import Button from "./button.component";
 import { X } from "lucide-react";
 

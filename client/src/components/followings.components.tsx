@@ -5,6 +5,7 @@ import {
   useGetUserFollowingsQuery,
 } from "../api/users/users.api";
 import { usePage } from "../hooks/usePage";
+import { List, ListItem } from "../common/ui";
 
 const Followings = () => {
   const { userId } = useParams();
@@ -31,11 +32,13 @@ const Followings = () => {
           isFetching={isFetching}
           next={nextPage}
         >
-          <div className="flex flex-col gap-4">
+          <List className="gap-4">
             {data?.data.map((user) => (
-              <UserItem data={user} key={user._id} />
+              <ListItem key={user._id}>
+                <UserItem data={user} />
+              </ListItem>
             ))}
-          </div>
+          </List>
         </InfiniteScroll>
       </div>
     </div>

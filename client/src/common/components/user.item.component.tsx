@@ -1,4 +1,3 @@
-import React from "react";
 import { User } from "../../api/users/dto/get.users.dto";
 import { Link } from "react-router-dom";
 import { userAvatarsUrl } from "../../api/constants";

@@ -2,6 +2,7 @@ import { useGetCommentsQuery } from "../api/articles/comments.api";
 import { useParams } from "react-router";
 import { usePage } from "../hooks/usePage";
 import { ArticleCommentItem, InfiniteScroll } from "../common/components";
+import { List, ListItem } from "../common/ui";
 
 const ArticleComments = () => {
   const { page, nextPage } = usePage();
@@ -20,11 +21,13 @@ const ArticleComments = () => {
         isFetching={isFetching}
         totalPages={comments?.totalPages || 0}
       >
-        <div className="flex flex-col gap-7">
-          {comments?.data.map((c) => (
-            <ArticleCommentItem data={c} key={c._id} />
+        <List className="gap-7">
+          {comments?.data.map((comment) => (
+            <ListItem key={comment._id}>
+              <ArticleCommentItem data={comment} />
+            </ListItem>
           ))}
-        </div>
+        </List>
       </InfiniteScroll>
     </div>
   );
