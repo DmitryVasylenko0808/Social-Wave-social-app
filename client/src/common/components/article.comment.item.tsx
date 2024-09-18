@@ -10,6 +10,7 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import { useDeleteCommentMutation } from "../../api/articles/comments.api";
 import { useModal } from "../../hooks/useModal";
 import EditCommentModal from "./edit.comment.modal";
+import ReactTimeAgo from "react-time-ago";
 
 type ArticleCommentItemProps = {
   data: Comment;
@@ -61,7 +62,7 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-secondary-100">
-            {data.createdAt.toString()}
+            <ReactTimeAgo date={new Date(data.createdAt)} timeStyle="twitter" />
           </span>
 
           {isUserCommnent && (

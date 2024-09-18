@@ -23,6 +23,7 @@ import EditArticleModal from "./edit.article.modal";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { articlesImgUrl, userAvatarsUrl } from "../../api/constants";
 import { cn } from "../../utils/cn";
+import ReactTimeAgo from "react-time-ago";
 
 type ArticleItemProps = {
   data: Article;
@@ -114,7 +115,7 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
             {data.repostedArticle && (
               <Link
                 to={`/articles/${data.repostedArticle._id}`}
-                className="text-secondary-100 hover:underline"
+                className="text-secondary-100 underline"
               >
                 reposted article
               </Link>
@@ -123,7 +124,7 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-secondary-100">
-            {data.createdAt.toString()}
+            <ReactTimeAgo date={new Date(data.createdAt)} timeStyle="twitter" />
           </span>
 
           {isUserArticle && !reposted && (
