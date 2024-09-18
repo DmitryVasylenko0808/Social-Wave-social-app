@@ -14,6 +14,7 @@ import ArticleSkeleton from "./article.skeleton.component";
 import NavigateBack from "./navigate.back.component";
 import ScrollToTop from "./scroll.to.top.component";
 import RequireAuth from "./require.auth.component";
+import NoData from "./no.data.component";
 
 export {
   Banner,
@@ -32,4 +33,5 @@ export {
   NavigateBack,
   ScrollToTop,
   RequireAuth,
+  NoData,
 };

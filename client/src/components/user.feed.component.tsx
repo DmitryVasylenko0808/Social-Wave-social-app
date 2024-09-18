@@ -3,7 +3,7 @@ import {
   useGetUserFeedQuery,
   useLazyGetUserFeedQuery,
 } from "../api/articles/articles.api";
-import { ArticleItem, InfiniteScroll } from "../common/components";
+import { ArticleItem, InfiniteScroll, NoData } from "../common/components";
 import { usePage } from "../hooks/usePage";
 import { useEffect } from "react";
 import { List, ListItem } from "../common/ui";
@@ -27,6 +27,10 @@ const UserFeed = () => {
 
   if (isError) {
     return <span>Error.</span>;
+  }
+
+  if (data?.data.length === 0) {
+    return <NoData message="No articles" />;
   }
 
   return (

@@ -1,7 +1,11 @@
 import { useGetCommentsQuery } from "../api/articles/comments.api";
 import { useParams } from "react-router";
 import { usePage } from "../hooks/usePage";
-import { ArticleCommentItem, InfiniteScroll } from "../common/components";
+import {
+  ArticleCommentItem,
+  InfiniteScroll,
+  NoData,
+} from "../common/components";
 import { List, ListItem } from "../common/ui";
 
 const ArticleComments = () => {
@@ -11,6 +15,10 @@ const ArticleComments = () => {
     articleId: articleId as string,
     page,
   });
+
+  if (comments?.data.length === 0) {
+    return <NoData message="No comments" />;
+  }
 
   return (
     <div className="px-6 py-7">

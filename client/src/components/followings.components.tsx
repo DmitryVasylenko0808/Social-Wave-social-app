@@ -1,4 +1,9 @@
-import { InfiniteScroll, NavigateBack, UserItem } from "../common/components";
+import {
+  InfiniteScroll,
+  NavigateBack,
+  NoData,
+  UserItem,
+} from "../common/components";
 import { useParams } from "react-router";
 import {
   useGetOneUserQuery,
@@ -18,6 +23,10 @@ const Followings = () => {
 
   if (isError) {
     return <span>Error.</span>;
+  }
+
+  if (data?.data.length === 0) {
+    return <NoData message="No followings" />;
   }
 
   return (

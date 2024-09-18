@@ -2,6 +2,7 @@ import {
   InfiniteScroll,
   ArticleItem,
   NavigateBack,
+  NoData,
 } from "../common/components";
 import { List, ListItem } from "../common/ui";
 import { useGetBookmarkedArticlesQuery } from "../api/articles/bookmarked.article.api";
@@ -18,6 +19,10 @@ const BookmarksArticles = () => {
 
   if (isError) {
     return <span>Error.</span>;
+  }
+
+  if (data?.data.length === 0) {
+    return <NoData message="No articles" />;
   }
 
   return (
