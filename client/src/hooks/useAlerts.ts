@@ -17,8 +17,8 @@ export const useAlerts = () => {
     dispatch(setAlert({ type: "error", message }));
   };
 
-  const remove = (index: number) => {
-    dispatch(removeAlert(index));
+  const remove = (id: string) => {
+    dispatch(removeAlert(id));
   };
 
   const clearAll = () => {

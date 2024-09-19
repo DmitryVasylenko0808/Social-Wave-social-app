@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v4 } from "uuid";
 
 export type AlertItem = {
+  id: string;
   type: "info" | "success" | "error";
   message: string;
 };
@@ -12,11 +14,14 @@ export const alertsSlice = createSlice({
   name: "alerts",
   initialState,
   reducers: {
-    setAlert: (state, action: PayloadAction<AlertItem>) => {
-      state.push(action.payload);
+    setAlert: (state, action: PayloadAction<Omit<AlertItem, "id">>) => {
+      state.push({ ...action.payload, id: v4() });
     },
-    removeAlert: (state, action: PayloadAction<number>) => {
-      state.splice(action.payload, 1);
+    removeAlert: (state, action: PayloadAction<string>) => {
+      state.splice(
+        state.findIndex((item) => item.id === action.payload),
+        1
+      );
     },
     removeAll: (state) => {
       state = [];

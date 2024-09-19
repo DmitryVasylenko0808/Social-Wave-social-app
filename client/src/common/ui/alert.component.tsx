@@ -1,4 +1,5 @@
 import { Ban, Check, Info, X } from "lucide-react";
+import { useEffect } from "react";
 
 type AlertProps = {
   type: "info" | "success" | "error";
@@ -7,6 +8,12 @@ type AlertProps = {
 };
 
 const Alert = ({ type, message, onClose }: AlertProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => onClose(), 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   let typeIcon;
 
   if (type === "success") {
@@ -18,7 +25,7 @@ const Alert = ({ type, message, onClose }: AlertProps) => {
   }
 
   return (
-    <div className="relative min-w-80 py-5 px-4 bg-white rounded-xl shadow-xl flex">
+    <div className="relative min-w-80 py-5 px-4 bg-white border rounded-xl shadow-xl flex">
       <div className="flex items-center gap-4">
         {typeIcon} {message}
       </div>
