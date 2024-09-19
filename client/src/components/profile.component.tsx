@@ -11,8 +11,10 @@ import {
 import { userAvatarsUrl } from "../api/constants";
 import Avatar from "../common/ui/avatar.component";
 import { UserProfileSkeleton } from "../common/components";
+import { useAlerts } from "../hooks/useAlerts";
 
 const Profile = () => {
+  const alerts = useAlerts();
   const { userId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -25,13 +27,17 @@ const Profile = () => {
   const handleClickFollow = () => {
     triggerFollowUser(userId as string)
       .unwrap()
-      .catch((err) => alert(err.data.message));
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+      });
   };
 
   const handleClickUnfollow = () => {
     triggerUnfollowUser(userId as string)
       .unwrap()
-      .catch((err) => alert(err.data.message));
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+      });
   };
 
   if (isLoading) {

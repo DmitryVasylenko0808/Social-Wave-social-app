@@ -24,6 +24,7 @@ import { Article } from "../../api/articles/dto/get.articles.dto";
 import { articlesImgUrl, userAvatarsUrl } from "../../api/constants";
 import { cn } from "../../utils/cn";
 import ReactTimeAgo from "react-time-ago";
+import { useAlerts } from "../../hooks/useAlerts";
 
 type ArticleItemProps = {
   data: Article;
@@ -41,6 +42,7 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
   const [triggerToggleLikeArticle] = useToggleLikeArticleMutation();
   const [triggerToggleBookmarkArticle] = useToggleBookmarkArticleMutation();
   const [triggerRepostArticle] = useRepostArticleMutation();
+  const alerts = useAlerts();
 
   useClickOutside(ref, () => setOpenMenu(false));
 
@@ -54,15 +56,21 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
       isLiked,
     })
       .unwrap()
-      .catch((err) => alert(err.data.message));
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+      });
   };
 
   const handleClickRepost = () => {
     if (!isReposted) {
       triggerRepostArticle(data._id)
         .unwrap()
-        .then(() => alert("The article has been successfully reposted"))
-        .catch((err) => alert(err.data.message));
+        .then(() =>
+          alerts.success("The article has been successfully reposted")
+        )
+        .catch((err) => {
+          alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        });
     }
   };
 
@@ -72,7 +80,9 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
       isBookmarked,
     })
       .unwrap()
-      .catch((err) => alert(err.data.message));
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+      });
   };
 
   const isUserArticle = data.author._id === user.userId;

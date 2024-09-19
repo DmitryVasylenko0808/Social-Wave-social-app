@@ -11,6 +11,7 @@ import { useDeleteCommentMutation } from "../../api/articles/comments.api";
 import { useModal } from "../../hooks/useModal";
 import EditCommentModal from "./edit.comment.modal";
 import ReactTimeAgo from "react-time-ago";
+import { useAlerts } from "../../hooks/useAlerts";
 
 type ArticleCommentItemProps = {
   data: Comment;
@@ -21,6 +22,7 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
   const { user } = useAuth();
   const ref = useRef<HTMLDivElement>(null);
   const editModal = useModal();
+  const alerts = useAlerts();
   const [triggerDeleteComment] = useDeleteCommentMutation();
 
   useClickOutside(ref, () => setOpenMenu(false));
@@ -31,7 +33,9 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
   const handleClickDelete = () => {
     triggerDeleteComment({ articleId: data.article, commentId: data._id })
       .unwrap()
-      .catch((err) => alert(err.data.message));
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+      });
   };
 
   const isUserCommnent = data.author._id === user.userId;

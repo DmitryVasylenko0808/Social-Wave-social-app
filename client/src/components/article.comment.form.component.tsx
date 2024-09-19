@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateCommentMutation } from "../api/articles/comments.api";
 import { useParams } from "react-router";
+import { useAlerts } from "../hooks/useAlerts";
 
 const createCommentSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -12,6 +13,7 @@ const createCommentSchema = z.object({
 type ArticleCommmentFormFields = z.infer<typeof createCommentSchema>;
 
 const ArticleCommentForm = () => {
+  const alerts = useAlerts();
   const { articleId } = useParams();
   const [triggerCreateComment, { isLoading }] = useCreateCommentMutation();
 
@@ -31,9 +33,10 @@ const ArticleCommentForm = () => {
     triggerCreateComment(createCommentData)
       .unwrap()
       .then(() => reset())
-      .catch((err) =>
-        setError("text", { type: "server", message: err.data.message })
-      );
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        setError("text", { type: "server", message: err.data.message });
+      });
   };
 
   return (

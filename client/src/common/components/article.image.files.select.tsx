@@ -8,8 +8,9 @@ const ArticleImageFilesSelect = forwardRef<
   ArticleImageFilesSelectProps
 >(({ ...props }, ref) => {
   return (
-    <label className="px-4 text-primary-200 hover:text-primary-200 cursor-pointer">
+    <label className="px-4 inline-flex items-center gap-2 text-primary-200 hover:text-primary-200 cursor-pointer">
       <FileImage />
+      <span className="font-medium">Upload images</span>
       <input
         {...props}
         type="file"

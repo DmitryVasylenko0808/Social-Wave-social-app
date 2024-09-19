@@ -10,6 +10,8 @@ import { ArticleImageFilesSelect, ArticleImagesPreview } from ".";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useImagePreview } from "../../hooks/useImagePreview";
+import { useAlerts } from "../../hooks/useAlerts";
+import { useEffect } from "react";
 
 const editArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -41,6 +43,7 @@ const EditArticleModal = ({
   });
   const [triggerEditArticle, { isLoading: isLoadingEdit }] =
     useEditArticleMutation();
+  const alerts = useAlerts();
   const {
     register,
     handleSubmit,
@@ -55,13 +58,19 @@ const EditArticleModal = ({
   });
   const { imagesPreview, handleImagesChange } = useImagePreview(data?.images);
 
+  useEffect(() => {
+    if (isError) {
+      alerts.error("Oops... something went wrong");
+    }
+  }, [isError]);
+
   const submitHandler = (data: EditArticleFormFields) => {
     triggerEditArticle({ id: article._id, ...data })
       .unwrap()
       .then(() => modalProps.onClose())
-      .catch((err) =>
-        setError("root", { type: "server", message: err.data.message })
-      );
+      .catch((err) => {
+        setError("root", { type: "server", message: err.data.message });
+      });
   };
 
   if (isError) {

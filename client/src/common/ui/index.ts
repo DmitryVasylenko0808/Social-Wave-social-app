@@ -10,6 +10,7 @@ import Loader from "./loader.component";
 import Avatar from "./avatar.component";
 import List from "./list.component";
 import ListItem from "./list.item.component";
+import Alert from "./alert.component";
 
 export {
   Button,
@@ -24,4 +25,5 @@ export {
   Avatar,
   List,
   ListItem,
+  Alert,
 };

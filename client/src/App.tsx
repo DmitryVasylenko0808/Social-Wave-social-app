@@ -13,6 +13,7 @@ import EditProfilePage from "./pages/edit.profile.page.tsx";
 import OneArticlePage from "./pages/one.article.page.tsx";
 import BookmarksPage from "./pages/bookmarks.page.tsx";
 import { RequireAuth, ScrollToTop } from "./common/components/index.ts";
+import AlertsContainer from "./components/alerts.container.component.tsx";
 
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();
@@ -24,29 +25,32 @@ function App() {
   }, []);
 
   return (
-    <ScrollToTop>
-      <Routes>
-        <Route path="/" element={<BaseLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="articles/:articleId" element={<OneArticlePage />} />
-          <Route element={<RequireAuth />}>
-            <Route path="bookmarks" element={<BookmarksPage />} />
-          </Route>
-          <Route path="users">
-            <Route path=":userId/profile" element={<ProfilePage />} />
+    <>
+      <ScrollToTop>
+        <Routes>
+          <Route path="/" element={<BaseLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="articles/:articleId" element={<OneArticlePage />} />
             <Route element={<RequireAuth />}>
-              <Route path=":userId/edit" element={<EditProfilePage />} />
+              <Route path="bookmarks" element={<BookmarksPage />} />
             </Route>
-            <Route path=":userId/followers" element={<FollowersPage />} />
-            <Route path=":userId/followings" element={<FollowingsPage />} />
+            <Route path="users">
+              <Route path=":userId/profile" element={<ProfilePage />} />
+              <Route element={<RequireAuth />}>
+                <Route path=":userId/edit" element={<EditProfilePage />} />
+              </Route>
+              <Route path=":userId/followers" element={<FollowersPage />} />
+              <Route path=":userId/followings" element={<FollowingsPage />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="auth" element={<AuthLayout />}>
-          <Route path="sign-in" element={<SignInPage />} />
-          <Route path="sign-up" element={<SignUpPage />} />
-        </Route>
-      </Routes>
-    </ScrollToTop>
+          <Route path="auth" element={<AuthLayout />}>
+            <Route path="sign-in" element={<SignInPage />} />
+            <Route path="sign-up" element={<SignUpPage />} />
+          </Route>
+        </Routes>
+      </ScrollToTop>
+      <AlertsContainer />
+    </>
   );
 }
 

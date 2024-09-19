@@ -8,6 +8,7 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useImagePreview } from "../hooks/useImagePreview";
+import { useAlerts } from "../hooks/useAlerts";
 
 const createArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -27,6 +28,7 @@ const createArticleSchema = z.object({
 type CreateArticleFormFields = z.infer<typeof createArticleSchema>;
 
 const CreateArticleForm = () => {
+  const alerts = useAlerts();
   const { imagesPreview, handleImagesChange, clearPreviewImages } =
     useImagePreview();
   const [triggerCreateArticle, { isLoading }] = useCreateArticleMutation();
@@ -49,9 +51,10 @@ const CreateArticleForm = () => {
         reset();
         clearPreviewImages();
       })
-      .catch((err) =>
-        setError("text", { type: "server", message: err.data.message })
-      );
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        setError("text", { type: "server", message: err.data.message });
+      });
   };
 
   return (

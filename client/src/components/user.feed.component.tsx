@@ -7,8 +7,10 @@ import { ArticleItem, InfiniteScroll, NoData } from "../common/components";
 import { usePage } from "../hooks/usePage";
 import { useEffect } from "react";
 import { List, ListItem } from "../common/ui";
+import { useAlerts } from "../hooks/useAlerts";
 
 const UserFeed = () => {
+  const alerts = useAlerts();
   const { page, setPage, nextPage } = usePage();
   const { userId } = useParams();
   const [triggerGetUserFeed, { data, isFetching, isError }] =
@@ -25,9 +27,11 @@ const UserFeed = () => {
     }
   }, [page]);
 
-  if (isError) {
-    return <span>Error.</span>;
-  }
+  useEffect(() => {
+    if (isError) {
+      alerts.error("Oops... something went wrong");
+    }
+  }, [isError]);
 
   if (data?.data.length === 0) {
     return <NoData message="No articles" />;

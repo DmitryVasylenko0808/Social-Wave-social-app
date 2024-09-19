@@ -2,6 +2,7 @@ import { Button, Loader, Modal } from "../ui";
 import { ModalProps } from "../ui/modal.component";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { useDeleteArticleMutation } from "../../api/articles/articles.api";
+import { useAlerts } from "../../hooks/useAlerts";
 
 type DeleteArticleModalProps = ModalProps & {
   article: Article;
@@ -15,6 +16,7 @@ const DeleteArticleModal = ({
   ...modalProps
 }: DeleteArticleModalProps) => {
   const [triggerDeleteArticle, { isLoading }] = useDeleteArticleMutation();
+  const alerts = useAlerts();
 
   const handleClickDelete = () => {
     triggerDeleteArticle(article._id)
@@ -23,7 +25,9 @@ const DeleteArticleModal = ({
         modalProps.onClose();
         deleteAfter?.();
       })
-      .catch((err) => alert(err.data.message));
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+      });
   };
 
   return (

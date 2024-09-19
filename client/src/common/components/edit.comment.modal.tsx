@@ -5,6 +5,7 @@ import { useEditCommentMutation } from "../../api/articles/comments.api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Comment } from "../../api/articles/dto/get.comments.dto";
+import { useAlerts } from "../../hooks/useAlerts";
 
 const editCommentSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -20,6 +21,7 @@ const EditCommentModal = ({
   comment,
   ...modalProps
 }: EditCommentModalProps) => {
+  const alerts = useAlerts();
   const [triggerEditComment, { isLoading }] = useEditCommentMutation();
   const {
     register,
@@ -41,9 +43,10 @@ const EditCommentModal = ({
     })
       .unwrap()
       .then(() => modalProps.onClose())
-      .catch((err) =>
-        setError("text", { type: "server", message: err.data.message })
-      );
+      .catch((err) => {
+        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        setError("text", { type: "server", message: err.data.message });
+      });
   };
 
   return (
