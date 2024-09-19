@@ -1,12 +1,9 @@
-import { useParams } from "react-router";
-import {
-  useGetUserFeedQuery,
-  useLazyGetUserFeedQuery,
-} from "../api/articles/articles.api";
 import { ArticleItem, InfiniteScroll, NoData } from "../common/components";
+import { List, ListItem } from "../common/ui";
+import { useParams } from "react-router";
+import { useLazyGetUserFeedQuery } from "../api/articles/articles.api";
 import { usePage } from "../hooks/usePage";
 import { useEffect } from "react";
-import { List, ListItem } from "../common/ui";
 import { useAlerts } from "../hooks/useAlerts";
 
 const UserFeed = () => {

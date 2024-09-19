@@ -35,13 +35,13 @@ function App() {
             <Route element={<RequireAuth />}>
               <Route path="bookmarks" element={<BookmarksPage />} />
             </Route>
-            <Route path="users">
-              <Route path=":userId/profile" element={<ProfilePage />} />
+            <Route path="users/:userId">
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="followers" element={<FollowersPage />} />
+              <Route path="followings" element={<FollowingsPage />} />
               <Route element={<RequireAuth />}>
-                <Route path=":userId/edit" element={<EditProfilePage />} />
+                <Route path="edit" element={<EditProfilePage />} />
               </Route>
-              <Route path=":userId/followers" element={<FollowersPage />} />
-              <Route path=":userId/followings" element={<FollowingsPage />} />
             </Route>
           </Route>
           <Route path="auth" element={<AuthLayout />}>
