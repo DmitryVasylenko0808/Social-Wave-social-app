@@ -14,6 +14,7 @@ import OneArticlePage from "./pages/one.article.page.tsx";
 import BookmarksPage from "./pages/bookmarks.page.tsx";
 import { RequireAuth, ScrollToTop } from "./common/components/index.ts";
 import AlertsContainer from "./components/alerts.container.component.tsx";
+import ErrorPage from "./pages/error.page.tsx";
 
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();
@@ -47,6 +48,7 @@ function App() {
             <Route path="sign-in" element={<SignInPage />} />
             <Route path="sign-up" element={<SignUpPage />} />
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </ScrollToTop>
       <AlertsContainer />

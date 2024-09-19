@@ -1,6 +1,6 @@
 import { ArrowLeft, PenLine } from "lucide-react";
 import { Button } from "../common/ui";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import {
@@ -45,7 +45,7 @@ const Profile = () => {
   }
 
   if (isError) {
-    return <span>Error.</span>;
+    return <Navigate to="*" replace />;
   }
 
   const isCurrentUserProfile = userId === user.userId;

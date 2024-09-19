@@ -5,6 +5,7 @@ import {
   NoData,
 } from "../common/components";
 import { List, ListItem } from "../common/ui";
+import { Navigate } from "react-router";
 import { useGetBookmarkedArticlesQuery } from "../api/articles/bookmarked.article.api";
 import { useAuth } from "../hooks/useAuth";
 import { usePage } from "../hooks/usePage";
@@ -18,7 +19,7 @@ const BookmarksArticles = () => {
   });
 
   if (isError) {
-    return <span>Error.</span>;
+    return <Navigate to="*" replace />;
   }
 
   if (data?.data.length === 0) {

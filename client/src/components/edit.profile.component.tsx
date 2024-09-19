@@ -5,15 +5,15 @@ import {
   TextArea,
   Loader,
 } from "../common/ui";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import {
   useEditUserMutation,
   useGetOneUserQuery,
 } from "../api/users/users.api";
-import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { userAvatarsUrl } from "../api/constants";
 import { NavigateBack } from "../common/components";
+import { z } from "zod";
 
 const editUserSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -98,7 +98,7 @@ const EditProfileForm = () => {
   };
 
   if (isErrorUser) {
-    alert("Oops... something went wrong :(");
+    return <Navigate to="*" replace />;
   }
 
   return (

@@ -1,9 +1,4 @@
-import {
-  AlertItem,
-  removeAlert,
-  removeAll,
-  setAlert,
-} from "../redux/alerts.slice";
+import { removeAlert, removeAll, setAlert } from "../redux/alerts.slice";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
 export const useAlerts = () => {

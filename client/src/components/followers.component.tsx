@@ -4,7 +4,7 @@ import {
   NoData,
   UserItem,
 } from "../common/components";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import {
   useGetOneUserQuery,
   useGetUserFollowersQuery,
@@ -22,7 +22,7 @@ const Followers = () => {
   });
 
   if (isError) {
-    return <span>Error.</span>;
+    return <Navigate to="*" replace />;
   }
 
   if (data?.data.length === 0) {

@@ -10,7 +10,7 @@ const AlertsContainer = () => {
 
   return (
     <div className="fixed top-0 left-0 z-60 w-full py-4 px-2 flex justify-center">
-      <List className="flex fle-col gap-4">
+      <List className="flex flex-col gap-4">
         {alerts.items.map((item, index) => (
           <ListItem key={index}>
             <Alert {...item} onClose={() => handleClickRemove(index)} />

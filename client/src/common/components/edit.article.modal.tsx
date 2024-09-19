@@ -73,10 +73,6 @@ const EditArticleModal = ({
       });
   };
 
-  if (isError) {
-    alert("Oops... something went wrong");
-  }
-
   return (
     <Modal title="Editing article" {...modalProps}>
       {isLoading && <div className="min-w-[560px]">Loading...</div>}

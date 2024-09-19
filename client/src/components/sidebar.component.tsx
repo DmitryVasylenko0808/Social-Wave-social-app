@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { House, Bookmark, UserRound, LogOut, LogIn } from "lucide-react";
 import { Button } from "../common/ui";

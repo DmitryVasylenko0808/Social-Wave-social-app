@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { useGetOneArticleQuery } from "../api/articles/articles.api";
 import {
   ArticleItem,
@@ -18,7 +18,7 @@ const ArticleDetails = () => {
   const goBackAfterDelete = () => navigate(-1);
 
   if (isError) {
-    return <span>Error.</span>;
+    return <Navigate to="*" replace />;
   }
 
   return (

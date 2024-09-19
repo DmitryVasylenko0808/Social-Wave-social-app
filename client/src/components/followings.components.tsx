@@ -4,13 +4,13 @@ import {
   NoData,
   UserItem,
 } from "../common/components";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
+import { List, ListItem } from "../common/ui";
 import {
   useGetOneUserQuery,
   useGetUserFollowingsQuery,
 } from "../api/users/users.api";
 import { usePage } from "../hooks/usePage";
-import { List, ListItem } from "../common/ui";
 
 const Followings = () => {
   const { userId } = useParams();
@@ -22,7 +22,7 @@ const Followings = () => {
   });
 
   if (isError) {
-    return <span>Error.</span>;
+    return <Navigate to="*" replace />;
   }
 
   if (data?.data.length === 0) {
