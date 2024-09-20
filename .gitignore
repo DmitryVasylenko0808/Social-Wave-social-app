@@ -18,4 +18,6 @@ client/.env.test.local
 client/.env.production.local
 client/.env.local
 
+.vscode
+
 TODO.txt
