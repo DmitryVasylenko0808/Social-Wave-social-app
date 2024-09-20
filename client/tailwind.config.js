@@ -25,8 +25,12 @@ export default {
         header: "90px",
         cover: "230px"
       },
+      width: {
+        modal: "1002px"
+      },
       maxWidth: {
-        container: "1260px"
+        container: "1260px",
+        modal: "1002px"
       },
       minWidth: {
         btn: "100px"

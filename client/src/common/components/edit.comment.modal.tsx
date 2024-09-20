@@ -51,9 +51,10 @@ const EditCommentModal = ({
 
   return (
     <Modal title="Editing comment" {...modalProps}>
-      <form className="min-w-[560px]" onSubmit={handleSubmit(submitHandler)}>
+      <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
         <TextArea
           className="mb-8"
+          rows={4}
           error={errors.text?.message}
           {...register("text")}
         />

@@ -77,9 +77,10 @@ const EditArticleModal = ({
     <Modal title="Editing article" {...modalProps}>
       {isLoading && <div className="min-w-[560px]">Loading...</div>}
       {data && (
-        <form className="min-w-[560px]" onSubmit={handleSubmit(submitHandler)}>
+        <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
           <TextArea
             className="mb-8"
+            rows={8}
             error={errors.text?.message}
             {...register("text")}
           />
