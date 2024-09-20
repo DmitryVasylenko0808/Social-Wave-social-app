@@ -5,7 +5,7 @@ import InfiniteScroll from "./infinite.scroll.component";
 import UserItem from "./user.item.component";
 import DeleteArticleModal from "./delete.article.modal";
 import EditArticleModal from "./edit.article.modal";
-import ArticleCommentItem from "./article.comment.item";
+import CommentItem from "./comment-item/comment.item";
 import EditCommentModal from "./edit.comment.modal";
 import ArticleImagesPreview from "./article.images.preview";
 import ArticleImageFilesSelect from "./article.image.files.select";
@@ -25,7 +25,7 @@ export {
   UserItem,
   DeleteArticleModal,
   EditArticleModal,
-  ArticleCommentItem,
+  CommentItem,
   EditCommentModal,
   ArticleImagesPreview,
   ArticleImageFilesSelect,

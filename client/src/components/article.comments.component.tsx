@@ -1,11 +1,7 @@
 import { useGetCommentsQuery } from "../api/articles/comments.api";
 import { useParams } from "react-router";
 import { usePage } from "../hooks/usePage";
-import {
-  ArticleCommentItem,
-  InfiniteScroll,
-  NoData,
-} from "../common/components";
+import { CommentItem, InfiniteScroll, NoData } from "../common/components";
 import { List, ListItem } from "../common/ui";
 
 const ArticleComments = () => {
@@ -32,7 +28,7 @@ const ArticleComments = () => {
         <List className="gap-7">
           {comments?.data.map((comment) => (
             <ListItem key={comment._id}>
-              <ArticleCommentItem data={comment} />
+              <CommentItem data={comment} />
             </ListItem>
           ))}
         </List>

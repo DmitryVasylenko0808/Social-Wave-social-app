@@ -1,28 +1,25 @@
-import { EllipsisVertical, PenLine, Trash2 } from "lucide-react";
-import { userAvatarsUrl } from "../../api/constants";
-import { Button, Menu, MenuItem } from "../ui";
-import Avatar from "../ui/avatar.component";
-import { Link } from "react-router-dom";
-import { Comment } from "../../api/articles/dto/get.comments.dto";
-import { useAuth } from "../../hooks/useAuth";
-import { useRef, useState } from "react";
-import { useClickOutside } from "../../hooks/useClickOutside";
-import { useDeleteCommentMutation } from "../../api/articles/comments.api";
-import { useModal } from "../../hooks/useModal";
-import EditCommentModal from "./edit.comment.modal";
 import ReactTimeAgo from "react-time-ago";
-import { useAlerts } from "../../hooks/useAlerts";
+import { Link } from "react-router-dom";
+import { CommentItemProps } from "./comment.item";
+import { EllipsisVertical, PenLine, Trash2 } from "lucide-react";
+import { Avatar, Button, Menu, MenuItem } from "../../ui";
+import { userAvatarsUrl } from "../../../api/constants";
+import { useState, useRef } from "react";
+import { useDeleteCommentMutation } from "../../../api/articles/comments.api";
+import { useAlerts } from "../../../hooks/useAlerts";
+import { useAuth } from "../../../hooks/useAuth";
+import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useModal } from "../../../hooks/useModal";
+import { EditCommentModal } from "..";
 
-type ArticleCommentItemProps = {
-  data: Comment;
-};
+type CommentItemHeaderProps = CommentItemProps;
 
-const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
+const CommentItemHeader = ({ data }: CommentItemHeaderProps) => {
   const { user } = useAuth();
+  const alerts = useAlerts();
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const editModal = useModal();
-  const alerts = useAlerts();
   const [triggerDeleteComment] = useDeleteCommentMutation();
 
   useClickOutside(ref, () => setOpenMenu(false));
@@ -88,8 +85,6 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
           )}
         </div>
       </div>
-      <p>{data.text}</p>
-
       {data && (
         <EditCommentModal
           comment={data}
@@ -101,4 +96,4 @@ const ArticleCommentItem = ({ data }: ArticleCommentItemProps) => {
   );
 };
 
-export default ArticleCommentItem;
+export default CommentItemHeader;
