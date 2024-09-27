@@ -13,7 +13,7 @@ i18n
             en,
             uk
         },
-        lng: "uk",
+        lng: "en",
         fallbackLng: "en",
 
         interpolation: {

@@ -118,7 +118,7 @@ const EditProfileForm = () => {
               {...register("coverImage")}
               className="w-full h-[152px] rounded-none border-0"
               imgClassName="rounded-none"
-              label={t("editProfile.coverImage")}
+              label={t("editProfile.fields.coverImage")}
               defaultImageUrl={
                 user?.coverImage && `${userAvatarsUrl}/${user?.coverImage}`
               }
@@ -135,7 +135,7 @@ const EditProfileForm = () => {
                 <ImageFileSelect
                   {...register("avatar")}
                   className="border-[1px] border-textFieldBorder"
-                  label={t("editProfile.profilePhoto")}
+                  label={t("editProfile.fields.profilePhoto")}
                   defaultImageUrl={
                     user?.avatar && `${userAvatarsUrl}/${user?.avatar}`
                   }
