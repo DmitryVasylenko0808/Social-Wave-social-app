@@ -5,7 +5,7 @@ type ProfileBioProps = {
 };
 
 const ProfileBio = ({ data }: ProfileBioProps) => {
-  return <p className="mb-10">{data?.bio}</p>;
+  return <p className="mb-10 dark:text-secondary-200">{data?.bio}</p>;
 };
 
 export default ProfileBio;

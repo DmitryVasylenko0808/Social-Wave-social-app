@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -19,7 +20,12 @@ export default {
         },
         label: "#7B7B7B",
         labelFill: "#F1F1F1",
-        textFieldBorder: "#E4E4E4"
+        textFieldBorder: "#E4E4E4",
+        dark: {
+          100: "#121212",
+          200: "#282828",
+          300: "#3f3f3f"
+        }
       },
       height: {
         header: "90px",

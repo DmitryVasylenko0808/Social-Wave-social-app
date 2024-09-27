@@ -71,7 +71,7 @@ const ArticleItemFooter = ({ data }: ArticleItemFooterProps) => {
   return (
     <div>
       {data.repostedArticle ? (
-        <div className="px-6 py-3 border-2 border-secondary-50">
+        <div className="px-6 py-3 border-2 border-secondary-50 dark:border-dark-200 dark:border">
           <ArticleItem
             data={data.repostedArticle}
             reposted={!!data.repostedArticle}

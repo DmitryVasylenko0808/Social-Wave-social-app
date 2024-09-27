@@ -23,7 +23,7 @@ const UserItem = ({ data }: UserItemProps) => {
           />
         </Link>
         <Link to={`/users/${data._id}/profile`}>
-          <span className="text-secondary-300 font-medium">
+          <span className="text-secondary-300 font-medium dark:text-white">
             {data.firstName} {data.secondName}
           </span>
         </Link>

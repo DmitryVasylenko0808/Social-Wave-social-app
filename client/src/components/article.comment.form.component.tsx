@@ -42,7 +42,7 @@ const ArticleCommentForm = () => {
 
   return (
     <form
-      className="p-4 pb-2.5 bg-labelFill"
+      className="p-4 pb-2.5 bg-labelFill dark:bg-dark-100"
       onSubmit={handleSubmit(submitHandler)}
     >
       <TextArea

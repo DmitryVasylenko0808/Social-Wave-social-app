@@ -14,5 +14,5 @@
 }
 
 .active {
-    @apply text-secondary-200
+    @apply text-secondary-200 dark:text-white
 }

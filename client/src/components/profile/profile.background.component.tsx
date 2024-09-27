@@ -18,7 +18,7 @@ const ProfileBackground = ({ data }: ProfileBackgroundProps) => {
       style={{
         backgroundImage: `url(${userAvatarsUrl}/${data!.coverImage})`,
       }}
-      className="h-cover bg-blue-50 bg-cover bg-center"
+      className="h-cover bg-blue-50 bg-cover bg-center dark:bg-dark-300"
     >
       <div className="pt-2 px-6">
         <div className="flex items-center gap-3.5">

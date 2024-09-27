@@ -61,7 +61,7 @@ const CreateArticleForm = () => {
 
   return (
     <form
-      className="mb-8 p-4 pb-2.5 bg-labelFill"
+      className="mb-8 p-4 pb-2.5 bg-labelFill dark:bg-dark-100"
       onSubmit={handleSubmit(submitHandler)}
     >
       <TextArea

@@ -34,7 +34,7 @@ const DeleteArticleModal = ({
 
   return (
     <Modal title={t("deleteArticle.title")} {...modalProps}>
-      <p className="mb-8">{t("deleteArticle.body")}</p>
+      <p className="mb-8 dark:text-secondary-50">{t("deleteArticle.body")}</p>
       <div className="flex justify-end">
         <Button
           variant="secondary"

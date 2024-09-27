@@ -50,7 +50,7 @@ const ArticleItemHeader = ({
         <span>
           <Link
             to={`/users/${data.author._id}/profile`}
-            className="text-secondary-300 font-medium"
+            className="text-secondary-300 font-medium dark:text-white"
           >
             {data.author.firstName} {data.author.secondName}
           </Link>{" "}
@@ -79,7 +79,10 @@ const ArticleItemHeader = ({
               <MenuItem onClick={handleClickEdit}>
                 <PenLine size={18} /> {t("article.menu.edit")}
               </MenuItem>
-              <MenuItem className="text-red-600" onClick={handleClickDelete}>
+              <MenuItem
+                className="text-red-600 dark:text-red-600"
+                onClick={handleClickDelete}
+              >
                 <Trash2 size={18} />
                 {t("article.menu.delete")}
               </MenuItem>

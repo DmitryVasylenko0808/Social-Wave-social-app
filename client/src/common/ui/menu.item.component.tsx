@@ -5,7 +5,7 @@ type MenuItemProps = ComponentProps<"li">;
 
 const MenuItem = ({ children, className, ...menuItemProps }: MenuItemProps) => {
   const classes = cn(
-    "cursor-pointer flex items-center gap-3 text-lg text-black",
+    "cursor-pointer flex items-center gap-3 text-lg text-black dark:text-secondary-100",
     className
   );
 

@@ -16,7 +16,7 @@ const ProfileStats = ({ data }: ProfileStatsProps) => {
           CustomLink: (
             <Link
               to={`/users/${data?._id}/followers`}
-              className="px-2 text-secondary-300 text-lg inline-flex gap-2"
+              className="px-2 text-secondary-300 text-lg inline-flex gap-2 dark:text-secondary-100"
             />
           ),
           span: <span className="text-primary-200 font-medium" />,
@@ -29,7 +29,7 @@ const ProfileStats = ({ data }: ProfileStatsProps) => {
           CustomLink: (
             <Link
               to={`/users/${data?._id}/followings`}
-              className="px-2 text-secondary-300 text-lg inline-flex gap-2"
+              className="px-2 text-secondary-300 text-lg inline-flex gap-2 dark:text-secondary-100"
             />
           ),
           span: <span className="text-primary-200 font-medium" />,

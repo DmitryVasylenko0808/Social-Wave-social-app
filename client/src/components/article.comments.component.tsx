@@ -20,7 +20,7 @@ const ArticleComments = () => {
 
   return (
     <div className="px-6 py-7">
-      <h2 className="mb-10 text-xl text-black font-bold">
+      <h2 className="mb-10 text-xl text-black font-bold dark:text-white">
         {t("articleCommments.title")}
       </h2>
       <InfiniteScroll

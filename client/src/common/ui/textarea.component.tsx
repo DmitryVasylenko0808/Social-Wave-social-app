@@ -9,7 +9,7 @@ type TextAreaProps = ComponentProps<"textarea"> & {
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, error, className, ...textAreaProps }, ref) => {
     const classes = cn(
-      "bg-labelFill border-1 border-textFieldBorder rounded text-xl resize-none",
+      "bg-labelFill border-1 border-textFieldBorder rounded text-xl resize-none dark:bg-dark-200 dark:border-dark-300 dark:text-secondary-50",
       className
     );
 

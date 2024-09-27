@@ -14,7 +14,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       <div className={classes}>
         <label className="mb-1.5 text-label text-sm">{label}</label>
         <input
-          className="bg-labelFill border-1 border-textFieldBorder rounded text-xl"
+          className="bg-labelFill border-1 border-textFieldBorder rounded text-xl dark:bg-dark-200 dark:border-dark-300 dark:text-secondary-50"
           ref={ref}
           {...inputProps}
         />

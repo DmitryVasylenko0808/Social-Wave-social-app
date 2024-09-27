@@ -10,7 +10,7 @@ const ProfileInfo = ({ data }: ProfileInfoProps) => {
   return (
     <div className="flex items-center gap-5">
       <Avatar
-        className="border-4 border-white"
+        className="border-4 border-white dark:border-dark-100"
         variant="big"
         src={
           data?.avatar

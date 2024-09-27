@@ -107,7 +107,7 @@ const EditProfileForm = () => {
     <div className="px-6 py-2">
       <NavigateBack title={t("editProfile.title")} />
       <form
-        className="border-[1px] border-textFieldBorder"
+        className="border border-textFieldBorder dark:border-dark-200"
         onSubmit={handleSubmit(submitHandler)}
       >
         <Controller

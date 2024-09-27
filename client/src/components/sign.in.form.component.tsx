@@ -76,7 +76,7 @@ const SignInForm = () => {
       <Trans
         i18nKey="signIn.withoutAcc"
         components={{
-          CustomParagraph: <p className="text-black" />,
+          CustomParagraph: <p className="text-black dark:text-secondary-100" />,
           CustomLink: (
             <Link to="/auth/sign-up" className="text-primary-200 font-bold" />
           ),

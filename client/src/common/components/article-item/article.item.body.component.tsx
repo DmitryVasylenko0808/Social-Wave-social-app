@@ -6,7 +6,7 @@ type ArticleItemBodyProps = Pick<ArticleItemProps, "data">;
 const ArticleItemBody = ({ data }: ArticleItemBodyProps) => {
   return (
     <div>
-      <p className="mb-1">{data?.text}</p>
+      <p className="mb-1 dark:text-secondary-100">{data?.text}</p>
       {data.images && (
         <div className="py-4 flex flex-wrap gap-7">
           {data.images.map((image, index) => (
