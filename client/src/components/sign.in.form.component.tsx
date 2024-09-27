@@ -42,9 +42,9 @@ const SignInForm = () => {
 
   return (
     <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
-      <h1 className="mb-7 text-primary-200 text-2xl font-bold">
+      <h2 className="mb-7 text-primary-200 text-2xl text-center font-bold">
         {t("signIn.title")}
-      </h1>
+      </h2>
 
       <div className="mb-5 flex flex-col space-y-4">
         <TextField
@@ -65,7 +65,7 @@ const SignInForm = () => {
         {errors.root?.message}
       </p>
 
-      <Button variant="primary" className="mb-8" disabled={isLoading}>
+      <Button variant="secondary" className="mb-8 w-full" disabled={isLoading}>
         {isLoading ? (
           <Loader size="small" variant="secondary" />
         ) : (
@@ -76,7 +76,9 @@ const SignInForm = () => {
       <Trans
         i18nKey="signIn.withoutAcc"
         components={{
-          CustomParagraph: <p className="text-black dark:text-secondary-100" />,
+          CustomParagraph: (
+            <p className="text-center text-black dark:text-secondary-100" />
+          ),
           CustomLink: (
             <Link to="/auth/sign-up" className="text-primary-200 font-bold" />
           ),

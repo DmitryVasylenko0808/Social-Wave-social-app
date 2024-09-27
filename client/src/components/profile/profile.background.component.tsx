@@ -20,7 +20,7 @@ const ProfileBackground = ({ data }: ProfileBackgroundProps) => {
       }}
       className="h-cover bg-blue-50 bg-cover bg-center dark:bg-dark-300"
     >
-      <div className="pt-2 px-6">
+      <div className="py-2 px-6 hover:bg-black/50">
         <div className="flex items-center gap-3.5">
           <Button variant="terciary" onClick={handleClickBack}>
             <ArrowLeft />

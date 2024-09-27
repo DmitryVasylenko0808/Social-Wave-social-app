@@ -1,7 +1,12 @@
+import { Logo } from ".";
+import { Container } from "../ui";
+
 const Header = () => {
   return (
-    <header className="bg-primary-100 h-header flex justify-center items-center">
-      <span className="text-white text-4xl">SocialWave</span>
+    <header className="h-header border border-secondary-50 dark:border-dark-200">
+      <Container className="h-full w-container flex items-center">
+        <Logo />
+      </Container>
     </header>
   );
 };

@@ -9,8 +9,8 @@ export default {
     extend: {
       colors: {
         primary: {
-          100: "#5858FA",
-          200: "#150AA1"
+          100: "#fb7185",
+          200: "#f43f5e"
         },
         secondary: {
           50: "#F1F1F1",
@@ -32,6 +32,7 @@ export default {
         cover: "230px"
       },
       width: {
+        container: "1260px",
         modal: "1002px"
       },
       maxWidth: {

@@ -59,7 +59,7 @@ const ArticleItemFooter = ({ data }: ArticleItemFooterProps) => {
   const isBookmarked = data.bookmarks.includes(user.userId as string);
 
   const heartClasses = cn("", {
-    "fill-red-500 text-red-500": isLiked === true,
+    "fill-primary-200 text-primary-200": isLiked === true,
   });
   const repostClasses = cn("", {
     "text-primary-200": isReposted === true,

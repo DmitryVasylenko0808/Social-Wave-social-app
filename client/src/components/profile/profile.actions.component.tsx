@@ -66,7 +66,7 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
       )}
       {isCurrentUserProfile && (
         <Link
-          className="px-4 py-2.5 inline-flex items-center gap-3.5 bg-labelFill text-base text-primary-200 border border-primary-200 rounded-3xl dark:bg-dark-200"
+          className="px-4 py-2.5 inline-flex items-center gap-3.5 bg-labelFill text-base font-bold text-primary-200 border border-primary-200 rounded-3xl dark:bg-dark-200"
           to={`/users/${data?._id}/edit`}
         >
           <PenLine size={20} />

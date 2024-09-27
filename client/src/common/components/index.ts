@@ -16,6 +16,7 @@ import ScrollToTop from "./scroll.to.top.component";
 import RequireAuth from "./require.auth.component";
 import NoData from "./no.data.component";
 import Portal from "./portal.component";
+import Logo from "./logo.component";
 
 export {
   Banner,
@@ -36,4 +37,5 @@ export {
   RequireAuth,
   NoData,
   Portal,
+  Logo,
 };

@@ -70,9 +70,9 @@ const SignUpForm = () => {
 
   return (
     <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
-      <h1 className="mb-7 text-primary-200 text-2xl font-bold">
+      <h2 className="mb-7 text-primary-200 text-2xl text-center font-bold">
         {t("signUp.title")}
-      </h1>
+      </h2>
 
       <div className="mb-5 flex flex-col space-y-4">
         <TextField
@@ -103,17 +103,19 @@ const SignUpForm = () => {
           type="password"
           error={errors.confirmPassword?.message}
         />
-        <Controller
-          name="avatar"
-          control={control}
-          render={({ field }) => (
-            <ImageFileSelect
-              {...register("avatar")}
-              label={t("signUp.fields.profilePhoto")}
-              onFileChange={field.onChange}
-            />
-          )}
-        />
+        <div className="inline-flex justify-center">
+          <Controller
+            name="avatar"
+            control={control}
+            render={({ field }) => (
+              <ImageFileSelect
+                {...register("avatar")}
+                label={t("signUp.fields.profilePhoto")}
+                onFileChange={field.onChange}
+              />
+            )}
+          />
+        </div>
       </div>
 
       <p className="mb-2.5 text-center text-red-700 text-sm">
@@ -122,8 +124,8 @@ const SignUpForm = () => {
 
       <Button
         type="submit"
-        variant="primary"
-        className="mb-8"
+        variant="secondary"
+        className="mb-8 w-full"
         disabled={isLoading}
       >
         {isLoading ? (
@@ -136,7 +138,9 @@ const SignUpForm = () => {
       <Trans
         i18nKey="signUp.withAcc"
         components={{
-          CustomParagraph: <p className="text-black dark:text-secondary-100" />,
+          CustomParagraph: (
+            <p className="text-center text-black dark:text-secondary-100" />
+          ),
           CustomLink: (
             <Link to="/auth/sign-in" className="text-primary-200 font-bold" />
           ),
