@@ -5,9 +5,11 @@ import { useLazyGetUserFeedQuery } from "../api/articles/articles.api";
 import { usePage } from "../hooks/usePage";
 import { useEffect } from "react";
 import { useAlerts } from "../hooks/useAlerts";
+import { useTranslation } from "react-i18next";
 
 const UserFeed = () => {
   const alerts = useAlerts();
+  const { t } = useTranslation();
   const { page, setPage, nextPage } = usePage();
   const { userId } = useParams();
   const [triggerGetUserFeed, { data, isFetching, isError }] =
@@ -26,12 +28,12 @@ const UserFeed = () => {
 
   useEffect(() => {
     if (isError) {
-      alerts.error("Oops... something went wrong");
+      alerts.error(t("error"));
     }
   }, [isError]);
 
   if (data?.data.length === 0) {
-    return <NoData message="No articles" />;
+    return <NoData message={t("noData.articles")} />;
   }
 
   return (

@@ -11,8 +11,10 @@ import {
 } from "../api/users/users.api";
 import { usePage } from "../hooks/usePage";
 import { List, ListItem } from "../common/ui";
+import { useTranslation } from "react-i18next";
 
 const Followers = () => {
+  const { t } = useTranslation();
   const { userId } = useParams();
   const { page, nextPage } = usePage();
   const { data: user } = useGetOneUserQuery(userId as string);
@@ -26,13 +28,16 @@ const Followers = () => {
   }
 
   if (data?.data.length === 0) {
-    return <NoData message="No followers" />;
+    return <NoData message={t("noData.followers")} />;
   }
 
   return (
     <div className="px-6 py-2">
       <NavigateBack
-        title={`${user?.firstName} ${user?.secondName}: Followers`}
+        title={t("followers.title", {
+          firstName: user?.firstName,
+          secondName: user?.secondName,
+        })}
       />
       <div>
         <InfiniteScroll

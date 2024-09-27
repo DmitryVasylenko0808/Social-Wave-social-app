@@ -16,6 +16,8 @@ import { RequireAuth, ScrollToTop } from "./common/components/index.ts";
 import AlertsContainer from "./components/alerts.container.component.tsx";
 import ErrorPage from "./pages/error.page.tsx";
 
+import "./i18n/i18n.js";
+
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();
 

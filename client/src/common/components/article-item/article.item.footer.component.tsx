@@ -9,15 +9,17 @@ import ArticleItem, { ArticleItemProps } from "./article.item.component";
 import { Heart, MessageSquare, Repeat2, Bookmark } from "lucide-react";
 import { Button } from "../../ui";
 import { cn } from "../../../utils/cn";
+import { useTranslation } from "react-i18next";
 
 type ArticleItemFooterProps = Pick<ArticleItemProps, "data">;
 
 const ArticleItemFooter = ({ data }: ArticleItemFooterProps) => {
+  const alerts = useAlerts();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [triggerToggleLikeArticle] = useToggleLikeArticleMutation();
   const [triggerToggleBookmarkArticle] = useToggleBookmarkArticleMutation();
   const [triggerRepostArticle] = useRepostArticleMutation();
-  const alerts = useAlerts();
 
   const handleClickLike = () => {
     triggerToggleLikeArticle({
@@ -34,11 +36,9 @@ const ArticleItemFooter = ({ data }: ArticleItemFooterProps) => {
     if (!isReposted) {
       triggerRepostArticle(data._id)
         .unwrap()
-        .then(() =>
-          alerts.success("The article has been successfully reposted")
-        )
+        .then(() => alerts.success(t("article.successReposted")))
         .catch((err) => {
-          alerts.error(`Oops... something went wrong: ${err.data.message}`);
+          alerts.error(`${t("error")}: ${err.data.message}`);
         });
     }
   };
@@ -50,7 +50,7 @@ const ArticleItemFooter = ({ data }: ArticleItemFooterProps) => {
     })
       .unwrap()
       .catch((err) => {
-        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        alerts.error(`${t("error")}: ${err.data.message}`);
       });
   };
 

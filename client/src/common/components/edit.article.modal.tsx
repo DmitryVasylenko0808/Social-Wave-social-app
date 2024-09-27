@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useImagePreview } from "../../hooks/useImagePreview";
 import { useAlerts } from "../../hooks/useAlerts";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const editArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -38,6 +39,7 @@ const EditArticleModal = ({
   article,
   ...modalProps
 }: EditArticleModalProps) => {
+  const { t } = useTranslation();
   const { data, isLoading, isError } = useGetOneArticleQuery(article._id, {
     skip: !modalProps.open,
   });
@@ -60,7 +62,7 @@ const EditArticleModal = ({
 
   useEffect(() => {
     if (isError) {
-      alerts.error("Oops... something went wrong");
+      alerts.error(t("error"));
     }
   }, [isError]);
 
@@ -74,7 +76,7 @@ const EditArticleModal = ({
   };
 
   return (
-    <Modal title="Editing article" {...modalProps}>
+    <Modal title={t("editArticle.title")} {...modalProps}>
       {isLoading && <div className="min-w-[560px]">Loading...</div>}
       {data && (
         <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
@@ -103,7 +105,7 @@ const EditArticleModal = ({
               {isLoadingEdit ? (
                 <Loader size="small" variant="secondary" />
               ) : (
-                "Edit"
+                t("editArticle.submitBtn")
               )}
             </Button>
           </div>

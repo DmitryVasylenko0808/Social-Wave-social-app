@@ -26,7 +26,7 @@ const Alert = ({ type, message, onClose }: AlertProps) => {
 
   return (
     <div className="relative min-w-80 py-5 px-4 bg-white border rounded-xl shadow-xl flex">
-      <div className="flex items-center gap-4">
+      <div className="flex-1 flex items-center gap-4">
         {typeIcon} {message}
       </div>
       <X

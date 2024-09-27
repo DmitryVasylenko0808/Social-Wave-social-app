@@ -8,6 +8,7 @@ import { PenLine } from "lucide-react";
 import { Button } from "../../common/ui";
 import { UserDetails } from "../../api/users/dto/get.one.user.dto";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type ProfileActionsProps = {
   data?: UserDetails;
@@ -16,6 +17,7 @@ type ProfileActionsProps = {
 
 const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
   const alerts = useAlerts();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [triggerFollowUser] = useFollowUserMutation();
   const [triggerUnfollowUser] = useUnfollowUserMutation();
@@ -49,7 +51,7 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
               className="rounded-3xl"
               onClick={handleClickFollow}
             >
-              Follow
+              {t("profile.actions.followBtn")}
             </Button>
           ) : (
             <Button
@@ -57,7 +59,7 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
               className="rounded-3xl"
               onClick={handleClickUnfollow}
             >
-              Unfollow
+              {t("profile.actions.unfollowBtn")}
             </Button>
           )}
         </>
@@ -68,7 +70,7 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
           to={`/users/${data?._id}/edit`}
         >
           <PenLine size={20} />
-          Edit Profile
+          {t("profile.actions.editBtn")}
         </Link>
       )}
     </div>

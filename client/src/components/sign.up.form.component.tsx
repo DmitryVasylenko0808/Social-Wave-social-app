@@ -5,6 +5,7 @@ import { useSignUpMutation } from "../api/auth/auth.api";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../hooks/useAuth";
+import { Trans, useTranslation } from "react-i18next";
 
 const signUpSchema = z
   .object({
@@ -37,6 +38,7 @@ const signUpSchema = z
 type SignUpFormFields = z.infer<typeof signUpSchema>;
 
 const SignUpForm = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [triggerSignUp, { isLoading }] = useSignUpMutation();
   const { authenticate } = useAuth();
@@ -68,34 +70,36 @@ const SignUpForm = () => {
 
   return (
     <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
-      <h1 className="mb-7 text-primary-200 text-2xl font-bold">Sign Up</h1>
+      <h1 className="mb-7 text-primary-200 text-2xl font-bold">
+        {t("signUp.title")}
+      </h1>
 
       <div className="mb-5 flex flex-col space-y-4">
         <TextField
           {...register("firstName")}
-          label="First Name"
+          label={t("signUp.fields.firstName")}
           error={errors.firstName?.message}
         />
         <TextField
           {...register("secondName")}
-          label="Second Name"
+          label={t("signUp.fields.secondName")}
           error={errors.secondName?.message}
         />
         <TextField
           {...register("email")}
-          label="Email"
+          label={t("signUp.fields.email")}
           type="email"
           error={errors.email?.message}
         />
         <TextField
           {...register("password")}
-          label="Password"
+          label={t("signUp.fields.password")}
           type="password"
           error={errors.password?.message}
         />
         <TextField
           {...register("confirmPassword")}
-          label="Confirm Password"
+          label={t("signUp.fields.confirmPassword")}
           type="password"
           error={errors.confirmPassword?.message}
         />
@@ -105,7 +109,7 @@ const SignUpForm = () => {
           render={({ field }) => (
             <ImageFileSelect
               {...register("avatar")}
-              label="Profile photo"
+              label={t("signUp.fields.profilePhoto")}
               onFileChange={field.onChange}
             />
           )}
@@ -122,15 +126,22 @@ const SignUpForm = () => {
         className="mb-8"
         disabled={isLoading}
       >
-        {isLoading ? <Loader size="small" variant="secondary" /> : "Sign Up"}
+        {isLoading ? (
+          <Loader size="small" variant="secondary" />
+        ) : (
+          t("signUp.submitBtn")
+        )}
       </Button>
 
-      <p className="text-black">
-        Already have an account?{" "}
-        <Link to="/auth/sign-in" className="text-primary-200 font-bold">
-          Sign In
-        </Link>
-      </p>
+      <Trans
+        i18nKey="signUp.withAcc"
+        components={{
+          CustomParagraph: <p className="text-black" />,
+          CustomLink: (
+            <Link to="/auth/sign-in" className="text-primary-200 font-bold" />
+          ),
+        }}
+      />
     </form>
   );
 };

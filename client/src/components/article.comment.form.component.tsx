@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateCommentMutation } from "../api/articles/comments.api";
 import { useParams } from "react-router";
 import { useAlerts } from "../hooks/useAlerts";
+import { useTranslation } from "react-i18next";
 
 const createCommentSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -13,10 +14,10 @@ const createCommentSchema = z.object({
 type ArticleCommmentFormFields = z.infer<typeof createCommentSchema>;
 
 const ArticleCommentForm = () => {
+  const { t } = useTranslation();
   const alerts = useAlerts();
   const { articleId } = useParams();
   const [triggerCreateComment, { isLoading }] = useCreateCommentMutation();
-
   const {
     register,
     setError,
@@ -34,7 +35,7 @@ const ArticleCommentForm = () => {
       .unwrap()
       .then(() => reset())
       .catch((err) => {
-        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        alerts.error(`${t("error")}: ${err.data.message}`);
         setError("text", { type: "server", message: err.data.message });
       });
   };
@@ -47,13 +48,17 @@ const ArticleCommentForm = () => {
       <TextArea
         className="mb-4 bg-white"
         rows={5}
-        placeholder="Write a comment..."
+        placeholder={t("articleCommentsForm.placeholder")}
         error={errors.text?.message}
         {...register("text")}
       />
       <div className="flex justify-end items-center">
         <Button type="submit" variant="secondary" disabled={isLoading}>
-          {isLoading ? <Loader size="small" variant="secondary" /> : "Comment"}
+          {isLoading ? (
+            <Loader size="small" variant="secondary" />
+          ) : (
+            t("articleCommentsForm.submitBtn")
+          )}
         </Button>
       </div>
     </form>

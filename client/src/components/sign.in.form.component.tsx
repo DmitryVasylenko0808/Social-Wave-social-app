@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Trans, useTranslation } from "react-i18next";
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -14,10 +15,9 @@ const signInSchema = z.object({
 type SignInFormFields = z.infer<typeof signInSchema>;
 
 const SignInForm = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-
   const [triggerSignIn, { isLoading }] = useSignInMutation();
-
   const { authenticate } = useAuth();
   const {
     register,
@@ -42,18 +42,20 @@ const SignInForm = () => {
 
   return (
     <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
-      <h1 className="mb-7 text-primary-200 text-2xl font-bold">Sign In</h1>
+      <h1 className="mb-7 text-primary-200 text-2xl font-bold">
+        {t("signIn.title")}
+      </h1>
 
       <div className="mb-5 flex flex-col space-y-4">
         <TextField
           {...register("email")}
-          label="Email"
+          label={t("signIn.fields.email")}
           type="email"
           error={errors.email?.message}
         />
         <TextField
           {...register("password")}
-          label="Password"
+          label={t("signIn.fields.password")}
           type="password"
           error={errors.password?.message}
         />
@@ -64,15 +66,22 @@ const SignInForm = () => {
       </p>
 
       <Button variant="primary" className="mb-8" disabled={isLoading}>
-        {isLoading ? <Loader size="small" variant="secondary" /> : "Sign In"}
+        {isLoading ? (
+          <Loader size="small" variant="secondary" />
+        ) : (
+          t("signIn.submitBtn")
+        )}
       </Button>
 
-      <p className="text-black">
-        Don't have an account?{" "}
-        <Link to="/auth/sign-up" className="text-primary-200 font-bold">
-          Sign Up
-        </Link>
-      </p>
+      <Trans
+        i18nKey="signIn.withoutAcc"
+        components={{
+          CustomParagraph: <p className="text-black" />,
+          CustomLink: (
+            <Link to="/auth/sign-up" className="text-primary-200 font-bold" />
+          ),
+        }}
+      ></Trans>
     </form>
   );
 };

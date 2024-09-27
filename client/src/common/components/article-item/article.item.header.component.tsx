@@ -9,6 +9,7 @@ import ReactTimeAgo from "react-time-ago";
 import { Avatar, Button, Menu, MenuItem } from "../../ui";
 import { ArticleItemProps } from "./article.item.component";
 import { DeleteArticleModal, EditArticleModal } from "..";
+import { useTranslation } from "react-i18next";
 
 type ArticleItemHeaderProps = ArticleItemProps;
 
@@ -17,11 +18,12 @@ const ArticleItemHeader = ({
   reposted,
   deleteAfter,
 }: ArticleItemHeaderProps) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const deleteModal = useModal();
   const editModal = useModal();
   const ref = useRef<HTMLDivElement>(null);
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   useClickOutside(ref, () => setOpenMenu(false));
 
@@ -57,7 +59,7 @@ const ArticleItemHeader = ({
               to={`/articles/${data.repostedArticle._id}`}
               className="text-secondary-100 underline"
             >
-              reposted article
+              {t("article.reposted")}
             </Link>
           )}
         </span>
@@ -75,11 +77,11 @@ const ArticleItemHeader = ({
 
             <Menu open={openMenu} ref={ref}>
               <MenuItem onClick={handleClickEdit}>
-                <PenLine size={18} /> Edit
+                <PenLine size={18} /> {t("article.menu.edit")}
               </MenuItem>
               <MenuItem className="text-red-600" onClick={handleClickDelete}>
                 <Trash2 size={18} />
-                Delete
+                {t("article.menu.delete")}
               </MenuItem>
             </Menu>
           </div>

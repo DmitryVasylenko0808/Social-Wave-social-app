@@ -9,10 +9,12 @@ import { Navigate } from "react-router";
 import { useGetBookmarkedArticlesQuery } from "../api/articles/bookmarked.article.api";
 import { useAuth } from "../hooks/useAuth";
 import { usePage } from "../hooks/usePage";
+import { useTranslation } from "react-i18next";
 
 const BookmarksArticles = () => {
-  const { page, nextPage } = usePage();
+  const { t } = useTranslation();
   const { user } = useAuth();
+  const { page, nextPage } = usePage();
   const { data, isFetching, isError } = useGetBookmarkedArticlesQuery({
     userId: user.userId as string,
     page,
@@ -23,7 +25,7 @@ const BookmarksArticles = () => {
   }
 
   if (data?.data.length === 0) {
-    return <NoData message="No articles" />;
+    return <NoData message={t("noData.articles")} />;
   }
 
   return (

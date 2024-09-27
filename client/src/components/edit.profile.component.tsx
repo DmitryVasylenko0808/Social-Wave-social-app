@@ -14,6 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import { userAvatarsUrl } from "../api/constants";
 import { NavigateBack } from "../common/components";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 
 const editUserSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -56,6 +57,7 @@ type EditProfileFormFields = z.infer<typeof editUserSchema>;
 
 const EditProfileForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { userId } = useParams();
   const {
     data: user,
@@ -103,7 +105,7 @@ const EditProfileForm = () => {
 
   return (
     <div className="px-6 py-2">
-      <NavigateBack title="Edit Profile" />
+      <NavigateBack title={t("editProfile.title")} />
       <form
         className="border-[1px] border-textFieldBorder"
         onSubmit={handleSubmit(submitHandler)}
@@ -116,7 +118,7 @@ const EditProfileForm = () => {
               {...register("coverImage")}
               className="w-full h-[152px] rounded-none border-0"
               imgClassName="rounded-none"
-              label="Cover Image"
+              label={t("editProfile.coverImage")}
               defaultImageUrl={
                 user?.coverImage && `${userAvatarsUrl}/${user?.coverImage}`
               }
@@ -133,7 +135,7 @@ const EditProfileForm = () => {
                 <ImageFileSelect
                   {...register("avatar")}
                   className="border-[1px] border-textFieldBorder"
-                  label="Profile Photo"
+                  label={t("editProfile.profilePhoto")}
                   defaultImageUrl={
                     user?.avatar && `${userAvatarsUrl}/${user?.avatar}`
                   }
@@ -146,23 +148,23 @@ const EditProfileForm = () => {
             <div className="mb-3 py-3 flex flex-col gap-8">
               <TextField
                 {...register("firstName")}
-                label="First Name"
+                label={t("editProfile.fields.firstName")}
                 error={errors.firstName?.message}
               />
               <TextField
                 {...register("secondName")}
-                label="Second Name"
+                label={t("editProfile.fields.secondName")}
                 error={errors.secondName?.message}
               />
               <TextArea
                 {...register("bio")}
-                label="Bio/About"
+                label={t("editProfile.fields.bio")}
                 rows={3}
                 error={errors.bio?.message}
               />
               <TextField
                 {...register("email")}
-                label="Email"
+                label={t("editProfile.fields.email")}
                 type="email"
                 error={errors.email?.message}
               />
@@ -179,7 +181,7 @@ const EditProfileForm = () => {
                 {isLoading ? (
                   <Loader size="small" variant="secondary" />
                 ) : (
-                  "Edit"
+                  t("editProfile.submitBtn")
                 )}
               </Button>
             </div>

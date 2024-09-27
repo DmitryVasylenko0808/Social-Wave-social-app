@@ -3,6 +3,7 @@ import { ModalProps } from "../ui/modal.component";
 import { Article } from "../../api/articles/dto/get.articles.dto";
 import { useDeleteArticleMutation } from "../../api/articles/articles.api";
 import { useAlerts } from "../../hooks/useAlerts";
+import { useTranslation } from "react-i18next";
 
 type DeleteArticleModalProps = ModalProps & {
   article: Article;
@@ -15,8 +16,9 @@ const DeleteArticleModal = ({
   deleteAfter,
   ...modalProps
 }: DeleteArticleModalProps) => {
-  const [triggerDeleteArticle, { isLoading }] = useDeleteArticleMutation();
   const alerts = useAlerts();
+  const { t } = useTranslation();
+  const [triggerDeleteArticle, { isLoading }] = useDeleteArticleMutation();
 
   const handleClickDelete = () => {
     triggerDeleteArticle(article._id)
@@ -26,23 +28,24 @@ const DeleteArticleModal = ({
         deleteAfter?.();
       })
       .catch((err) => {
-        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        alerts.error(`${t("error")}: ${err.data.message}`);
       });
   };
 
   return (
-    <Modal title="Dou really want to delete this article?" {...modalProps}>
-      <p className="mb-8">
-        If you delete this article, it will be permanently removed and the
-        action cannot be undone.
-      </p>
+    <Modal title={t("deleteArticle.title")} {...modalProps}>
+      <p className="mb-8">{t("deleteArticle.body")}</p>
       <div className="flex justify-end">
         <Button
           variant="secondary"
           onClick={handleClickDelete}
           disabled={isLoading}
         >
-          {isLoading ? <Loader size="small" variant="secondary" /> : "Delete"}
+          {isLoading ? (
+            <Loader size="small" variant="secondary" />
+          ) : (
+            t("deleteArticle.submitBtn")
+          )}
         </Button>
       </div>
     </Modal>

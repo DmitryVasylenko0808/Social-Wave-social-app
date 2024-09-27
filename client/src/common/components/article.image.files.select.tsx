@@ -1,5 +1,6 @@
 import { FileImage } from "lucide-react";
 import { ComponentProps, forwardRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type ArticleImageFilesSelectProps = ComponentProps<"input">;
 
@@ -7,10 +8,12 @@ const ArticleImageFilesSelect = forwardRef<
   HTMLInputElement,
   ArticleImageFilesSelectProps
 >(({ ...props }, ref) => {
+  const { t } = useTranslation();
+
   return (
     <label className="px-4 inline-flex items-center gap-2 text-primary-200 hover:text-primary-200 cursor-pointer">
       <FileImage />
-      <span className="font-medium">Upload images</span>
+      <span className="font-medium">{t("createArticle.uploadImages")}</span>
       <input
         {...props}
         type="file"

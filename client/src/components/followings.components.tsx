@@ -11,8 +11,10 @@ import {
   useGetUserFollowingsQuery,
 } from "../api/users/users.api";
 import { usePage } from "../hooks/usePage";
+import { useTranslation } from "react-i18next";
 
 const Followings = () => {
+  const { t } = useTranslation();
   const { userId } = useParams();
   const { page, nextPage } = usePage();
   const { data: user } = useGetOneUserQuery(userId as string);
@@ -26,13 +28,16 @@ const Followings = () => {
   }
 
   if (data?.data.length === 0) {
-    return <NoData message="No followings" />;
+    return <NoData message={t("noData.followings")} />;
   }
 
   return (
     <div className="px-6 py-2">
       <NavigateBack
-        title={`${user?.firstName} ${user?.secondName}: Followings`}
+        title={t("followings.title", {
+          firstName: user?.firstName,
+          secondName: user?.secondName,
+        })}
       />
       <div className="">
         <InfiniteScroll

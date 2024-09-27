@@ -5,15 +5,17 @@ import { usePage } from "../hooks/usePage";
 import { List, ListItem } from "../common/ui";
 import { useEffect } from "react";
 import { useAlerts } from "../hooks/useAlerts";
+import { useTranslation } from "react-i18next";
 
 const Feed = () => {
   const alerts = useAlerts();
+  const { t } = useTranslation();
   const { page, nextPage } = usePage();
   const { data: articles, isFetching, isError } = useGetFeedQuery(page);
 
   useEffect(() => {
     if (isError) {
-      alerts.error("Oops... something went wrong");
+      alerts.error(t("error"));
     }
   }, [isError]);
 

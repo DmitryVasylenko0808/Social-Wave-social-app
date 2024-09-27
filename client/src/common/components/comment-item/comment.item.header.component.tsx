@@ -11,15 +11,17 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import { useModal } from "../../../hooks/useModal";
 import { EditCommentModal } from "..";
+import { useTranslation } from "react-i18next";
 
 type CommentItemHeaderProps = CommentItemProps;
 
 const CommentItemHeader = ({ data }: CommentItemHeaderProps) => {
-  const { user } = useAuth();
+  const { t } = useTranslation();
   const alerts = useAlerts();
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
   const editModal = useModal();
+  const ref = useRef<HTMLDivElement>(null);
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [triggerDeleteComment] = useDeleteCommentMutation();
 
   useClickOutside(ref, () => setOpenMenu(false));
@@ -31,7 +33,7 @@ const CommentItemHeader = ({ data }: CommentItemHeaderProps) => {
     triggerDeleteComment({ articleId: data.article, commentId: data._id })
       .unwrap()
       .catch((err) => {
-        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        alerts.error(`${t("error")}: ${err.data.message}`);
       });
   };
 
@@ -74,11 +76,11 @@ const CommentItemHeader = ({ data }: CommentItemHeaderProps) => {
 
               <Menu open={openMenu} ref={ref}>
                 <MenuItem onClick={handleClickEdit}>
-                  <PenLine size={18} /> Edit
+                  <PenLine size={18} /> {t("comment.menu.edit")}
                 </MenuItem>
                 <MenuItem className="text-red-600" onClick={handleClickDelete}>
                   <Trash2 size={18} />
-                  Delete
+                  {t("comment.menu.delete")}
                 </MenuItem>
               </Menu>
             </div>

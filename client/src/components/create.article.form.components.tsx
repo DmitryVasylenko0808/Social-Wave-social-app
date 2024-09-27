@@ -9,6 +9,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useImagePreview } from "../hooks/useImagePreview";
 import { useAlerts } from "../hooks/useAlerts";
+import { useTranslation } from "react-i18next";
 
 const createArticleSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -28,6 +29,7 @@ const createArticleSchema = z.object({
 type CreateArticleFormFields = z.infer<typeof createArticleSchema>;
 
 const CreateArticleForm = () => {
+  const { t } = useTranslation();
   const alerts = useAlerts();
   const { imagesPreview, handleImagesChange, clearPreviewImages } =
     useImagePreview();
@@ -52,7 +54,7 @@ const CreateArticleForm = () => {
         clearPreviewImages();
       })
       .catch((err) => {
-        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        alerts.error(`${t("error")}: ${err.data.message}`);
         setError("text", { type: "server", message: err.data.message });
       });
   };
@@ -65,7 +67,7 @@ const CreateArticleForm = () => {
       <TextArea
         className="mb-4 bg-white"
         rows={5}
-        placeholder="Write an article..."
+        placeholder={t("createArticle.placeholder")}
         error={errors.text?.message}
         {...register("text")}
       />
@@ -86,7 +88,11 @@ const CreateArticleForm = () => {
         />
 
         <Button type="submit" variant="secondary" disabled={isLoading}>
-          {isLoading ? <Loader size="small" variant="secondary" /> : "Create"}
+          {isLoading ? (
+            <Loader size="small" variant="secondary" />
+          ) : (
+            t("createArticle.submitBtn")
+          )}
         </Button>
       </div>
     </form>

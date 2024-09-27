@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Comment } from "../../api/articles/dto/get.comments.dto";
 import { useAlerts } from "../../hooks/useAlerts";
+import { useTranslation } from "react-i18next";
 
 const editCommentSchema = z.object({
   text: z.string().min(1, "Text is required"),
@@ -22,6 +23,7 @@ const EditCommentModal = ({
   ...modalProps
 }: EditCommentModalProps) => {
   const alerts = useAlerts();
+  const { t } = useTranslation();
   const [triggerEditComment, { isLoading }] = useEditCommentMutation();
   const {
     register,
@@ -44,13 +46,13 @@ const EditCommentModal = ({
       .unwrap()
       .then(() => modalProps.onClose())
       .catch((err) => {
-        alerts.error(`Oops... something went wrong: ${err.data.message}`);
+        alerts.error(`${t("error")}: ${err.data.message}`);
         setError("text", { type: "server", message: err.data.message });
       });
   };
 
   return (
-    <Modal title="Editing comment" {...modalProps}>
+    <Modal title={t("editComment.title")} {...modalProps}>
       <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
         <TextArea
           className="mb-8"
@@ -60,7 +62,11 @@ const EditCommentModal = ({
         />
         <div className="flex justify-end">
           <Button variant="secondary" type="submit" disabled={isLoading}>
-            {isLoading ? <Loader size="small" variant="secondary" /> : "Edit"}
+            {isLoading ? (
+              <Loader size="small" variant="secondary" />
+            ) : (
+              t("editComment.submitBtn")
+            )}
           </Button>
         </div>
       </form>
