@@ -18,7 +18,7 @@ const ArticleItemHeader = ({
   reposted,
   deleteAfter,
 }: ArticleItemHeaderProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const deleteModal = useModal();
   const editModal = useModal();
@@ -66,7 +66,11 @@ const ArticleItemHeader = ({
       </div>
       <div className="flex items-center gap-3">
         <span className="text-secondary-100">
-          <ReactTimeAgo date={new Date(data.createdAt)} timeStyle="twitter" />
+          <ReactTimeAgo
+            date={new Date(data.createdAt)}
+            locale={i18n.resolvedLanguage}
+            timeStyle="twitter"
+          />
         </span>
 
         {isUserArticle && !reposted && (

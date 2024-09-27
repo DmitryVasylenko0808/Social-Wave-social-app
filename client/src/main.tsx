@@ -7,7 +7,9 @@ import "./index.css";
 
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import uk from "javascript-time-ago/locale/uk";
 
+TimeAgo.addLocale(uk);
 TimeAgo.addDefaultLocale(en);
 
 createRoot(document.getElementById("root")!).render(

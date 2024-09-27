@@ -16,9 +16,9 @@ import { useTranslation } from "react-i18next";
 type CommentItemHeaderProps = CommentItemProps;
 
 const CommentItemHeader = ({ data }: CommentItemHeaderProps) => {
-  const { t } = useTranslation();
-  const alerts = useAlerts();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
+  const alerts = useAlerts();
   const editModal = useModal();
   const ref = useRef<HTMLDivElement>(null);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -65,7 +65,11 @@ const CommentItemHeader = ({ data }: CommentItemHeaderProps) => {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-secondary-100">
-            <ReactTimeAgo date={new Date(data.createdAt)} timeStyle="twitter" />
+            <ReactTimeAgo
+              date={new Date(data.createdAt)}
+              locale={i18n.resolvedLanguage}
+              timeStyle="twitter"
+            />
           </span>
 
           {isUserCommnent && (
