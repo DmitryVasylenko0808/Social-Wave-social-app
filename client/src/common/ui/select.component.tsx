@@ -29,7 +29,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
           <ChevronDown />
         </div>
         {open && (
-          <ul className="absolute top-[100%] left-0 w-full shadow-xl border border-textFieldBorder flex flex-col dark:border-dark-300">
+          <ul className="absolute top-[110%] left-0 w-full py-3 shadow-xl border border-textFieldBorder rounded-2xl flex flex-col dark:border-dark-300 dark:bg-dark-200">
             {children}
           </ul>
         )}
