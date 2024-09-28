@@ -10,6 +10,7 @@ export const en = {
         sidebar: {
             home: "Home",
             bookmarks: "Bookmarks",
+            settings: "Settings",
             profile: "My Profile",
             signInBtn: "Sign In",
             logOutBtn: "Log Out"
@@ -103,6 +104,10 @@ export const en = {
                 delete: "Delete",
                 edit: "Edit"
             }
+        },
+        settings: {
+            toggleDarkThemeLabel: "Dark Theme",
+            selectLanguageLabel: "Language"
         }
     }
 }

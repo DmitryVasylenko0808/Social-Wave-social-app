@@ -12,6 +12,8 @@ import List from "./list.component";
 import ListItem from "./list.item.component";
 import Alert from "./alert.component";
 import Switch from "./switch.component";
+import Select from "./select.component";
+import SelectItem from "./select.item.component";
 
 export {
   Button,
@@ -28,4 +30,6 @@ export {
   ListItem,
   Alert,
   Switch,
+  Select,
+  SelectItem,
 };

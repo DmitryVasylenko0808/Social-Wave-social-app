@@ -6,17 +6,20 @@ import { en } from "./en/translation";
 import { uk } from "./uk/translation";
 
 i18n
-    .use(initReactI18next)
     .use(LanguageDetector)
+    .use(initReactI18next)
     .init({
         resources: {
             en,
             uk
         },
-        lng: "en",
         fallbackLng: "en",
 
         interpolation: {
             escapeValue: false
-        }
+        },
+        detection: {
+            order: ['localStorage', 'cookie', 'navigator'],
+            caches: ['localStorage', 'cookie'],
+        },
     });

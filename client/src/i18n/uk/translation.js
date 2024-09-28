@@ -10,6 +10,7 @@ export const uk = {
         sidebar: {
             home: "Головна",
             bookmarks: "Закладки",
+            settings: "Налаштування",
             profile: "Профіль",
             signInBtn: "Ввійти",
             logOutBtn: "Вихід"
@@ -103,6 +104,10 @@ export const uk = {
                 delete: "Видалити",
                 edit: "Редагувати"
             }
+        },
+        settings: {
+            toggleDarkThemeLabel: "Нічна тема",
+            selectLanguageLabel: "Мова"
         }
     }
 }

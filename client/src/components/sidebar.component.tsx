@@ -37,7 +37,7 @@ const SideBar = () => {
             <li className="block">
               <NavLink to="/settings" className="py-3 flex items-center gap-5">
                 <Settings />
-                Settings
+                {t("sidebar.settings")}
               </NavLink>
             </li>
           )}
