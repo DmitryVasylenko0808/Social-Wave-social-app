@@ -1,5 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { House, Bookmark, UserRound, LogOut, LogIn } from "lucide-react";
+import {
+  House,
+  Bookmark,
+  UserRound,
+  LogOut,
+  LogIn,
+  Settings,
+} from "lucide-react";
 import { Button } from "../common/ui";
 import { useAuth } from "../hooks/useAuth";
 import { useTranslation } from "react-i18next";
@@ -23,6 +30,14 @@ const SideBar = () => {
               <NavLink to="/bookmarks" className="py-3 flex items-center gap-5">
                 <Bookmark />
                 {t("sidebar.bookmarks")}
+              </NavLink>
+            </li>
+          )}
+          {isAuthenticated && (
+            <li className="block">
+              <NavLink to="/settings" className="py-3 flex items-center gap-5">
+                <Settings />
+                Settings
               </NavLink>
             </li>
           )}

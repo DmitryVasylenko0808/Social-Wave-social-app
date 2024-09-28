@@ -12,6 +12,7 @@ import ArticleCommentForm from "./article.comment.form.component";
 import ArticleComments from "./article.comments.component";
 import Profile from "./profile/profile.component";
 import AlertsContainer from "./alerts.container.component";
+import Settings from "./settings.component";
 
 export {
   SignInForm,
@@ -28,4 +29,5 @@ export {
   ArticleComments,
   Profile,
   AlertsContainer,
+  Settings,
 };

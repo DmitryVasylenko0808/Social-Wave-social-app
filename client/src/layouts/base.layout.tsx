@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const BaseLayout = () => {
   useEffect(() => {
-    document.documentElement.classList.add("dark");
+    // document.documentElement.classList.add("dark");
   }, []);
 
   return (

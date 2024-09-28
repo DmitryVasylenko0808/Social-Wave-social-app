@@ -19,7 +19,7 @@ const ProfileInfo = ({ data }: ProfileInfoProps) => {
         }
         alt={`Avatar ${data?.firstName} ${data?.secondName}`}
       />
-      <h2 className="pt-5 text-xl text-primary-200 font-bold">
+      <h2 className="pt-9 text-xl text-primary-200 font-bold">
         {data?.firstName} {data?.secondName}
       </h2>
     </div>

@@ -6,6 +6,7 @@ import authSlice from "./auth.slice";
 import { articlesApi } from "../api/articles/articles.api";
 import { usersApi } from "../api/users/users.api";
 import alertsSlice from "./alerts.slice";
+import themeSlice from "./theme.slice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     auth: authSlice,
     alerts: alertsSlice,
+    theme: themeSlice,
   },
   middleware: (getDefaultMiddeware) =>
     getDefaultMiddeware()

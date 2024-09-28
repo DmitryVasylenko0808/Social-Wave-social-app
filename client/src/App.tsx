@@ -17,13 +17,22 @@ import AlertsContainer from "./components/alerts.container.component.tsx";
 import ErrorPage from "./pages/error.page.tsx";
 
 import "./i18n/i18n.js";
+import SettingsPage from "./pages/settings.page.tsx";
+import { useTheme } from "./hooks/useTheme.ts";
 
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();
+  const { isDarkTheme, setDarkTheme } = useTheme();
 
   useEffect(() => {
     if (isAuthenticated) {
       setAuthData();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDarkTheme) {
+      setDarkTheme();
     }
   }, []);
 
@@ -33,9 +42,9 @@ function App() {
         <Routes>
           <Route path="/" element={<BaseLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="articles/:articleId" element={<OneArticlePage />} />
             <Route element={<RequireAuth />}>
               <Route path="bookmarks" element={<BookmarksPage />} />
+              <Route path="settings" element={<SettingsPage />} />
             </Route>
             <Route path="users/:userId">
               <Route path="profile" element={<ProfilePage />} />
@@ -45,6 +54,7 @@ function App() {
                 <Route path="edit" element={<EditProfilePage />} />
               </Route>
             </Route>
+            <Route path="articles/:articleId" element={<OneArticlePage />} />
           </Route>
           <Route path="auth" element={<AuthLayout />}>
             <Route path="sign-in" element={<SignInPage />} />

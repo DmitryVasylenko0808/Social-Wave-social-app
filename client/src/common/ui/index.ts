@@ -11,6 +11,7 @@ import Avatar from "./avatar.component";
 import List from "./list.component";
 import ListItem from "./list.item.component";
 import Alert from "./alert.component";
+import Switch from "./switch.component";
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   List,
   ListItem,
   Alert,
+  Switch,
 };

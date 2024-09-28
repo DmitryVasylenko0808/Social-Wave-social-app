@@ -57,7 +57,7 @@ const ArticleItemHeader = ({
           {data.repostedArticle && (
             <Link
               to={`/articles/${data.repostedArticle._id}`}
-              className="text-secondary-100 underline"
+              className="text-secondary-100 underline hover:text-primary-100"
             >
               {t("article.reposted")}
             </Link>
