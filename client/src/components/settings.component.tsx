@@ -3,6 +3,7 @@ import { Select, SelectItem, Switch } from "../common/ui";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { useTheme } from "../hooks/useTheme";
 import { useTranslation } from "react-i18next";
+import { NavigateBack } from "../common/components";
 
 const lngs = {
   en: "English",
@@ -24,7 +25,8 @@ const Settings = () => {
   };
 
   return (
-    <div className="px-6 py-4">
+    <div className="px-6 py-2">
+      <NavigateBack />
       <div className="w-64 flex flex-col gap-10">
         <div className="flex justify-between items-center">
           <label className="text-label font-medium">
