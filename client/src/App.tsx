@@ -1,6 +1,8 @@
 import { useAuth } from "./hooks/useAuth.ts";
+import { useTheme } from "./hooks/useTheme.ts";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router";
+import { RequireAuth, ScrollToTop } from "./common/components/index.ts";
 import BaseLayout from "./layouts/base.layout";
 import HomePage from "./pages/home.page";
 import AuthLayout from "./layouts/auth.layout.tsx";
@@ -12,13 +14,11 @@ import FollowingsPage from "./pages/followings.page.tsx";
 import EditProfilePage from "./pages/edit.profile.page.tsx";
 import OneArticlePage from "./pages/one.article.page.tsx";
 import BookmarksPage from "./pages/bookmarks.page.tsx";
-import { RequireAuth, ScrollToTop } from "./common/components/index.ts";
-import AlertsContainer from "./components/alerts.container.component.tsx";
+import SettingsPage from "./pages/settings.page.tsx";
 import ErrorPage from "./pages/error.page.tsx";
+import AlertsContainer from "./components/alerts.container.component.tsx";
 
 import "./i18n/i18n.js";
-import SettingsPage from "./pages/settings.page.tsx";
-import { useTheme } from "./hooks/useTheme.ts";
 
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();

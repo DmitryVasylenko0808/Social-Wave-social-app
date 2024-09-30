@@ -40,7 +40,7 @@ export default {
         modal: "1002px"
       },
       minWidth: {
-        btn: "100px"
+        btn: "120px"
       }
     },
   },

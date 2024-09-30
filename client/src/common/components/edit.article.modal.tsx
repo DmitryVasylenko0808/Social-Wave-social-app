@@ -77,7 +77,16 @@ const EditArticleModal = ({
 
   return (
     <Modal title={t("editArticle.title")} {...modalProps}>
-      {isLoading && <div className="min-w-[560px]">Loading...</div>}
+      {isLoading && (
+        <div className="min-w-[560px]">
+          <Loader
+            position="center"
+            size="big"
+            variant="primary"
+            className="py-5"
+          />
+        </div>
+      )}
       {data && (
         <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
           <TextArea

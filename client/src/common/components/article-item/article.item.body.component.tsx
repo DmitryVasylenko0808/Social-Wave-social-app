@@ -8,10 +8,10 @@ const ArticleItemBody = ({ data }: ArticleItemBodyProps) => {
     <div>
       <p className="mb-1 dark:text-secondary-100">{data?.text}</p>
       {data.images && (
-        <div className="py-4 flex flex-wrap gap-7">
+        <div className="py-4 flex flex-col items-center gap-2">
           {data.images.map((image, index) => (
             <img
-              className="max-w-52 max-h-52 rounded-xl"
+              className="size-fit max-h-[300px] rounded-xl"
               src={`${articlesImgUrl}/${image}`}
               alt={`image ${index}`}
               key={index}

@@ -29,7 +29,7 @@ const Button = ({ children, variant, className, ...btnProps }: ButtonProps) => {
         variant === "secondary",
       "py-3 text-base text-secondary-100 font-medium hover:text-secondary-200":
         variant === "terciary",
-      "px-5 py-3 bg-secondary-50 text-secondary-300 rounded-3xl font-medium dark:bg-dark-200 dark:text-secondary-50":
+      "min-w-btn px-5 py-3 bg-secondary-50 text-secondary-300 rounded-3xl font-medium dark:bg-dark-200 dark:text-secondary-50":
         variant === "remove",
     },
     className
