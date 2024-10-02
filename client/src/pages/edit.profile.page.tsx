@@ -1,6 +1,6 @@
-import { Navigate, useParams } from "react-router";
-import { EditProfileForm } from "../components";
 import { useAuth } from "../hooks/useAuth";
+import { Navigate, useParams } from "react-router";
+import { EditProfileForm } from "../modules/users/components";
 
 const EditProfilePage = () => {
   const { userId } = useParams();

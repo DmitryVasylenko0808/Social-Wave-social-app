@@ -2,7 +2,7 @@ import { useAuth } from "./hooks/useAuth.ts";
 import { useTheme } from "./hooks/useTheme.ts";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router";
-import { RequireAuth, ScrollToTop } from "./common/components/index.ts";
+import { RequireAuth, ScrollToTop } from "./modules/common/components/index.ts";
 import BaseLayout from "./layouts/base.layout";
 import HomePage from "./pages/home.page";
 import AuthLayout from "./layouts/auth.layout.tsx";
@@ -16,7 +16,7 @@ import OneArticlePage from "./pages/one.article.page.tsx";
 import BookmarksPage from "./pages/bookmarks.page.tsx";
 import SettingsPage from "./pages/settings.page.tsx";
 import ErrorPage from "./pages/error.page.tsx";
-import AlertsContainer from "./components/alerts.container.component.tsx";
+import AlertsContainer from "./modules/common/components/alerts.container.component.tsx";
 
 import "./i18n/i18n.js";
 

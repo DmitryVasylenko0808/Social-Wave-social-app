@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { Logo } from "../common/components";
+import { Logo } from "../modules/common/components";
 
 const AuthLayout = () => {
   return (

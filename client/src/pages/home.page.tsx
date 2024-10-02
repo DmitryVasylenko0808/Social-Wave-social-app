@@ -1,5 +1,4 @@
-import React from "react";
-import { Feed } from "../components";
+import { Feed } from "../modules/articles/components";
 
 const HomePage = () => {
   return (

@@ -1,5 +1,4 @@
-import React from "react";
-import { Followings } from "../components";
+import { Followings } from "../modules/users/components";
 
 const FollowingsPage = () => {
   return (

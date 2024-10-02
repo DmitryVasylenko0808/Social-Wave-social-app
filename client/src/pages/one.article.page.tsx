@@ -2,7 +2,7 @@ import {
   ArticleCommentForm,
   ArticleComments,
   ArticleDetails,
-} from "../components";
+} from "../modules/articles/components";
 
 const OneArticlePage = () => {
   return (

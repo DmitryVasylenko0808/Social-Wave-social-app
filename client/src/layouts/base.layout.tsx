@@ -1,14 +1,9 @@
 import { Outlet } from "react-router";
-import { Header } from "../common/components";
-import { Container } from "../common/ui";
-import SideBar from "../components/sidebar.component";
-import { useEffect } from "react";
+import { Header } from "../modules/common/components";
+import { Container } from "../modules/common/ui";
+import SideBar from "../modules/common/components/sidebar.component";
 
 const BaseLayout = () => {
-  useEffect(() => {
-    // document.documentElement.classList.add("dark");
-  }, []);
-
   return (
     <main className="dark:bg-dark-100">
       <Header />

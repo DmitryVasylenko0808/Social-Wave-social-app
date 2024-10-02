@@ -1,4 +1,4 @@
-import { BookmarksArticles } from "../components";
+import { BookmarksArticles } from "../modules/articles/components";
 
 const BookmarksPage = () => {
   return (
