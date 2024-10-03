@@ -58,8 +58,6 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
   const isReposted = data.reposts.includes(user.userId as string);
   const isBookmarked = data.bookmarks.includes(user.userId as string);
 
-  //
-
   const heartClasses = cn("", {
     "fill-primary-200 text-primary-200": isLiked === true,
   });
