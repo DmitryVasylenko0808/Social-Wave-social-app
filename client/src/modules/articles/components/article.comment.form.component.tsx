@@ -14,8 +14,8 @@ const createCommentSchema = z.object({
 type ArticleCommmentFormFields = z.infer<typeof createCommentSchema>;
 
 const ArticleCommentForm = () => {
-  const { t } = useTranslation();
   const alerts = useAlerts();
+  const { t } = useTranslation();
   const { articleId } = useParams();
   const [triggerCreateComment, { isLoading }] = useCreateCommentMutation();
   const {

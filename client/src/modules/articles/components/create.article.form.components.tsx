@@ -26,8 +26,8 @@ const createArticleSchema = z.object({
 type CreateArticleFormFields = z.infer<typeof createArticleSchema>;
 
 const CreateArticleForm = () => {
-  const { t } = useTranslation();
   const alerts = useAlerts();
+  const { t } = useTranslation();
   const { imagesPreview, handleImagesChange, clearPreviewImages } =
     useImagePreview();
   const [triggerCreateArticle, { isLoading }] = useCreateArticleMutation();

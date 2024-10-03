@@ -69,8 +69,8 @@ export const uk = {
         },
         profile: {
             actions: {
-                followBtn: "Підписатися",
-                unfollowBtn: "Відписатися",
+                followBtn: "Підписка",
+                unfollowBtn: "Відписка",
                 editBtn: "Редагувати профіль"
             },
             stats: {

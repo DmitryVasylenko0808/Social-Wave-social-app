@@ -39,13 +39,13 @@ const EditArticleModal = ({
   article,
   ...modalProps
 }: EditArticleModalProps) => {
+  const alerts = useAlerts();
   const { t } = useTranslation();
   const { data, isLoading, isError } = useGetOneArticleQuery(article._id, {
     skip: !modalProps.open,
   });
   const [triggerEditArticle, { isLoading: isLoadingEdit }] =
     useEditArticleMutation();
-  const alerts = useAlerts();
   const {
     register,
     handleSubmit,
