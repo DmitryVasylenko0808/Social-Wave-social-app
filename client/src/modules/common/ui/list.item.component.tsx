@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import { ComponentProps, memo } from "react";
 import { cn } from "../../../utils/cn";
 
 type ListItemProps = ComponentProps<"li">;
@@ -9,4 +9,4 @@ const ListItem = ({ className, children }: ListItemProps) => {
   return <li className={classes}>{children}</li>;
 };
 
-export default ListItem;
+export default memo(ListItem);

@@ -10,12 +10,13 @@ const lngs = {
 
 const LanguageSelect = () => {
   const { t, i18n } = useTranslation();
-
   const [open, setOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
+
   useClickOutside(ref, () => setOpen(false));
 
   const handleClickOpen = () => setOpen(true);
+
   const handleChangeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     setOpen(false);
