@@ -1,22 +1,23 @@
 import { useAuth } from "./hooks/useAuth.ts";
 import { useTheme } from "./hooks/useTheme.ts";
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { Route, Routes } from "react-router";
 import { RequireAuth, ScrollToTop } from "./modules/common/components/index.ts";
 import BaseLayout from "./layouts/base.layout";
-import HomePage from "./pages/home.page";
 import AuthLayout from "./layouts/auth.layout.tsx";
-import SignInPage from "./pages/sign.in.page";
-import SignUpPage from "./pages/sign.up.page";
-import ProfilePage from "./pages/profile.page.tsx";
-import FollowersPage from "./pages/followers.page.tsx";
-import FollowingsPage from "./pages/followings.page.tsx";
-import EditProfilePage from "./pages/edit.profile.page.tsx";
-import OneArticlePage from "./pages/one.article.page.tsx";
-import BookmarksPage from "./pages/bookmarks.page.tsx";
-import SettingsPage from "./pages/settings.page.tsx";
 import ErrorPage from "./pages/error.page.tsx";
 import AlertsContainer from "./modules/common/components/alerts.container.component.tsx";
+
+const HomePage = lazy(() => import("./pages/home.page"));
+const BookmarksPage = lazy(() => import("./pages/bookmarks.page.tsx"));
+const ProfilePage = lazy(() => import("./pages/profile.page.tsx"));
+const FollowersPage = lazy(() => import("./pages/followers.page.tsx"));
+const FollowingsPage = lazy(() => import("./pages/followings.page.tsx"));
+const EditProfilePage = lazy(() => import("./pages/edit.profile.page.tsx"));
+const OneArticlePage = lazy(() => import("./pages/one.article.page.tsx"));
+const SettingsPage = lazy(() => import("./pages/settings.page.tsx"));
+const SignInPage = lazy(() => import("./pages/sign.in.page.tsx"));
+const SignUpPage = lazy(() => import("./pages/sign.up.page.tsx"));
 
 import "./i18n/i18n.js";
 

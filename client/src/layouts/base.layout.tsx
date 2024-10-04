@@ -1,7 +1,8 @@
 import { Outlet } from "react-router";
 import { Header } from "../modules/common/components";
-import { Container } from "../modules/common/ui";
+import { Container, Loader } from "../modules/common/ui";
 import SideBar from "../modules/common/components/sidebar.component";
+import { Suspense } from "react";
 
 const BaseLayout = () => {
   return (
@@ -11,7 +12,9 @@ const BaseLayout = () => {
         <Container className="flex">
           <SideBar />
           <section className="flex-auto border-r border-secondary-50 dark:border-dark-200">
-            <Outlet />
+            <Suspense fallback={<Loader className="py-12" position="center" />}>
+              <Outlet />
+            </Suspense>
           </section>
         </Container>
       </main>
