@@ -1,7 +1,6 @@
-import { ArticleItemProps } from "./article.item.component";
 import { PropsWithChildren } from "react";
 
-type ArticleItemHeaderProps = ArticleItemProps & PropsWithChildren;
+type ArticleItemHeaderProps = PropsWithChildren;
 
 const ArticleItemHeader = ({ children }: ArticleItemHeaderProps) => {
   return (

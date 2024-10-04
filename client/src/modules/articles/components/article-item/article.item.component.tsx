@@ -8,6 +8,7 @@ import ArticleItemMeta from "./article.item.meta.component";
 import ArticleItemMenu from "./article.item.menu";
 import ArticleItemReposted from "./article.item.reposted.component";
 import ArticleItemActions from "./article.item.actions.component";
+import { memo } from "react";
 
 export type ArticleItemProps = {
   data: Article;
@@ -24,11 +25,7 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
 
   return (
     <article>
-      <ArticleItemHeader
-        data={data}
-        reposted={reposted}
-        deleteAfter={deleteAfter}
-      >
+      <ArticleItemHeader>
         <ArticleItemAuthor data={data} />
         <ArticleItemMeta data={data}>
           {isShowMenu && (
@@ -48,4 +45,4 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
   );
 };
 
-export default ArticleItem;
+export default memo(ArticleItem);

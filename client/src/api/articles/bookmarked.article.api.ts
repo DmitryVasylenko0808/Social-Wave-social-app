@@ -46,61 +46,38 @@ const bookmarkedArticleApi = articlesApi.injectEndpoints({
 
           if (!isBookmarked) {
             const patchResults = updateFeed(dispatch, (draft) => {
-              draft.data = draft.data
-                .map((item) =>
-                  item._id === id
-                    ? {
-                        ...item,
-                        bookmarks: [
-                          ...item.bookmarks,
-                          store.getState().auth.userId as string,
-                        ],
-                      }
-                    : item
-                )
-                .map((item) =>
-                  item.repostedArticle?._id === id
-                    ? {
-                        ...item,
-                        repostedArticle: {
-                          ...item.repostedArticle,
-                          bookmarks: [
-                            ...item.repostedArticle.bookmarks,
-                            store.getState().auth.userId as string,
-                          ],
-                        },
-                      }
-                    : item
-                );
+              for (const item of draft.data) {
+                if (item._id === id) {
+                  item.bookmarks = [
+                    ...item.bookmarks,
+                    store.getState().auth.userId as string,
+                  ];
+                }
+
+                if (item.repostedArticle?._id === id) {
+                  item.repostedArticle.bookmarks = [
+                    ...item.repostedArticle.bookmarks,
+                    store.getState().auth.userId as string,
+                  ];
+                }
+              }
             });
           } else {
             const patchResults = updateFeed(dispatch, (draft) => {
-              draft.data = draft.data
-                .map((item) =>
-                  item._id === id
-                    ? {
-                        ...item,
-                        bookmarks: item.bookmarks.filter(
-                          (likeItem) =>
-                            likeItem !== store.getState().auth.userId
-                        ),
-                      }
-                    : item
-                )
-                .map((item) =>
-                  item.repostedArticle?._id === id
-                    ? {
-                        ...item,
-                        repostedArticle: {
-                          ...item.repostedArticle,
-                          bookmarks: item.repostedArticle.bookmarks.filter(
-                            (likeItem) =>
-                              likeItem !== store.getState().auth.userId
-                          ),
-                        },
-                      }
-                    : item
-                );
+              for (const item of draft.data) {
+                if (item._id === id) {
+                  item.bookmarks = item.bookmarks.filter(
+                    (bmItem) => bmItem !== store.getState().auth.userId
+                  );
+                }
+
+                if (item.repostedArticle?._id === id) {
+                  item.repostedArticle.bookmarks =
+                    item.repostedArticle.bookmarks.filter(
+                      (bmItem) => bmItem !== store.getState().auth.userId
+                    );
+                }
+              }
             });
           }
         } catch {}

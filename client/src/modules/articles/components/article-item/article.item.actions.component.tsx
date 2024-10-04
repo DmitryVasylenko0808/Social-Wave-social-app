@@ -10,6 +10,7 @@ import { Heart, MessageSquare, Repeat2, Bookmark } from "lucide-react";
 import { Button } from "../../../common/ui";
 import { ArticleItemProps } from "./article.item.component";
 import { cn } from "../../../../utils/cn";
+import { useMemo } from "react";
 
 type ArticleItemActionsProps = ArticleItemProps;
 
@@ -54,9 +55,18 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
       });
   };
 
-  const isLiked = data.likes.includes(user.userId as string);
-  const isReposted = data.reposts.includes(user.userId as string);
-  const isBookmarked = data.bookmarks.includes(user.userId as string);
+  const isLiked = useMemo(
+    () => data.likes.includes(user.userId as string),
+    [data.likes]
+  );
+  const isReposted = useMemo(
+    () => data.reposts.includes(user.userId as string),
+    [data.reposts]
+  );
+  const isBookmarked = useMemo(
+    () => data.bookmarks.includes(user.userId as string),
+    [data.bookmarks]
+  );
 
   const heartClasses = cn("", {
     "fill-primary-200 text-primary-200": isLiked === true,

@@ -114,19 +114,22 @@ export const articlesApi = createApi({
 
           const patchResults = updateFeed(dispatch, (draft) => {
             const article = draft.data.find((item) => item._id === id);
-            draft.data = draft.data
-              .filter((item) => item._id !== id)
-              .filter((item) => item.repostedArticle?._id !== article?._id)
-              .map((item) =>
-                item._id === article?.repostedArticle?._id
-                  ? {
-                      ...item,
-                      reposts: item.reposts.filter(
-                        (userId) => userId !== store.getState().auth.userId
-                      ),
-                    }
-                  : item
-              );
+            const indexArticle = draft.data.findIndex(
+              (item) => item._id === article?._id
+            );
+            const indexReposted = draft.data.findIndex(
+              (item) => item.repostedArticle?._id === article?._id
+            );
+
+            draft.data.splice(indexArticle, 1).splice(indexReposted, 1);
+
+            for (const item of draft.data) {
+              if (item._id === article?.repostedArticle?._id) {
+                item.reposts = item.reposts.filter(
+                  (userId) => userId !== store.getState().auth.userId
+                );
+              }
+            }
           });
         } catch {}
       },
@@ -160,9 +163,11 @@ export const articlesApi = createApi({
           const { data } = await queryFulfilled;
 
           const patchResults = updateFeed(dispatch, (draft) => {
-            draft.data = draft.data.map((item) =>
-              item._id === id ? { ...item, ...data } : item
-            );
+            for (let i = 0; i < draft.data.length; i++) {
+              if (draft.data[i]._id === id) {
+                draft.data[i] = { ...draft.data[i], ...data };
+              }
+            }
           });
         } catch {}
       },
@@ -181,61 +186,38 @@ export const articlesApi = createApi({
 
           if (!isLiked) {
             const patchResults = updateFeed(dispatch, (draft) => {
-              draft.data = draft.data
-                .map((item) =>
-                  item._id === id
-                    ? {
-                        ...item,
-                        likes: [
-                          ...item.likes,
-                          store.getState().auth.userId as string,
-                        ],
-                      }
-                    : item
-                )
-                .map((item) =>
-                  item.repostedArticle?._id === id
-                    ? {
-                        ...item,
-                        repostedArticle: {
-                          ...item.repostedArticle,
-                          likes: [
-                            ...item.repostedArticle.likes,
-                            store.getState().auth.userId as string,
-                          ],
-                        },
-                      }
-                    : item
-                );
+              for (const item of draft.data) {
+                if (item._id === id) {
+                  item.likes = [
+                    ...item.likes,
+                    store.getState().auth.userId as string,
+                  ];
+                }
+
+                if (item.repostedArticle?._id === id) {
+                  item.repostedArticle.likes = [
+                    ...item.repostedArticle.likes,
+                    store.getState().auth.userId as string,
+                  ];
+                }
+              }
             });
           } else {
             const patchResults = updateFeed(dispatch, (draft) => {
-              draft.data = draft.data
-                .map((item) =>
-                  item._id === id
-                    ? {
-                        ...item,
-                        likes: item.likes.filter(
-                          (likeItem) =>
-                            likeItem !== store.getState().auth.userId
-                        ),
-                      }
-                    : item
-                )
-                .map((item) =>
-                  item.repostedArticle?._id === id
-                    ? {
-                        ...item,
-                        repostedArticle: {
-                          ...item.repostedArticle,
-                          likes: item.repostedArticle.likes.filter(
-                            (likeItem) =>
-                              likeItem !== store.getState().auth.userId
-                          ),
-                        },
-                      }
-                    : item
-                );
+              for (const item of draft.data) {
+                if (item._id === id) {
+                  item.likes = item.likes.filter(
+                    (likeItem) => likeItem !== store.getState().auth.userId
+                  );
+                }
+
+                if (item.repostedArticle?._id === id) {
+                  item.repostedArticle.likes =
+                    item.repostedArticle.likes.filter(
+                      (likeItem) => likeItem !== store.getState().auth.userId
+                    );
+                }
+              }
             });
           }
         } catch {}
@@ -254,17 +236,14 @@ export const articlesApi = createApi({
           await queryFulfilled;
 
           const patchResults = updateFeed(dispatch, (draft) => {
-            draft.data = draft.data.map((item) =>
-              item._id === id
-                ? {
-                    ...item,
-                    reposts: [
-                      ...item.reposts,
-                      store.getState().auth.userId as string,
-                    ],
-                  }
-                : item
-            );
+            for (const item of draft.data) {
+              if (item._id === id) {
+                item.reposts = [
+                  ...item.reposts,
+                  store.getState().auth.userId as string,
+                ];
+              }
+            }
           });
         } catch {}
       },
