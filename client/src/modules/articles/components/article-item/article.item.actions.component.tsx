@@ -57,15 +57,15 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
 
   const isLiked = useMemo(
     () => data.likes.includes(user.userId as string),
-    [data.likes]
+    [data.likes, user]
   );
   const isReposted = useMemo(
     () => data.reposts.includes(user.userId as string),
-    [data.reposts]
+    [data.reposts, user]
   );
   const isBookmarked = useMemo(
     () => data.bookmarks.includes(user.userId as string),
-    [data.bookmarks]
+    [data.bookmarks, user]
   );
 
   const heartClasses = cn("", {

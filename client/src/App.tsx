@@ -4,7 +4,7 @@ import { lazy, useEffect } from "react";
 import { Route, Routes } from "react-router";
 import { RequireAuth, ScrollToTop } from "./modules/common/components/index.ts";
 import BaseLayout from "./layouts/base.layout";
-import AuthLayout from "./layouts/auth.layout.tsx";
+import AuthLayout from "./layouts/auth.layout";
 import ErrorPage from "./pages/error.page.tsx";
 import AlertsContainer from "./modules/common/components/alerts.container.component.tsx";
 
