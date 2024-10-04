@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { toggleDarkTheme } from "../redux/theme.slice";
 
@@ -7,12 +8,12 @@ export const useTheme = () => {
 
   const isDarkTheme = !!localStorage.getItem("theme");
 
-  const setDarkTheme = () => {
+  const setDarkTheme = useCallback(() => {
     dispatch(toggleDarkTheme(true));
     document.documentElement.classList.add("dark");
-  };
+  }, []);
 
-  const handleToggleDarkTheme = () => {
+  const handleToggleDarkTheme = useCallback(() => {
     dispatch(toggleDarkTheme(!darkTheme));
     document.documentElement.classList.toggle("dark");
 
@@ -21,7 +22,7 @@ export const useTheme = () => {
     } else {
       localStorage.setItem("theme", "dark");
     }
-  };
+  }, [darkTheme]);
 
   return { darkTheme, isDarkTheme, setDarkTheme, handleToggleDarkTheme };
 };
