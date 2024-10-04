@@ -2,6 +2,7 @@ import { userAvatarsUrl } from "../../../api/constants";
 import { User } from "../../../api/users/dto/get.users.dto";
 import { Link } from "react-router-dom";
 import Avatar from "../../common/ui/avatar.component";
+import { memo } from "react";
 
 type UserItemProps = {
   data: User;
@@ -32,4 +33,4 @@ const UserItem = ({ data }: UserItemProps) => {
   );
 };
 
-export default UserItem;
+export default memo(UserItem);
