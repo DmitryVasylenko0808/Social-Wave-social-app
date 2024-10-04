@@ -5,6 +5,7 @@ import CommentItemBody from "./comment.item.body.component";
 import CommentItemHeader from "./comment.item.header.component";
 import CommentItemMenu from "./comment.item.menu.component";
 import CommentItemMeta from "./comment.item.meta.component";
+import { memo } from "react";
 
 export type CommentItemProps = {
   data: Comment;
@@ -28,4 +29,4 @@ const CommentItem = ({ data }: CommentItemProps) => {
   );
 };
 
-export default CommentItem;
+export default memo(CommentItem);

@@ -15,6 +15,7 @@ const CommentItemMeta = ({ data, children }: CommentItemMetaProps) => {
           date={new Date(data.createdAt)}
           locale={i18n.resolvedLanguage}
           timeStyle="twitter"
+          tick={false}
         />
       </span>
       {children}

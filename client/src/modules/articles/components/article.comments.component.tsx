@@ -1,9 +1,9 @@
 import { useGetCommentsQuery } from "../../../api/articles/comments.api";
 import { useParams } from "react-router";
 import { usePage } from "../../../hooks/usePage";
+import { useTranslation } from "react-i18next";
 import { InfiniteScroll, NoData } from "../../common/components";
 import { List, ListItem } from "../../common/ui";
-import { useTranslation } from "react-i18next";
 import { CommentItem } from ".";
 
 const ArticleComments = () => {

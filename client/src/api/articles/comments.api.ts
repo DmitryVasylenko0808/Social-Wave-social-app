@@ -124,9 +124,11 @@ const commentsApi = articlesApi.injectEndpoints({
               "getComments",
               undefined,
               (draft) => {
-                draft.data = draft.data.map((item) =>
-                  item._id === commentId ? { ...item, text } : item
-                );
+                for (let i = 0; i < draft.data.length; i++) {
+                  if (draft.data[i]._id === commentId) {
+                    draft.data[i] = { ...draft.data[i], text };
+                  }
+                }
               }
             )
           );
