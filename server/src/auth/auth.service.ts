@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { SignUpDto } from './dto/sign.up.dto';
 import * as bcrypt from 'bcrypt';
@@ -7,6 +11,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Profile } from 'passport';
 import { VerifyEmailData } from './types/verify.email.data';
 import { VerifyEmailDto } from './dto/verify.email.dto';
+import { ForgotPasswordDto } from './dto/forgot.password.dto';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -48,6 +54,26 @@ export class AuthService {
     const token = await this.generateToken(verifiedUser._id);
 
     return token;
+  }
+
+  async forgotPassword(data: ForgotPasswordDto) {
+    const { email } = data;
+
+    const user = await this.usersService.findOneByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('User is not found');
+    }
+
+    const resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    const resetPasswordTokenExpiredAt = new Date(
+      Date.now() + 2 * 60 * 60 * 1000,
+    );
+
+    user.resetPasswordToken = resetPasswordToken;
+    user.resetPasswordTokenExpiredAt = resetPasswordTokenExpiredAt;
+
+    return await user.save();
   }
 
   async signIn(data: any) {

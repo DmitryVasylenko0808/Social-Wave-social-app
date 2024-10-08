@@ -18,6 +18,7 @@ import { avatarsStorage } from 'src/multer.config';
 import { AuthGuard } from '@nestjs/passport';
 import { EmailService } from 'src/email/email.service';
 import { VerifyEmailDto } from './dto/verify.email.dto';
+import { ForgotPasswordDto } from './dto/forgot.password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -41,7 +42,7 @@ export class AuthController {
     file?: Express.Multer.File,
   ) {
     const user = await this.authService.signUp(signUpDto, file?.filename);
-    await this.emailService.sendVerifyEmail(
+    await this.emailService.sendVerifyCode(
       user.email,
       user.verificationCode,
       user.firstName,
@@ -50,8 +51,21 @@ export class AuthController {
   }
 
   @Post('verify-email')
+  @HttpCode(HttpStatus.OK)
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     return await this.authService.verifyEmail(verifyEmailDto);
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    const user = await this.authService.forgotPassword(forgotPasswordDto);
+    await this.emailService.sendResetPasswordLink(
+      user.email,
+      user.resetPasswordToken,
+      user.firstName,
+      user.secondName,
+    );
   }
 
   @UseGuards(AuthGuard('local'))
