@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { EmailService } from 'src/email/email.service';
 import { VerifyEmailDto } from './dto/verify.email.dto';
 import { ForgotPasswordDto } from './dto/forgot.password.dto';
+import { ResetPasswordDto } from './dto/reset.password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -66,6 +67,12 @@ export class AuthController {
       user.firstName,
       user.secondName,
     );
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto);
   }
 
   @UseGuards(AuthGuard('local'))

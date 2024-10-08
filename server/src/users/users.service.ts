@@ -54,6 +54,17 @@ export class UsersService {
     return user;
   }
 
+  async findOneByToken(token: string) {
+    const currentDate = new Date();
+
+    const user = await this.userModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordTokenExpiredAt: { $gt: currentDate },
+    });
+
+    return user;
+  }
+
   async setVerified(id: Types.ObjectId) {
     const user = await this.userModel.findById(id);
 

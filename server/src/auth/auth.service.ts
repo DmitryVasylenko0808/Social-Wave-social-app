@@ -13,6 +13,7 @@ import { VerifyEmailData } from './types/verify.email.data';
 import { VerifyEmailDto } from './dto/verify.email.dto';
 import { ForgotPasswordDto } from './dto/forgot.password.dto';
 import * as crypto from 'crypto';
+import { ResetPasswordDto } from './dto/reset.password.dto';
 
 @Injectable()
 export class AuthService {
@@ -74,6 +75,23 @@ export class AuthService {
     user.resetPasswordTokenExpiredAt = resetPasswordTokenExpiredAt;
 
     return await user.save();
+  }
+
+  async resetPassword(data: ResetPasswordDto) {
+    const { token, newPassword } = data;
+    const user = await this.usersService.findOneByToken(token);
+
+    if (!user) {
+      throw new NotFoundException('Token is invalid or expired');
+    }
+
+    const hash = await bcrypt.hash(newPassword, 10);
+
+    user.passwordHash = hash;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTokenExpiredAt = undefined;
+
+    await user.save();
   }
 
   async signIn(data: any) {
