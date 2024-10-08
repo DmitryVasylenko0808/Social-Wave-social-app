@@ -5,14 +5,24 @@ import { Injectable } from '@nestjs/common';
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendTest(to: string) {
+  async sendVerifyEmail(
+    email: string,
+    code: number,
+    firstName: string,
+    secondName: string,
+  ) {
     await this.mailerService.sendMail({
-      to,
+      to: email,
       from: 'Social Wave <emiliano.langworth@ethereal.email>',
-      subject: 'Test Email',
-      text: 'That`s easy!',
-    });
+      subject: 'Verification Email',
+      text: `
+        Hello, ${firstName} ${secondName}!
+        
+        Thank you for registering on our application. To complete the registration process and verify your account, please use the following code:
 
-    console.log('Success!');
+        Your confirmation code: ${code}
+
+        If you did not register on our website, please disregard this message.`,
+    });
   }
 }

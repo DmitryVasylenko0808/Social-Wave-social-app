@@ -17,6 +17,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { avatarsStorage } from 'src/multer.config';
 import { AuthGuard } from '@nestjs/passport';
 import { EmailService } from 'src/email/email.service';
+import { VerifyEmailDto } from './dto/verify.email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -40,7 +41,17 @@ export class AuthController {
     file?: Express.Multer.File,
   ) {
     const user = await this.authService.signUp(signUpDto, file?.filename);
-    await this.emailService.sendTest(user.email);
+    await this.emailService.sendVerifyEmail(
+      user.email,
+      user.verifyEmailCode,
+      user.firstName,
+      user.secondName,
+    );
+  }
+
+  @Post('verify-email')
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    return await this.authService.verifyEmail(verifyEmailDto);
   }
 
   @UseGuards(AuthGuard('local'))

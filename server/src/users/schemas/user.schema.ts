@@ -1,36 +1,45 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-    @Prop({ required: true, unique: true })
-    email: string;
+  @Prop({ required: true, unique: true })
+  email: string;
 
-    @Prop({ required: true })
-    firstName: string;
+  @Prop({ required: true })
+  firstName: string;
 
-    @Prop({ required: true })
-    secondName: string;
+  @Prop({ required: true })
+  secondName: string;
 
-    @Prop()
-    passwordHash?: string;
-    
-    @Prop()
-    avatar?: string;
+  @Prop()
+  passwordHash?: string;
 
-    @Prop()
-    bio?: string;
+  @Prop()
+  avatar?: string;
 
-    @Prop()
-    coverImage?: string;
+  @Prop()
+  bio?: string;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
-    followers: User[];
+  @Prop()
+  coverImage?: string;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
-    followings: User[];
+  @Prop()
+  verifyEmailCode?: number;
+
+  @Prop()
+  verifyEmailCodeExpiredAt?: Date;
+
+  @Prop({ default: false })
+  isVerified?: boolean;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  followers: User[];
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  followings: User[];
 }
 
-export const UserSchema = SchemaFactory.createForClass(User); 
+export const UserSchema = SchemaFactory.createForClass(User);

@@ -5,6 +5,8 @@ import * as bcrypt from 'bcrypt';
 import { Types } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Profile } from 'passport';
+import { VerifyEmailData } from './types/verify.email.data';
+import { VerifyEmailDto } from './dto/verify.email.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,16 +23,32 @@ export class AuthService {
     }
 
     const hash = await bcrypt.hash(data.password, 10);
+    const verifyEmailData = this.generateVerifyEmailCode();
 
     const createdUser = await this.usersService.create({
       ...data,
+      ...verifyEmailData,
       passwordHash: hash,
       avatar: filename,
     });
-    const { passwordHash, _id } = createdUser;
-    // const token = await this.generateToken(_id);
 
     return createdUser;
+  }
+
+  async verifyEmail(data: VerifyEmailDto) {
+    const { code } = data;
+
+    const user = await this.usersService.findOneByVerifyEmailCode(code);
+    const currentDate = new Date();
+
+    if (currentDate > user.verifyEmailCodeExpiredAt) {
+      throw new BadRequestException('Verify code is expired');
+    }
+
+    const verifiedUser = await this.usersService.setVerified(user._id);
+    const token = await this.generateToken(verifiedUser._id);
+
+    return token;
   }
 
   async signIn(data: any) {
@@ -83,5 +101,16 @@ export class AuthService {
     const token = await this.jwtService.signAsync({ userId: data });
 
     return { token };
+  }
+
+  private generateVerifyEmailCode(): VerifyEmailData {
+    const verifyEmailCode = Math.floor(100000 + Math.random() * 900000);
+
+    const currentDate = new Date(Date.now());
+    const verifyEmailCodeExpiredAt = new Date(currentDate);
+
+    verifyEmailCodeExpiredAt.setMinutes(currentDate.getMinutes() + 5);
+
+    return { verifyEmailCode, verifyEmailCodeExpiredAt };
   }
 }
