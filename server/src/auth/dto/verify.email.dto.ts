@@ -1,3 +1,3 @@
 export class VerifyEmailDto {
-  readonly code: number;
+  readonly code: string;
 }

@@ -7,7 +7,7 @@ export class EmailService {
 
   async sendVerifyEmail(
     email: string,
-    code: number,
+    code: string,
     firstName: string,
     secondName: string,
   ) {
@@ -20,7 +20,7 @@ export class EmailService {
         
         Thank you for registering on our application. To complete the registration process and verify your account, please use the following code:
 
-        Your confirmation code: ${code}
+        Your verification code: ${code}
 
         This code will expire in 15 minutes.
 

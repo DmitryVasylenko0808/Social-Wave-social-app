@@ -43,7 +43,7 @@ export class AuthController {
     const user = await this.authService.signUp(signUpDto, file?.filename);
     await this.emailService.sendVerifyEmail(
       user.email,
-      user.verifyEmailCode,
+      user.verificationCode,
       user.firstName,
       user.secondName,
     );

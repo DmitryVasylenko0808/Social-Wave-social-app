@@ -43,12 +43,13 @@ export class UsersService {
     return user;
   }
 
-  async findOneByVerifyEmailCode(verifyEmailCode: number) {
-    const user = await this.userModel.findOne({ verifyEmailCode });
+  async findOneByVerifyEmailCode(verificationCode: string) {
+    const currentDate = new Date();
 
-    if (!user) {
-      throw new BadRequestException('Verify code is invalid');
-    }
+    const user = await this.userModel.findOne({
+      verificationCode,
+      verificationCodeExpiredAt: { $gt: currentDate },
+    });
 
     return user;
   }
@@ -61,8 +62,8 @@ export class UsersService {
     }
 
     user.isVerified = true;
-    user.verifyEmailCode = undefined;
-    user.verifyEmailCodeExpiredAt = undefined;
+    user.verificationCode = undefined;
+    user.verificationCodeExpiredAt = undefined;
 
     return await user.save();
   }

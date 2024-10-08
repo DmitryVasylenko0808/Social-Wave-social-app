@@ -23,11 +23,11 @@ export class AuthService {
     }
 
     const hash = await bcrypt.hash(data.password, 10);
-    const verifyEmailData = this.generateVerifyEmailCode();
+    const verificationCodeData = this.generateVerificationEmailCode();
 
     const createdUser = await this.usersService.create({
       ...data,
-      ...verifyEmailData,
+      ...verificationCodeData,
       passwordHash: hash,
       avatar: filename,
     });
@@ -39,10 +39,9 @@ export class AuthService {
     const { code } = data;
 
     const user = await this.usersService.findOneByVerifyEmailCode(code);
-    const currentDate = new Date();
 
-    if (currentDate > user.verifyEmailCodeExpiredAt) {
-      throw new BadRequestException('Verify code is expired');
+    if (!user) {
+      throw new BadRequestException('Verification code is invalid or expired');
     }
 
     const verifiedUser = await this.usersService.setVerified(user._id);
@@ -103,14 +102,13 @@ export class AuthService {
     return { token };
   }
 
-  private generateVerifyEmailCode(): VerifyEmailData {
-    const verifyEmailCode = Math.floor(100000 + Math.random() * 900000);
+  private generateVerificationEmailCode(): VerifyEmailData {
+    const MIN = 10000;
+    const MAX = 90000;
 
-    const currentDate = new Date(Date.now());
-    const verifyEmailCodeExpiredAt = new Date(currentDate);
+    const verificationCode = Math.floor(MIN + Math.random() * MAX).toString();
+    const verificationCodeExpiredAt = new Date(Date.now() + 15 * 60 * 1000);
 
-    verifyEmailCodeExpiredAt.setMinutes(currentDate.getMinutes() + 15);
-
-    return { verifyEmailCode, verifyEmailCodeExpiredAt };
+    return { verificationCode, verificationCodeExpiredAt };
   }
 }

@@ -27,10 +27,10 @@ export class User {
   coverImage?: string;
 
   @Prop()
-  verifyEmailCode?: number;
+  verificationCode?: string;
 
   @Prop()
-  verifyEmailCodeExpiredAt?: Date;
+  verificationCodeExpiredAt?: Date;
 
   @Prop({ default: false })
   isVerified?: boolean;
