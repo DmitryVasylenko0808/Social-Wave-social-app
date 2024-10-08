@@ -8,25 +8,22 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix('api');
 
   app.enableCors();
 
-  app.useStaticAssets(
-    join(__dirname, "..", "uploads/avatars"), 
-    { prefix: "/avatars" }
-  );
+  app.useStaticAssets(join(__dirname, '..', 'uploads/avatars'), {
+    prefix: '/avatars',
+  });
 
-  app.useStaticAssets(
-    join(__dirname, "..", "uploads/covers"), 
-    { prefix: "/covers" }
-  );
+  app.useStaticAssets(join(__dirname, '..', 'uploads/covers'), {
+    prefix: '/covers',
+  });
 
-  app.useStaticAssets(
-    join(__dirname, "..", "uploads/articles"), 
-    { prefix: "/articles" }
-  );
+  app.useStaticAssets(join(__dirname, '..', 'uploads/articles'), {
+    prefix: '/articles',
+  });
 
-  await app.listen(configService.get<number>("PORT") || 3000);
+  await app.listen(configService.get<number>('PORT') || 3000);
 }
 bootstrap();

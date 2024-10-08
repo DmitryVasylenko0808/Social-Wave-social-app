@@ -4,11 +4,27 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticlesModule } from './articles/articles.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
+    }),
+    MailerModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('MAIL_HOST'),
+          port: configService.get<number>('MAIL_PORT'),
+          secure: false,
+          auth: {
+            user: configService.get<string>('MAIL_AUTH_USER'),
+            pass: configService.get<string>('MAIL_AUTH_PASS'),
+          },
+        },
+      }),
+      inject: [ConfigService],
     }),
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
@@ -18,7 +34,8 @@ import { ArticlesModule } from './articles/articles.module';
     }),
     UsersModule,
     AuthModule,
-    ArticlesModule
-  ]
+    ArticlesModule,
+    EmailModule,
+  ],
 })
 export class AppModule {}
