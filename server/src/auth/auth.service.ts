@@ -109,7 +109,7 @@ export class AuthService {
     const currentDate = new Date(Date.now());
     const verifyEmailCodeExpiredAt = new Date(currentDate);
 
-    verifyEmailCodeExpiredAt.setMinutes(currentDate.getMinutes() + 5);
+    verifyEmailCodeExpiredAt.setMinutes(currentDate.getMinutes() + 15);
 
     return { verifyEmailCode, verifyEmailCodeExpiredAt };
   }

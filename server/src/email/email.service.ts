@@ -22,6 +22,8 @@ export class EmailService {
 
         Your confirmation code: ${code}
 
+        This code will expire in 15 minutes.
+
         If you did not register on our website, please disregard this message.`,
     });
   }
