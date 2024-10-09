@@ -23,6 +23,9 @@ import { EmailModule } from './email/email.module';
             pass: configService.get<string>('MAIL_AUTH_PASS'),
           },
         },
+        defaults: {
+          from: `Social Wave ${configService.get<string>('MAIL_AUTH_USER')}`,
+        },
       }),
       inject: [ConfigService],
     }),
