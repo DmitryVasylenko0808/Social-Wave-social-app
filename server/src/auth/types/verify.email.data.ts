@@ -1,4 +1,4 @@
 export type VerifyEmailData = {
-  verificationCode: string;
-  verificationCodeExpiredAt: Date;
+  userId: string;
+  code: string;
 };

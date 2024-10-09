@@ -1,11 +1,7 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
-import { Model, Types } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { EditUserDto } from './dto/edit.user.dto';
 import { PaginatedUsersResponse } from './types/paginated.users.response';
 
@@ -43,29 +39,7 @@ export class UsersService {
     return user;
   }
 
-  async findOneByVerifyEmailCode(verificationCode: string) {
-    const currentDate = new Date();
-
-    const user = await this.userModel.findOne({
-      verificationCode,
-      verificationCodeExpiredAt: { $gt: currentDate },
-    });
-
-    return user;
-  }
-
-  async findOneByToken(token: string) {
-    const currentDate = new Date();
-
-    const user = await this.userModel.findOne({
-      resetPasswordToken: token,
-      resetPasswordTokenExpiredAt: { $gt: currentDate },
-    });
-
-    return user;
-  }
-
-  async setVerified(id: Types.ObjectId) {
+  async setVerified(id: Types.ObjectId | string) {
     const user = await this.userModel.findById(id);
 
     if (!user) {
@@ -73,10 +47,16 @@ export class UsersService {
     }
 
     user.isVerified = true;
-    user.verificationCode = undefined;
-    user.verificationCodeExpiredAt = undefined;
 
     return await user.save();
+  }
+
+  async changePassword(id: Types.ObjectId | string | ObjectId, newPasswordHash: string) {
+    const user = await this.userModel.findByIdAndUpdate(id, { passwordHash: newPasswordHash });
+
+    if (!user) {
+      throw new NotFoundException('User is not found');
+    }
   }
 
   async edit(

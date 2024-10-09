@@ -26,20 +26,8 @@ export class User {
   @Prop()
   coverImage?: string;
 
-  @Prop()
-  verificationCode?: string;
-
-  @Prop()
-  verificationCodeExpiredAt?: Date;
-
   @Prop({ default: false })
   isVerified?: boolean;
-
-  @Prop()
-  resetPasswordToken?: string;
-
-  @Prop()
-  resetPasswordTokenExpiredAt?: Date;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   followers: User[];

@@ -5,12 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendVerifyCode(
-    email: string,
-    code: string,
-    firstName: string,
-    secondName: string,
-  ) {
+  async sendVerifyCode(email: string, code: string, firstName: string, secondName: string) {
     await this.mailerService.sendMail({
       to: email,
       from: 'Social Wave <emiliano.langworth@ethereal.email>',
@@ -22,18 +17,13 @@ export class EmailService {
 
         Your verification code: ${code}
 
-        This code will expire in 15 minutes.
+        This code will expire in 2 hours.
 
         If you did not register on our website, please disregard this message.`,
     });
   }
 
-  async sendResetPasswordLink(
-    email: string,
-    token: string,
-    firstName: string,
-    secondName: string,
-  ) {
+  async sendResetPasswordLink(email: string, token: string, firstName: string, secondName: string) {
     await this.mailerService.sendMail({
       to: email,
       from: 'Social Wave <emiliano.langworth@ethereal.email>',
