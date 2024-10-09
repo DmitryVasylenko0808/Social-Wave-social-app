@@ -23,10 +23,7 @@ import { ResetPasswordDto } from './dto/reset.password.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly emailService: EmailService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('sign-up')
   @UseInterceptors(FileInterceptor('avatar', { storage: avatarsStorage }))
