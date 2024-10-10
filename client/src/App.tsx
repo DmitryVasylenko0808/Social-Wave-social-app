@@ -36,7 +36,7 @@ function App() {
     if (isAuthenticated) {
       setAuthData();
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isDarkTheme) {
