@@ -24,6 +24,7 @@ const VerificationEmailPage = lazy(
 const ForgotPasswordPage = lazy(
   () => import("./pages/forgot.password.page.tsx")
 );
+const ResetPasswordPage = lazy(() => import("./pages/reset.password.page.tsx"));
 
 import "./i18n/i18n.js";
 
@@ -68,6 +69,7 @@ function App() {
             <Route path="sign-up" element={<SignUpPage />} />
             <Route path="verify-email" element={<VerificationEmailPage />} />
             <Route path="forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="reset-password" element={<ResetPasswordPage />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>

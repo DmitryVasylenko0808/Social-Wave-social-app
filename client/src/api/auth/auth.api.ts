@@ -24,6 +24,11 @@ type ForgotPasswordParams = {
   email: string;
 };
 
+type ResetPasswordParams = {
+  token: string;
+  newPassword: string;
+};
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
@@ -69,6 +74,13 @@ export const authApi = createApi({
         body,
       }),
     }),
+    resetPassword: builder.mutation<void, ResetPasswordParams>({
+      query: (body) => ({
+        url: "/reset-password",
+        method: "POST",
+        body,
+      }),
+    }),
     getMe: builder.query<{ userId: string }, void>({
       query: () => "/me",
     }),
@@ -80,5 +92,6 @@ export const {
   useSignUpMutation,
   useVerifyEmailMutation,
   useForgotPasswordMutation,
+  useResetPasswordMutation,
   useLazyGetMeQuery,
 } = authApi;
