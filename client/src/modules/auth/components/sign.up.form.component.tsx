@@ -4,7 +4,6 @@ import { z } from "zod";
 import { useSignUpMutation } from "../../../api/auth/auth.api";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../../../hooks/useAuth";
 import { Trans, useTranslation } from "react-i18next";
 
 const signUpSchema = z
