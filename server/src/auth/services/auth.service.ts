@@ -53,14 +53,14 @@ export class AuthService {
 
     const isValidCode = await this.verificationCodesService.compare(userId, code);
 
-    await this.verificationCodesService.remove(userId);
-
     if (!isValidCode) {
       throw new BadRequestException('Verification code is invalid or expired');
     }
 
     const verifiedUser = await this.usersService.setVerified(userId);
     const token = await this.generateToken(verifiedUser._id);
+
+    await this.verificationCodesService.remove(userId);
 
     return token;
   }
@@ -87,7 +87,6 @@ export class AuthService {
 
   async resetPassword(data: ResetPasswordDto) {
     const { token, newPassword } = data;
-
     const resetPasswordToken = await this.resetPasswordTokensService.findOne(token);
 
     await this.resetPasswordTokensService.remove(token);
