@@ -31,7 +31,7 @@ export class EmailService {
 
         <p>You received this email because a request was made to reset the password for your account. If this was you, please use the link below to set a new password:</p>
 
-        <p>Password Reset Link: <a href="http://localhost:4444/auth/reset-password?token=${token}">Click here to reset your password</a></p>
+        <p>Password Reset Link: <a href="http://localhost:5173/auth/reset-password?token=${token}">Click here to reset your password</a></p>
 
         <p>This link will expire in 2 hours.</p>
 
