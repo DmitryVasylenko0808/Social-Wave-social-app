@@ -18,6 +18,9 @@ const OneArticlePage = lazy(() => import("./pages/one.article.page.tsx"));
 const SettingsPage = lazy(() => import("./pages/settings.page.tsx"));
 const SignInPage = lazy(() => import("./pages/sign.in.page.tsx"));
 const SignUpPage = lazy(() => import("./pages/sign.up.page.tsx"));
+const VerificationEmailPage = lazy(
+  () => import("./pages/verification.email.page.tsx")
+);
 
 import "./i18n/i18n.js";
 
@@ -60,6 +63,7 @@ function App() {
           <Route path="auth" element={<AuthLayout />}>
             <Route path="sign-in" element={<SignInPage />} />
             <Route path="sign-up" element={<SignUpPage />} />
+            <Route path="verify-email" element={<VerificationEmailPage />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>

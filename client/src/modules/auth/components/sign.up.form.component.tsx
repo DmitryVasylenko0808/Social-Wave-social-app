@@ -41,7 +41,6 @@ const SignUpForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [triggerSignUp, { isLoading }] = useSignUpMutation();
-  const { authenticate } = useAuth();
   const {
     control,
     register,
@@ -59,10 +58,7 @@ const SignUpForm = () => {
 
     triggerSignUp(signUpData)
       .unwrap()
-      .then(({ token }) => {
-        authenticate(token);
-        navigate("/");
-      })
+      .then((data) => navigate("/auth/verify-email", { state: data }))
       .catch((error) =>
         setError("root", { type: "server", message: error.data.message })
       );
