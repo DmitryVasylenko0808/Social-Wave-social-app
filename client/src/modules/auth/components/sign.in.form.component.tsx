@@ -6,6 +6,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans, useTranslation } from "react-i18next";
+import GoogleAuth from "./google.auth.component";
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -78,6 +79,8 @@ const SignInForm = () => {
           t("signIn.submitBtn")
         )}
       </Button>
+
+      <GoogleAuth />
 
       <Trans
         i18nKey="signIn.withoutAcc"

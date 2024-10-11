@@ -27,6 +27,7 @@ const ForgotPasswordPage = lazy(
 const ResetPasswordPage = lazy(() => import("./pages/reset.password.page.tsx"));
 
 import "./i18n/i18n.js";
+import GoogleAuthRedirectPage from "./pages/google.auth.redirect.page.tsx";
 
 function App() {
   const { isAuthenticated, setAuthData } = useAuth();
@@ -70,6 +71,10 @@ function App() {
             <Route path="verify-email" element={<VerificationEmailPage />} />
             <Route path="forgot-password" element={<ForgotPasswordPage />} />
             <Route path="reset-password" element={<ResetPasswordPage />} />
+            <Route
+              path="google-auth-redirect"
+              element={<GoogleAuthRedirectPage />}
+            />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>

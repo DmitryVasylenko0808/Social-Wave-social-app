@@ -7,6 +7,7 @@ import {
   ParseFilePipeBuilder,
   Post,
   Request,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -20,10 +21,15 @@ import { EmailService } from 'src/email/email.service';
 import { VerifyEmailDto } from './dto/verify.email.dto';
 import { ForgotPasswordDto } from './dto/forgot.password.dto';
 import { ResetPasswordDto } from './dto/reset.password.dto';
+import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Post('sign-up')
   @UseInterceptors(FileInterceptor('avatar', { storage: avatarsStorage }))
@@ -71,8 +77,11 @@ export class AuthController {
 
   @UseGuards(AuthGuard('google'))
   @Get('google/redirect')
-  async googleAuthRedirect(@Request() req: any) {
-    return await this.authService.signIn(req);
+  async googleAuthRedirect(@Request() req: any, @Res() res: Response) {
+    const { token } = await this.authService.signIn(req);
+    return res.redirect(
+      `${this.configService.get<string>('GOOGLE_CLIENT_AUTH_URL')}/google-auth-redirect?token=${token}`,
+    );
   }
 
   @UseGuards(AuthGuard('jwt'))
