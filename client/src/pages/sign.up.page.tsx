@@ -1,11 +1,7 @@
-import { SignUpForm } from "../modules/auth/components";
+import { SignUp } from "../modules/auth/components";
 
 const SignUpPage = () => {
-  return (
-    <>
-      <SignUpForm />
-    </>
-  );
+  return <SignUp />;
 };
 
 export default SignUpPage;

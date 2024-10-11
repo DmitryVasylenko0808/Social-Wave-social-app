@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSignInMutation } from "../../../api/auth/auth.api";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../hooks/useAuth";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trans, useTranslation } from "react-i18next";
-import GoogleAuth from "./google.auth.component";
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -42,7 +41,7 @@ const SignInForm = () => {
   };
 
   return (
-    <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
+    <form onSubmit={handleSubmit(submitHandler)}>
       <h2 className="mb-7 text-primary-200 text-2xl text-center font-bold">
         {t("signIn.title")}
       </h2>
@@ -79,20 +78,6 @@ const SignInForm = () => {
           t("signIn.submitBtn")
         )}
       </Button>
-
-      <GoogleAuth />
-
-      <Trans
-        i18nKey="signIn.withoutAcc"
-        components={{
-          CustomParagraph: (
-            <p className="text-center text-black dark:text-secondary-100" />
-          ),
-          CustomLink: (
-            <Link to="/auth/sign-up" className="text-primary-200 font-bold" />
-          ),
-        }}
-      ></Trans>
     </form>
   );
 };

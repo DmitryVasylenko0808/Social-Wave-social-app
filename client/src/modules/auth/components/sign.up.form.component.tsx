@@ -1,10 +1,10 @@
 import { TextField, Button, ImageFileSelect, Loader } from "../../common/ui";
-import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useSignUpMutation } from "../../../api/auth/auth.api";
 import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trans, useTranslation } from "react-i18next";
 
 const signUpSchema = z
   .object({
@@ -129,18 +129,6 @@ const SignUpForm = () => {
           t("signUp.submitBtn")
         )}
       </Button>
-
-      <Trans
-        i18nKey="signUp.withAcc"
-        components={{
-          CustomParagraph: (
-            <p className="text-center text-black dark:text-secondary-100" />
-          ),
-          CustomLink: (
-            <Link to="/auth/sign-in" className="text-primary-200 font-bold" />
-          ),
-        }}
-      />
     </form>
   );
 };

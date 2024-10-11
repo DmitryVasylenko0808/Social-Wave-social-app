@@ -2,6 +2,7 @@ import { useAlerts } from "../../../hooks/useAlerts";
 import { useForgotPasswordMutation } from "../../../api/auth/auth.api";
 import { useForm } from "react-hook-form";
 import { Button, Loader, TextField } from "../../common/ui";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -56,6 +57,12 @@ const ForgotPasswordForm = () => {
 
       <p className="mb-2.5 text-center text-red-700 text-sm">
         {errors.root?.message}
+      </p>
+
+      <p className="mb-5 text-center text-primary-100 hover:text-primary-200">
+        <Link to="/auth/sign-in" className="underline">
+          Back to Sign In
+        </Link>
       </p>
 
       <Button
