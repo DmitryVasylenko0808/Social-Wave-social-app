@@ -1,19 +1,14 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Article } from '../schemas/article.schema';
 import { Model } from 'mongoose';
 import { CreateArticleDto } from '../dto/create.article.dto';
 import { EditArticleDto } from '../dto/edit.artcile.dto';
+import { RepostArticleDto } from '../dto/repost.article.dto';
 
 @Injectable()
 export class ArticlesService {
-  constructor(
-    @InjectModel(Article.name) private readonly articleModel: Model<Article>,
-  ) {}
+  constructor(@InjectModel(Article.name) private readonly articleModel: Model<Article>) {}
 
   async findOne(id: string) {
     const article = await this.articleModel
@@ -27,21 +22,14 @@ export class ArticlesService {
     return article;
   }
 
-  async create(
-    userId: string,
-    data: CreateArticleDto,
-    images?: Express.Multer.File[],
-  ) {
+  async create(userId: string, data: CreateArticleDto, images?: Express.Multer.File[]) {
     const article = new this.articleModel({
       author: userId,
       images: images?.map((img) => img.filename),
       ...data,
     });
 
-    return (await article.save()).populate(
-      'author',
-      '_id firstName secondName avatar',
-    );
+    return (await article.save()).populate('author', '_id firstName secondName avatar');
   }
 
   async edit(id: string, data: EditArticleDto, images?: Express.Multer.File[]) {
@@ -78,7 +66,7 @@ export class ArticlesService {
     );
   }
 
-  async repost(userId: string, id: string) {
+  async repost(userId: string, id: string, data: RepostArticleDto) {
     const article = await this.articleModel.findByIdAndUpdate(
       id,
       {
@@ -94,6 +82,7 @@ export class ArticlesService {
     const createdArticle = new this.articleModel({
       author: userId,
       repostedArticle: id,
+      ...data,
     });
 
     const result = (await createdArticle.save()).populate(
