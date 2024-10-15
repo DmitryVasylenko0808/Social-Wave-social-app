@@ -80,7 +80,7 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
 
   return (
     <div className="flex justify-between">
-      <div className="flex gap-10">
+      <div className="flex gap-8">
         <Button variant="terciary" onClick={handleClickLike}>
           <Heart className={heartClasses} />
           <span>{data.likes.length}</span>

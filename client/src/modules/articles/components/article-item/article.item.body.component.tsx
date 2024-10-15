@@ -8,7 +8,7 @@ const ArticleItemBody = ({ data }: ArticleItemBodyProps) => {
     <div>
       <p className="mb-4 dark:text-secondary-100">{data?.text}</p>
       {!!data.images?.length && (
-        <div className="mb-4 flex gap-2">
+        <div className="mb-4 flex flex-wrap gap-4">
           {data.images.map((image, index) => (
             <img
               className="size-fit h-[200px] rounded-xl"

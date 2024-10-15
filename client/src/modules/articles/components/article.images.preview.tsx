@@ -17,10 +17,10 @@ const ArticleImagesPreview = ({
     preview || defaultImages?.map((img) => `${articlesImgUrl}/${img}`);
 
   return (
-    <div className="py-4 flex flex-col items-center gap-2">
+    <div className="py-4 flex flex-wrap gap-4">
       {images?.map((image, index) => (
         <img
-          className="size-fit max-h-[400px] rounded-xl"
+          className="size-fit h-[200px] rounded-xl"
           src={image}
           alt={`image ${index}`}
           key={index}
