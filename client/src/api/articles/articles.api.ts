@@ -7,6 +7,12 @@ import { updateFeed } from "./utils";
 type GetUserFeedParams = {
   userId: string;
   page: number;
+  sortDate: "asc" | "desc";
+};
+
+type GetFollowingFeedParams = {
+  userId: string;
+  page: number;
 };
 
 type CreateArticleParams = {
@@ -49,7 +55,8 @@ export const articlesApi = createApi({
       keepUnusedDataFor: 0,
     }),
     getUserFeed: builder.query<GetArticlesDto, GetUserFeedParams>({
-      query: ({ userId, page }) => `/feed/${userId}?page=${page}`,
+      query: ({ userId, page, sortDate = "desc" }) =>
+        `/feed/${userId}?page=${page}&sort_date=${sortDate}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
@@ -59,6 +66,24 @@ export const articlesApi = createApi({
         } else {
           currentCache.data.push(...newItems.data);
         }
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      keepUnusedDataFor: 0,
+    }),
+    getFollowingFeed: builder.query<GetArticlesDto, GetFollowingFeedParams>({
+      query: ({ userId, page }) => `/feed/${userId}/following?page=${page}`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems, { arg }) => {
+        // if (currentCache.data[0]?.author._id !== arg.userId) {
+        //   return newItems;
+        // } else {
+        //   currentCache.data.push(...newItems.data);
+        // }
+        currentCache.data.push(...newItems.data);
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
@@ -257,6 +282,7 @@ export const articlesApi = createApi({
 export const {
   useGetFeedQuery,
   useGetUserFeedQuery,
+  useGetFollowingFeedQuery,
   useGetOneArticleQuery,
   useCreateArticleMutation,
   useEditArticleMutation,

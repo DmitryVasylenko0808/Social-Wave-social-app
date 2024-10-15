@@ -13,6 +13,8 @@ import ArticleCommentForm from "./article.comment.form.component";
 import EditCommentModal from "./edit.comment.modal";
 import Feed from "./feed.component";
 import UserFeed from "./user.feed.component";
+import FollowingFeed from "./following.feed.component";
+import MixedFeed from "./mixedfeed.component";
 
 export {
   ArticleItem,
@@ -30,4 +32,6 @@ export {
   EditCommentModal,
   Feed,
   UserFeed,
+  FollowingFeed,
+  MixedFeed,
 };

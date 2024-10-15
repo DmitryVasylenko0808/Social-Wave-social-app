@@ -1,6 +1,10 @@
 import { useParams } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import { CreateArticleForm, UserFeed } from "../modules/articles/components";
+import {
+  CreateArticleForm,
+  MixedFeed,
+  UserFeed,
+} from "../modules/articles/components";
 import { Profile } from "../modules/users/components";
 
 const ProfilePage = () => {
@@ -13,7 +17,7 @@ const ProfilePage = () => {
     <>
       <Profile />
       {isUserProfile && <CreateArticleForm />}
-      <UserFeed />
+      {isUserProfile ? <MixedFeed /> : <UserFeed />}
     </>
   );
 };

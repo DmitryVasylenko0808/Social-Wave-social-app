@@ -10,6 +10,7 @@ export const updateFeed = async (
   const endpoints = [
     "getFeed",
     "getUserFeed",
+    "getFollowingFeed",
     "getBookmarkedArticles",
   ] as const;
 
