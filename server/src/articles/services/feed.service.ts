@@ -4,6 +4,7 @@ import { Article } from '../schemas/article.schema';
 import { Model } from 'mongoose';
 import { PaginatedResponse } from '../types/paginated.response';
 import { UsersService } from 'src/users/users.service';
+import { SortDate } from '../types/sort.date';
 
 @Injectable()
 export class FeedService {
@@ -39,12 +40,12 @@ export class FeedService {
     return res;
   }
 
-  async getFeedByUserId(userId: string, page: number) {
+  async getFeedByUserId(userId: string, page: number, sortDate: SortDate) {
     const articles = await this.articleModel
       .find({ author: userId })
       .skip((page - 1) * this.limit)
       .limit(this.limit)
-      .sort({ createdAt: 'desc' })
+      .sort({ createdAt: sortDate })
       .populate('author', '_id firstName secondName avatar')
       .populate({
         path: 'repostedArticle',
