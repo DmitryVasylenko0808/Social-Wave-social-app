@@ -14,6 +14,8 @@ import Alert from "./alert.component";
 import Switch from "./switch.component";
 import Select from "./select.component";
 import SelectItem from "./select.item.component";
+import Tabs from "./tabs.component";
+import Tab from "./tab.component";
 
 export {
   Button,
@@ -32,4 +34,6 @@ export {
   Switch,
   Select,
   SelectItem,
+  Tabs,
+  Tab,
 };
