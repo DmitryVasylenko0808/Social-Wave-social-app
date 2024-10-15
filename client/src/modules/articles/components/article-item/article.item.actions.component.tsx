@@ -79,26 +79,22 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
   });
 
   return (
-    <div className="flex">
-      <div className="flex-1 flex justify-center">
+    <div className="flex justify-between">
+      <div className="flex gap-10">
         <Button variant="terciary" onClick={handleClickLike}>
           <Heart className={heartClasses} />
           <span>{data.likes.length}</span>
         </Button>
-      </div>
-      <div className="flex-1 flex justify-center">
+        <Button variant="terciary" onClick={handleClickRepost}>
+          <Repeat2 className={repostClasses} />
+          <span>{data.reposts.length}</span>
+        </Button>
         <Button as="link" to={`/articles/${data._id}`} variant="terciary">
           <MessageSquare />
           <span>{data.commentsCount}</span>
         </Button>
       </div>
-      <div className="flex-1 flex justify-center">
-        <Button variant="terciary" onClick={handleClickRepost}>
-          <Repeat2 className={repostClasses} />
-          <span>{data.reposts.length}</span>
-        </Button>
-      </div>
-      <div className="flex-1 flex justify-center">
+      <div className="">
         <Button variant="terciary" onClick={handleClickBookmark}>
           <Bookmark className={bookmarkClasses} />
           <span>{data.bookmarks.length}</span>
