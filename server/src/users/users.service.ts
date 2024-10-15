@@ -175,4 +175,11 @@ export class UsersService {
 
     return res;
   }
+
+  async getFollowingsIds(id: string) {
+    const user = await this.userModel.findById(id, 'followings');
+    const followingsIds = user.followings;
+
+    return followingsIds;
+  }
 }

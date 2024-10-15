@@ -10,25 +10,22 @@ import { FeedController } from './controllers/feed.controller';
 import { FeedService } from './services/feed.service';
 import { CommentsController } from './controllers/comments.controller';
 import { CommentsService } from './services/comments.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Article.name, schema: ArticleSchema },
-      { name: Comment.name, schema: CommentSchema }
-    ])
+      { name: Comment.name, schema: CommentSchema },
+    ]),
+    UsersModule,
   ],
-  providers: [
-    ArticlesService, 
-    BookmarkedArticlesService, 
-    FeedService, 
-    CommentsService
-  ],
+  providers: [ArticlesService, BookmarkedArticlesService, FeedService, CommentsService],
   controllers: [
-    ArticlesController, 
-    BookmarkedArticlesController, 
-    FeedController, 
-    CommentsController
-  ]
+    ArticlesController,
+    BookmarkedArticlesController,
+    FeedController,
+    CommentsController,
+  ],
 })
 export class ArticlesModule {}
