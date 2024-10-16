@@ -7,7 +7,7 @@ type ArticleItemRepostedProps = {
 
 const ArticleItemReposted = ({ repostedArticle }: ArticleItemRepostedProps) => {
   return (
-    <div className="px-6 py-3 border-2 border-secondary-50 dark:border-dark-200 dark:border">
+    <div className="px-6 py-3 border-2 rounded-2xl border-secondary-50 dark:border-dark-200 dark:border">
       <ArticleItem data={repostedArticle} reposted={!!repostedArticle} />
     </div>
   );

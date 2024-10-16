@@ -1,16 +1,14 @@
-import {
-  useToggleLikeArticleMutation,
-  useRepostArticleMutation,
-} from "../../../../api/articles/articles.api";
+import { useToggleLikeArticleMutation } from "../../../../api/articles/articles.api";
 import { useToggleBookmarkArticleMutation } from "../../../../api/articles/bookmarked.article.api";
 import { useAlerts } from "../../../../hooks/useAlerts";
 import { useAuth } from "../../../../hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
-import { Heart, MessageSquare, Repeat2, Bookmark } from "lucide-react";
+import { Heart, MessageSquare, Bookmark } from "lucide-react";
 import { Button } from "../../../common/ui";
 import { ArticleItemProps } from "./article.item.component";
 import { cn } from "../../../../utils/cn";
+import ArticleMenuRepost from "./article.menu.repost";
 
 type ArticleItemActionsProps = ArticleItemProps;
 
@@ -20,7 +18,6 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
   const { t } = useTranslation();
   const [triggerToggleLikeArticle] = useToggleLikeArticleMutation();
   const [triggerToggleBookmarkArticle] = useToggleBookmarkArticleMutation();
-  const [triggerRepostArticle] = useRepostArticleMutation();
 
   const handleClickLike = () => {
     triggerToggleLikeArticle({
@@ -31,17 +28,6 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
       .catch((err) => {
         alerts.error(`Oops... something went wrong: ${err.data.message}`);
       });
-  };
-
-  const handleClickRepost = () => {
-    if (!isReposted) {
-      triggerRepostArticle(data._id)
-        .unwrap()
-        .then(() => alerts.success(t("article.successReposted")))
-        .catch((err) => {
-          alerts.error(`${t("error")}: ${err.data.message}`);
-        });
-    }
   };
 
   const handleClickBookmark = () => {
@@ -71,9 +57,6 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
   const heartClasses = cn("", {
     "fill-primary-200 text-primary-200": isLiked === true,
   });
-  const repostClasses = cn("", {
-    "text-primary-200": isReposted === true,
-  });
   const bookmarkClasses = cn("", {
     "fill-secondary-100 hover:fill-secondary-200": isBookmarked === true,
   });
@@ -81,22 +64,36 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
   return (
     <div className="flex justify-between">
       <div className="flex gap-8">
-        <Button variant="terciary" onClick={handleClickLike}>
-          <Heart className={heartClasses} />
+        <Button
+          className="text-sm gap-2"
+          variant="terciary"
+          onClick={handleClickLike}
+        >
+          <Heart size={22} className={heartClasses} />
           <span>{data.likes.length}</span>
         </Button>
-        <Button variant="terciary" onClick={handleClickRepost}>
-          <Repeat2 className={repostClasses} />
-          <span>{data.reposts.length}</span>
-        </Button>
-        <Button as="link" to={`/articles/${data._id}`} variant="terciary">
-          <MessageSquare />
+        <ArticleMenuRepost
+          article={data}
+          reposts={data.reposts}
+          disabled={isReposted}
+        />
+        <Button
+          className="text-sm gap-2"
+          as="link"
+          to={`/articles/${data._id}`}
+          variant="terciary"
+        >
+          <MessageSquare size={22} />
           <span>{data.commentsCount}</span>
         </Button>
       </div>
       <div className="">
-        <Button variant="terciary" onClick={handleClickBookmark}>
-          <Bookmark className={bookmarkClasses} />
+        <Button
+          className="text-sm gap-2"
+          variant="terciary"
+          onClick={handleClickBookmark}
+        >
+          <Bookmark size={22} className={bookmarkClasses} />
           <span>{data.bookmarks.length}</span>
         </Button>
       </div>
