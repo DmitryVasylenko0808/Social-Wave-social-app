@@ -12,7 +12,7 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(
 
     return (
       <div
-        className="absolute top-11 right-0 z-10 px-5 py-4 bg-white shadow-xl border border-textFieldBorder rounded-xl dark:bg-dark-200 dark:border-0"
+        className="min-w-max absolute top-11 right-0 z-10 px-5 py-4 bg-white shadow-xl border border-textFieldBorder rounded-xl dark:bg-dark-200 dark:border-0"
         ref={ref}
         {...menuProps}
       >
