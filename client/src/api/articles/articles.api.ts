@@ -66,7 +66,10 @@ export const articlesApi = createApi({
         return endpointName;
       },
       merge: (currentCache, newItems, { arg }) => {
-        if (currentCache.data[0]?.author._id !== arg.userId) {
+        if (
+          currentCache.data[0]?.author._id !== arg.userId ||
+          currentCache.sortDate !== newItems.sortDate
+        ) {
           return newItems;
         } else {
           currentCache.data.push(...newItems.data);

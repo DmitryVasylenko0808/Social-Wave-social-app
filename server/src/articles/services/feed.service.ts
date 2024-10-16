@@ -62,9 +62,10 @@ export class FeedService {
 
     const res: PaginatedResponse<Article> = {
       data: articles,
+      currentPage: page,
       totalCount,
       totalPages,
-      currentPage: page,
+      sortDate,
     };
 
     return res;
