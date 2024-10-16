@@ -1,39 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useLazyGetUserFeedQuery } from "../../../api/articles/articles.api";
 import { usePage } from "../../../hooks/usePage";
 import { useAlerts } from "../../../hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 import { InfiniteScroll, NoData } from "../../common/components";
-import {
-  Button,
-  List,
-  ListItem,
-  Menu,
-  MenuItem,
-  Tab,
-  Tabs,
-} from "../../common/ui";
-import { ArticleItem } from ".";
-import { useClickOutside } from "../../../hooks/useClickOutside";
+import { List, ListItem, MenuItem } from "../../common/ui";
+import { ArticleItem, MenuSortArticles } from ".";
 
 const UserFeed = () => {
   const alerts = useAlerts();
   const { t } = useTranslation();
   const { userId } = useParams();
   const { page, setPage, nextPage } = usePage();
+  const [sortDate, setSortDate] = useState<"asc" | "desc">("desc");
   const [triggerGetUserFeed, { data, isFetching, isError }] =
     useLazyGetUserFeedQuery();
-
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
-  const [sortDate, setSortDate] = useState<"asc" | "desc">("desc");
-  const ref = useRef<HTMLDivElement>(null);
-  const handleClickMenu = () => setOpenMenu(true);
-  useClickOutside(ref, () => setOpenMenu(false));
-  const handleClickSort = (value: "asc" | "desc") => {
-    setSortDate(value);
-    setOpenMenu(false);
-  };
 
   useEffect(() => {
     setPage(1);
@@ -52,6 +34,10 @@ const UserFeed = () => {
     }
   }, [isError]);
 
+  const handleClickSort = (value: "asc" | "desc") => {
+    setSortDate(value);
+  };
+
   if (data?.data.length === 0) {
     return <NoData message={t("noData.articles")} />;
   }
@@ -59,16 +45,10 @@ const UserFeed = () => {
   return (
     <div className="px-6 py-2">
       <div className="flex justify-end">
-        <div className="relative">
-          <Button variant="terciary" onClick={handleClickMenu}>
-            Sort by: {sortDate === "desc" ? "Newest" : "Oldest"}
-          </Button>
-
-          <Menu open={openMenu} ref={ref}>
-            <MenuItem onClick={() => handleClickSort("desc")}>Newest</MenuItem>
-            <MenuItem onClick={() => handleClickSort("asc")}>Oldest</MenuItem>
-          </Menu>
-        </div>
+        <MenuSortArticles value={sortDate}>
+          <MenuItem onClick={() => handleClickSort("desc")}>Newest</MenuItem>
+          <MenuItem onClick={() => handleClickSort("asc")}>Oldest</MenuItem>
+        </MenuSortArticles>
       </div>
       <InfiniteScroll
         next={nextPage}
