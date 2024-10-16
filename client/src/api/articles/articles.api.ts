@@ -31,6 +31,11 @@ type ToggleLikeArticleParams = {
   isLiked: boolean;
 };
 
+type RepostArticleParams = {
+  id: string;
+  text?: string;
+};
+
 export const articlesApi = createApi({
   reducerPath: "articlesApi",
   baseQuery: fetchBaseQuery({
@@ -251,12 +256,13 @@ export const articlesApi = createApi({
         { type: "Articles", id: arg.id },
       ],
     }),
-    repostArticle: builder.mutation<Article, string>({
-      query: (id) => ({
+    repostArticle: builder.mutation<Article, RepostArticleParams>({
+      query: ({ id, ...body }) => ({
         url: `/articles/${id}/repost`,
         method: "POST",
+        body,
       }),
-      onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async ({ id }, { dispatch, queryFulfilled }) => {
         try {
           await queryFulfilled;
 
@@ -273,7 +279,7 @@ export const articlesApi = createApi({
         } catch {}
       },
       invalidatesTags: (result, error, arg, meta) => [
-        { type: "Articles", id: arg },
+        { type: "Articles", id: arg.id },
       ],
     }),
   }),

@@ -66,7 +66,7 @@ export class ArticlesService {
     );
   }
 
-  async repost(userId: string, id: string, data: RepostArticleDto) {
+  async repost(userId: string, id: string, data?: RepostArticleDto) {
     const article = await this.articleModel.findByIdAndUpdate(
       id,
       {

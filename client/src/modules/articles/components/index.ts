@@ -15,6 +15,8 @@ import Feed from "./feed.component";
 import UserFeed from "./user.feed.component";
 import FollowingFeed from "./following.feed.component";
 import MixedFeed from "./mixedfeed.component";
+import ArticleQuoteModal from "./article.quote.modal";
+import ArticleView from "./article.view";
 
 export {
   ArticleItem,
@@ -34,4 +36,6 @@ export {
   UserFeed,
   FollowingFeed,
   MixedFeed,
+  ArticleQuoteModal,
+  ArticleView,
 };
