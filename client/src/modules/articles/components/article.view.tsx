@@ -55,13 +55,9 @@ const ArticleView = ({ article }: ArticleViewProps) => {
       <footer>
         <p className="text-sm font-medium text-secondary-100">
           Published:{" "}
-          <ReactTimeAgo
-            className="text-black dark:text-white"
-            date={new Date(article.createdAt)}
-            locale={i18n.resolvedLanguage}
-            timeStyle="twitter"
-            tick={false}
-          />
+          <span className="text-black dark:text-white">
+            {new Date(article.createdAt).toLocaleString()}
+          </span>
         </p>
       </footer>
     </div>
