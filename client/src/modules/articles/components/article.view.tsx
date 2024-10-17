@@ -2,16 +2,12 @@ import { Link } from "react-router-dom";
 import { Article } from "../../../api/articles/dto/get.articles.dto";
 import { Avatar } from "../../common/ui";
 import { articlesImgUrl, userAvatarsUrl } from "../../../api/constants";
-import ReactTimeAgo from "react-time-ago";
-import { useTranslation } from "react-i18next";
 
 type ArticleViewProps = {
   article: Article;
 };
 
 const ArticleView = ({ article }: ArticleViewProps) => {
-  const { i18n } = useTranslation();
-
   return (
     <div className="p-4 border-2 rounded-2xl border-secondary-50 dark:border-dark-300">
       <header className="mb-4">
