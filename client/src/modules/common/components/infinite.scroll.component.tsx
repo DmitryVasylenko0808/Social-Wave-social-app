@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useRef } from "react";
 import { Loader } from "../ui";
 
 type InfiniteScrollProps = PropsWithChildren & {
@@ -15,26 +15,33 @@ const InfiniteScroll = ({
   currentPage,
   totalPages,
 }: InfiniteScrollProps) => {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.offsetHeight - 200 &&
-        !isFetching &&
-        currentPage < totalPages
-      ) {
+    const observer = new IntersectionObserver((entries) => {
+      const hasMore = currentPage < totalPages;
+
+      if (entries[0].isIntersecting && !isFetching && hasMore) {
         next();
       }
-    };
+    });
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isFetching, totalPages]);
+    if (bottomRef.current) {
+      observer.observe(bottomRef.current);
+    }
+
+    return () => {
+      if (bottomRef.current) {
+        observer.unobserve(bottomRef.current);
+      }
+    };
+  }, [isFetching]);
 
   return (
     <>
       {children}
       {isFetching && <Loader className="py-6" position="center" />}
+      <div className="h-2" ref={bottomRef}></div>
     </>
   );
 };
