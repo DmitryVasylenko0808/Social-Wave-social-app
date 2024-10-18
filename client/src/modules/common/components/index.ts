@@ -9,6 +9,7 @@ import Portal from "./portal.component";
 import Logo from "./logo.component";
 import AlertsContainer from "./alerts.container.component";
 import SideBar from "./sidebar.component";
+import UserExplorer from "./user.explorer";
 
 export {
   Banner,
@@ -22,4 +23,5 @@ export {
   Logo,
   AlertsContainer,
   SideBar,
+  UserExplorer,
 };

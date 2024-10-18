@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
-import { Header } from "../modules/common/components";
+import { Header, UserExplorer } from "../modules/common/components";
 import { Container, Loader } from "../modules/common/ui";
-import SideBar from "../modules/common/components/sidebar.component";
+import { SideBar } from "../modules/common/components";
 import { Suspense } from "react";
 
 const BaseLayout = () => {
@@ -16,6 +16,7 @@ const BaseLayout = () => {
               <Outlet />
             </Suspense>
           </section>
+          <UserExplorer />
         </Container>
       </main>
     </main>
