@@ -7,8 +7,8 @@ import { useMemo } from "react";
 import { Heart, MessageSquare, Bookmark } from "lucide-react";
 import { Button } from "../../../common/ui";
 import { ArticleItemProps } from "./article.item.component";
-import { cn } from "../../../../utils/cn";
 import ArticleMenuRepost from "./article.menu.repost";
+import { cn } from "../../../../utils/cn";
 
 type ArticleItemActionsProps = ArticleItemProps;
 
@@ -79,9 +79,10 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
         />
         <Button
           className="text-sm gap-2"
-          as="link"
-          to={`/articles/${data._id}`}
           variant="terciary"
+          as="link"
+          to={`/article/${data._id}`}
+          state={{ backgroundLocation: location }}
         >
           <MessageSquare size={22} />
           <span>{data.commentsCount}</span>

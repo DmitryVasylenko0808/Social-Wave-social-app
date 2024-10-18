@@ -15,6 +15,7 @@ type ButtonAsLinkProps = ComponentProps<"a"> &
   BaseButtonProps & {
     as: "link";
     to: string;
+    state?: any;
   };
 
 type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
@@ -37,7 +38,7 @@ const Button = ({ children, variant, className, ...btnProps }: ButtonProps) => {
 
   if (btnProps.as === "link") {
     return (
-      <Link to={btnProps.to} className={classes}>
+      <Link to={btnProps.to} className={classes} state={btnProps.state}>
         {children}
       </Link>
     );

@@ -30,12 +30,7 @@ const ArticleItemAuthor = ({ data }: ArticleItemAuthorProps) => {
           {data.author.firstName} {data.author.secondName}
         </Link>{" "}
         {data.repostedArticle && (
-          <Link
-            to={`/articles/${data.repostedArticle._id}`}
-            className="text-secondary-100 underline hover:text-primary-100"
-          >
-            {t("article.reposted")}
-          </Link>
+          <span className="text-secondary-100">{t("article.reposted")}</span>
         )}
       </span>
     </div>

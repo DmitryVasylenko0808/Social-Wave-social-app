@@ -20,8 +20,8 @@ const ArticleComments = () => {
   }
 
   return (
-    <div className="px-6 py-7">
-      <h2 className="mb-10 text-xl text-black font-bold dark:text-white">
+    <div className="">
+      <h2 className="mb-5 text-lg text-black font-bold dark:text-white">
         {t("articleCommments.title")}
       </h2>
       <InfiniteScroll
@@ -30,7 +30,7 @@ const ArticleComments = () => {
         isFetching={isFetching}
         totalPages={comments?.totalPages || 0}
       >
-        <List className="gap-7">
+        <List className="pl-3 gap-7">
           {comments?.data.map((comment) => (
             <ListItem key={comment._id}>
               <CommentItem data={comment} />

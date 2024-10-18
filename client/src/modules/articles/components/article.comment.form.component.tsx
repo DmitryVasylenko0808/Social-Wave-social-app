@@ -41,13 +41,10 @@ const ArticleCommentForm = () => {
   };
 
   return (
-    <form
-      className="p-4 pb-2.5 bg-labelFill dark:bg-dark-100"
-      onSubmit={handleSubmit(submitHandler)}
-    >
+    <form onSubmit={handleSubmit(submitHandler)}>
       <TextArea
         className="mb-4 bg-white"
-        rows={5}
+        rows={3}
         placeholder={t("articleCommentsForm.placeholder")}
         error={errors.text?.message}
         {...register("text")}

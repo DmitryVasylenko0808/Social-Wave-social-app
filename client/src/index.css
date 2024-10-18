@@ -11,6 +11,10 @@
         font-size: 14px;
         font-weight: 400;
     }
+
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 0;
+    }
 }
 
 .active {
