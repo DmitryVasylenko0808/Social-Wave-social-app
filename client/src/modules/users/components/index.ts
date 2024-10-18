@@ -4,6 +4,7 @@ import EditProfileForm from "./edit.profile.component";
 import Followers from "./followers.component";
 import Followings from "./followings.components";
 import UserItem from "./user.item.component";
+import UserSearch from "./user.search";
 
 export {
   Profile,
@@ -12,4 +13,5 @@ export {
   Followers,
   Followings,
   UserItem,
+  UserSearch,
 };

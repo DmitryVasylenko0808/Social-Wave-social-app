@@ -1,7 +1,11 @@
-const UserExplorer = () => {
+import { PropsWithChildren } from "react";
+
+type UserExplorerProps = PropsWithChildren;
+
+const UserExplorer = ({ children }: UserExplorerProps) => {
   return (
     <div className="min-w-[360px]">
-      <div className="sticky top-0 px-6 py-5">UserExplorer</div>
+      <div className="sticky top-0 pl-6 py-5">{children}</div>
     </div>
   );
 };

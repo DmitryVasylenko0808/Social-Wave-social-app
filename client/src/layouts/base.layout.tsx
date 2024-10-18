@@ -3,6 +3,7 @@ import { Header, UserExplorer } from "../modules/common/components";
 import { Container, Loader } from "../modules/common/ui";
 import { SideBar } from "../modules/common/components";
 import { Suspense } from "react";
+import { UserSearch } from "../modules/users/components";
 
 const BaseLayout = () => {
   return (
@@ -16,7 +17,9 @@ const BaseLayout = () => {
               <Outlet />
             </Suspense>
           </section>
-          <UserExplorer />
+          <UserExplorer>
+            <UserSearch />
+          </UserExplorer>
         </Container>
       </main>
     </main>

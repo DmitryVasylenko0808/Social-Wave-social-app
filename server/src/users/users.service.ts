@@ -39,6 +39,60 @@ export class UsersService {
     return user;
   }
 
+  async findByName(name: string, page: number) {
+    const LIMIT = 5;
+    const search = new RegExp(name);
+
+    if (!name) {
+      const res: PaginatedUsersResponse = {
+        data: [],
+        totalCount: 0,
+        totalPages: 0,
+        currentPage: 1,
+        searchValue: '',
+      };
+
+      return res;
+    }
+
+    const users = await this.userModel
+      .find(
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $concat: ['$firstName', ' ', '$secondName'] },
+              regex: search,
+              options: 'i',
+            },
+          },
+        },
+        '_id firstName secondName avatar',
+      )
+      .skip((page - 1) * LIMIT)
+      .limit(LIMIT);
+
+    const totalCount = await this.userModel.countDocuments({
+      $expr: {
+        $regexMatch: {
+          input: { $concat: ['$firstName', ' ', '$secondName'] },
+          regex: search,
+          options: 'i',
+        },
+      },
+    });
+    const totalPages = Math.ceil(totalCount / LIMIT);
+
+    const res: PaginatedUsersResponse = {
+      data: users.length ? users : [],
+      totalCount,
+      totalPages,
+      currentPage: page,
+      searchValue: name,
+    };
+
+    return res;
+  }
+
   async setVerified(id: Types.ObjectId | string) {
     const user = await this.userModel.findById(id);
 
