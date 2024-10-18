@@ -7,15 +7,18 @@ import { useMemo } from "react";
 import { Heart, MessageSquare, Bookmark } from "lucide-react";
 import { Button } from "../../../common/ui";
 import { ArticleItemProps } from "./article.item.component";
-import ArticleMenuRepost from "./article.menu.repost";
 import { cn } from "../../../../utils/cn";
+import ArticleMenuRepost from "./article.menu.repost";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type ArticleItemActionsProps = ArticleItemProps;
 
 const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
+  const location = useLocation();
   const alerts = useAlerts();
   const { user } = useAuth();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [triggerToggleLikeArticle] = useToggleLikeArticleMutation();
   const [triggerToggleBookmarkArticle] = useToggleBookmarkArticleMutation();
 
@@ -28,6 +31,12 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
       .catch((err) => {
         alerts.error(`Oops... something went wrong: ${err.data.message}`);
       });
+  };
+
+  const handleClickComments = () => {
+    navigate(`/article/${data._id}`, {
+      state: { backgroundLocation: location },
+    });
   };
 
   const handleClickBookmark = () => {
@@ -80,9 +89,7 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
         <Button
           className="text-sm gap-2"
           variant="terciary"
-          as="link"
-          to={`/article/${data._id}`}
-          state={{ backgroundLocation: location }}
+          onClick={handleClickComments}
         >
           <MessageSquare size={22} />
           <span>{data.commentsCount}</span>
