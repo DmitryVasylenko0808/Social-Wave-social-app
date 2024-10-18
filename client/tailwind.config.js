@@ -36,7 +36,7 @@ export default {
         modal: "1002px"
       },
       maxWidth: {
-        container: "1260px",
+        container: "1440px",
         modal: "1002px"
       },
       minWidth: {
