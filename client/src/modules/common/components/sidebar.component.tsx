@@ -16,7 +16,7 @@ const SideBar = () => {
   const { t } = useTranslation();
 
   return (
-    <aside className="min-w-[180px] min-h-screen pr-3 border-r border-secondary-50 dark:border-dark-200">
+    <aside className="min-w-[180px] min-h-screen pr-6 border-r border-secondary-50 dark:border-dark-200">
       <div className="sticky top-0 pt-5">
         <ul className="flex flex-col text-base text-secondary-100 font-medium">
           <li className="block">
