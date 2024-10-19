@@ -1,41 +1,79 @@
 import {
   useGetOneUserQuery,
-  useGetUserFollowingsQuery,
+  useLazyGetUserFollowingsQuery,
 } from "../../../api/users/users.api";
 import { usePage } from "../../../hooks/usePage";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import { useDebounce } from "../../../hooks/useDebounce";
 import { InfiniteScroll, NavigateBack, NoData } from "../../common/components";
 import { Navigate, useParams } from "react-router";
-import { List, ListItem } from "../../common/ui";
+import { List, ListItem, Loader, TextField } from "../../common/ui";
 import { UserItem } from ".";
+import { Search } from "lucide-react";
 
 const Followings = () => {
   const { t } = useTranslation();
   const { userId } = useParams();
-  const { page, nextPage } = usePage();
+  const { page, nextPage, setPage } = usePage();
+  const [search, setSearch] = useState<string>("");
+  const debounced = useDebounce(search, 500);
   const { data: user } = useGetOneUserQuery(userId as string);
-  const { data, isFetching, isError } = useGetUserFollowingsQuery({
-    id: userId as string,
-    page,
-  });
+  const [triggerSearchFollowings, { data, isLoading, isFetching, isError }] =
+    useLazyGetUserFollowingsQuery();
+
+  useEffect(() => {
+    setPage(1);
+    triggerSearchFollowings({
+      id: userId as string,
+      search: debounced,
+      page: 1,
+    });
+  }, [debounced]);
+
+  useEffect(() => {
+    if (page !== 1) {
+      triggerSearchFollowings({
+        id: userId as string,
+        search: debounced,
+        page,
+      });
+    }
+  }, [page]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const isShowLoader = isFetching && !isLoading;
+  const isNoData = data?.data.length === 0 && !isFetching;
 
   if (isError) {
     return <Navigate to="*" replace />;
   }
 
-  if (data?.data.length === 0) {
-    return <NoData message={t("noData.followings")} />;
-  }
-
   return (
     <div className="px-6 py-2">
       <NavigateBack
-        title={t("followings.title", {
+        title={t("followers.title", {
           firstName: user?.firstName,
           secondName: user?.secondName,
         })}
       />
-      <div className="">
+      <TextField
+        className="mb-4"
+        placeholder="Search user..."
+        leftAddon={
+          isShowLoader ? (
+            <Loader size="small" />
+          ) : (
+            <Search className="text-primary-200" />
+          )
+        }
+        onChange={handleChange}
+      />
+      <div>
+        {isNoData && <NoData message={t("noData.followings")} />}
         <InfiniteScroll
           currentPage={page}
           totalPages={data?.totalPages || 0}

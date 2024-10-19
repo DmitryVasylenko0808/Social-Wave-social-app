@@ -8,6 +8,14 @@ type SearchUsersParams = {
   page: number;
 };
 
+type SearchFollowersParams = {
+  id: string;
+  page: number;
+  search?: string;
+};
+
+type SearchFollowingsParams = SearchFollowersParams;
+
 type EditUserParams = {
   _id: string;
   firstName: string;
@@ -65,13 +73,18 @@ export const usersApi = createApi({
       },
       invalidatesTags: ["Users"],
     }),
-    getUserFollowers: builder.query<GetUsersDto, { id: string; page: number }>({
-      query: ({ id, page }) => `/${id}/followers?page=${page}`,
+    getUserFollowers: builder.query<GetUsersDto, SearchFollowersParams>({
+      query: ({ id, page, search }) =>
+        `/${id}/followers?page=${page}&search=${search}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
       merge: (currentCache, newItems) => {
-        currentCache.data.push(...newItems.data);
+        if (currentCache.searchValue !== newItems.searchValue) {
+          return newItems;
+        } else {
+          currentCache.data.push(...newItems.data);
+        }
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
@@ -79,22 +92,25 @@ export const usersApi = createApi({
       keepUnusedDataFor: 0,
       providesTags: ["Users"],
     }),
-    getUserFollowings: builder.query<GetUsersDto, { id: string; page: number }>(
-      {
-        query: ({ id, page }) => `/${id}/followings?page=${page}`,
-        serializeQueryArgs: ({ endpointName }) => {
-          return endpointName;
-        },
-        merge: (currentCache, newItems) => {
+    getUserFollowings: builder.query<GetUsersDto, SearchFollowingsParams>({
+      query: ({ id, page, search }) =>
+        `/${id}/followings?page=${page}&search=${search}`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        if (currentCache.searchValue !== newItems.searchValue) {
+          return newItems;
+        } else {
           currentCache.data.push(...newItems.data);
-        },
-        forceRefetch({ currentArg, previousArg }) {
-          return currentArg !== previousArg;
-        },
-        keepUnusedDataFor: 0,
-        providesTags: ["Users"],
-      }
-    ),
+        }
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      keepUnusedDataFor: 0,
+      providesTags: ["Users"],
+    }),
     followUser: builder.mutation<void, string>({
       query: (id) => ({
         url: `/${id}/follow`,
@@ -121,4 +137,6 @@ export const {
   useUnfollowUserMutation,
 
   useLazySearchUsersQuery,
+  useLazyGetUserFollowersQuery,
+  useLazyGetUserFollowingsQuery,
 } = usersApi;

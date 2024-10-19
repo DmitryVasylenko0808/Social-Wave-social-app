@@ -184,47 +184,85 @@ export class UsersService {
     );
   }
 
-  async getFollowers(id: string, page: number) {
-    const user = await this.userModel.findById(id).populate({
-      path: 'followers',
-      select: '_id firstName secondName avatar',
-      options: {
-        skip: (page - 1) * this.limit,
-        limit: this.limit,
+  async getFollowers(id: string, page: number, search?: string) {
+    const query = new RegExp(search);
+    const followers = await this.userModel
+      .find(
+        {
+          followings: { $in: [id] },
+          $expr: {
+            $regexMatch: {
+              input: { $concat: ['$firstName', ' ', '$secondName'] },
+              regex: query,
+              options: 'i',
+            },
+          },
+        },
+        '_id firstName secondName avatar',
+      )
+      .skip((page - 1) * this.limit)
+      .limit(this.limit);
+
+    const totalCount = await this.userModel.countDocuments({
+      followings: { $in: [id] },
+      $expr: {
+        $regexMatch: {
+          input: { $concat: ['$firstName', ' ', '$secondName'] },
+          regex: query,
+          options: 'i',
+        },
       },
     });
-
-    const totalCount = user.followers.length;
     const totalPages = Math.ceil(totalCount / this.limit);
 
     const res: PaginatedUsersResponse = {
-      data: user.followers,
+      data: followers,
       totalCount,
       totalPages,
       currentPage: page,
+      searchValue: search,
     };
 
     return res;
   }
 
-  async getFollowings(id: string, page: number) {
-    const user = await this.userModel.findById(id).populate({
-      path: 'followings',
-      select: '_id firstName secondName avatar',
-      options: {
-        skip: (page - 1) * this.limit,
-        limit: this.limit,
+  async getFollowings(id: string, page: number, search?: string) {
+    const query = new RegExp(search);
+    const followings = await this.userModel
+      .find(
+        {
+          followers: { $in: [id] },
+          $expr: {
+            $regexMatch: {
+              input: { $concat: ['$firstName', ' ', '$secondName'] },
+              regex: query,
+              options: 'i',
+            },
+          },
+        },
+        '_id firstName secondName avatar',
+      )
+      .skip((page - 1) * this.limit)
+      .limit(this.limit);
+
+    const totalCount = await this.userModel.countDocuments({
+      followers: { $in: [id] },
+      $expr: {
+        $regexMatch: {
+          input: { $concat: ['$firstName', ' ', '$secondName'] },
+          regex: query,
+          options: 'i',
+        },
       },
     });
-
-    const totalCount = user.followings.length;
     const totalPages = Math.ceil(totalCount / this.limit);
 
     const res: PaginatedUsersResponse = {
-      data: user.followings,
+      data: followings,
       totalCount,
       totalPages,
       currentPage: page,
+      searchValue: search,
     };
 
     return res;

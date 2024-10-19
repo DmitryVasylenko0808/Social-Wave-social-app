@@ -66,12 +66,20 @@ export class UsersController {
   }
 
   @Get(':id/followers')
-  async getFollowers(@Param('id') id: string, @Query('page', ParseIntPipe) page: number) {
-    return await this.usersService.getFollowers(id, page);
+  async getFollowers(
+    @Param('id') id: string,
+    @Query('page', ParseIntPipe) page: number,
+    @Query('search') search: string,
+  ) {
+    return await this.usersService.getFollowers(id, page, search);
   }
 
   @Get(':id/followings')
-  async getFollowings(@Param('id') id: string, @Query('page', ParseIntPipe) page: number) {
-    return await this.usersService.getFollowings(id, page);
+  async getFollowings(
+    @Param('id') id: string,
+    @Query('page', ParseIntPipe) page: number,
+    @Query('search') search: string,
+  ) {
+    return await this.usersService.getFollowings(id, page, search);
   }
 }
