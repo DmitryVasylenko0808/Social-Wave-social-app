@@ -1,32 +1,8 @@
 import { useEffect } from "react";
 import { UserItem } from ".";
-import {
-  useGetSuggestedUsersQuery,
-  useLazyGetSuggestedUsersQuery,
-} from "../../../api/users/users.api";
+import { useLazyGetSuggestedUsersQuery } from "../../../api/users/users.api";
 import { useAuth } from "../../../hooks/useAuth";
 import { List, ListItem, Loader } from "../../common/ui";
-
-const users = [
-  {
-    _id: "66cca661fe1a3651618a1136",
-    firstName: "Kevin",
-    secondName: "Bosket",
-    avatar: "nullavatar.jpg",
-  },
-  {
-    _id: "66cca67dfe1a3651618a1139",
-    firstName: "Job",
-    secondName: "Juares",
-    avatar: "nullavatar.jpg",
-  },
-  {
-    _id: "66cca6d7fe1a3651618a1145",
-    firstName: "Regan",
-    secondName: "Everil",
-    avatar: "nullavatar.jpg",
-  },
-];
 
 const UserSuggestions = () => {
   const { isAuthenticated, user } = useAuth();
