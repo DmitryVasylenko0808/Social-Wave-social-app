@@ -33,7 +33,7 @@ const UserSearch = () => {
   const isShowList = !!users?.data.length;
 
   return (
-    <div className="relative">
+    <div className="relative mb-10">
       <TextField
         placeholder="Search user..."
         leftAddon={

@@ -82,4 +82,9 @@ export class UsersController {
   ) {
     return await this.usersService.getFollowings(id, page, search);
   }
+
+  @Get(':id/suggested')
+  async getSuggested(@Param('id') id: string) {
+    return await this.usersService.getSuggested(id);
+  }
 }

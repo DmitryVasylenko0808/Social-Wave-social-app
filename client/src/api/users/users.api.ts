@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { GetOneUserDto } from "./dto/get.one.user.dto";
 import { GetUsersDto } from "./dto/get.users.dto";
 import { apiUrl } from "../constants";
+import { GetSuggestedUsersDto } from "./dto/get.suggested.users.dto";
 
 type SearchUsersParams = {
   query: string;
@@ -111,6 +112,11 @@ export const usersApi = createApi({
       keepUnusedDataFor: 0,
       providesTags: ["Users"],
     }),
+    getSuggestedUsers: builder.query<GetSuggestedUsersDto, string>({
+      query: (id) => `/${id}/suggested`,
+      providesTags: ["Users"],
+      keepUnusedDataFor: 0,
+    }),
     followUser: builder.mutation<void, string>({
       query: (id) => ({
         url: `/${id}/follow`,
@@ -139,4 +145,5 @@ export const {
   useLazySearchUsersQuery,
   useLazyGetUserFollowersQuery,
   useLazyGetUserFollowingsQuery,
+  useLazyGetSuggestedUsersQuery,
 } = usersApi;

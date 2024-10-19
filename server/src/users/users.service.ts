@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
-import { Model, ObjectId, Types } from 'mongoose';
+import mongoose, { Model, ObjectId, Types } from 'mongoose';
 import { EditUserDto } from './dto/edit.user.dto';
 import { PaginatedUsersResponse } from './types/paginated.users.response';
 
@@ -273,5 +273,30 @@ export class UsersService {
     const followingsIds = user.followings;
 
     return followingsIds;
+  }
+
+  async getSuggested(id: string) {
+    const suggestedUsers = await this.userModel.aggregate([
+      { $match: { _id: { $ne: new mongoose.Types.ObjectId(id) } } },
+      { $match: { followers: { $nin: [new mongoose.Types.ObjectId(id)] } } },
+      {
+        $addFields: {
+          followersCount: { $size: '$followers' },
+        },
+      },
+      {
+        $sort: { followersCount: -1 },
+      },
+      { $limit: 3 },
+      {
+        $project: {
+          firstName: 1,
+          secondName: 1,
+          avatar: 1,
+        },
+      },
+    ]);
+
+    return suggestedUsers;
   }
 }
