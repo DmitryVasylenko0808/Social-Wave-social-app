@@ -80,7 +80,7 @@ export class AuthController {
   async googleAuthRedirect(@Request() req: any, @Res() res: Response) {
     const { token } = await this.authService.signIn(req);
     return res.redirect(
-      `${this.configService.get<string>('GOOGLE_CLIENT_AUTH_URL')}/google-auth-redirect?token=${token}`,
+      `${this.configService.get<string>('GOOGLE_CLIENT_AUTH_URL')}/sign-in?token=${token}`,
     );
   }
 

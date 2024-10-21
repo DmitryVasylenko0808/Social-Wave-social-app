@@ -4,7 +4,6 @@ import VerifyEmailForm from "./verify.email.form.component";
 import ForgotPasswordForm from "./forgot.password.form.component";
 import ResetPasswordForm from "./reset.password.form.component";
 import GoogleAuth from "./google.auth.component";
-import GoogleAuthRedirect from "./google.auth.redirect.component";
 import SignIn from "./sign.in.component";
 import SignUp from "./sign.up.component";
 import WithAccount from "./with.account";
@@ -17,7 +16,6 @@ export {
   ForgotPasswordForm,
   ResetPasswordForm,
   GoogleAuth,
-  GoogleAuthRedirect,
   SignIn,
   SignUp,
   WithAccount,

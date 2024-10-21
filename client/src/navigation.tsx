@@ -6,7 +6,6 @@ import { ArticleModal } from "./modules/articles/components";
 import { ScrollToTop, RequireAuth } from "./modules/common/components";
 
 import ErrorPage from "./pages/error.page.tsx";
-import GoogleAuthRedirectPage from "./pages/google.auth.redirect.page.tsx";
 const HomePage = lazy(() => import("./pages/home.page"));
 const BookmarksPage = lazy(() => import("./pages/bookmarks.page.tsx"));
 const ProfilePage = lazy(() => import("./pages/profile.page.tsx"));
@@ -63,10 +62,6 @@ const Navigation = () => {
             <Route path="verify-email" element={<VerificationEmailPage />} />
             <Route path="forgot-password" element={<ForgotPasswordPage />} />
             <Route path="reset-password" element={<ResetPasswordPage />} />
-            <Route
-              path="google-auth-redirect"
-              element={<GoogleAuthRedirectPage />}
-            />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>

@@ -1,8 +1,25 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 import { apiUrl } from "../../../api/constants";
 import { Button } from "../../common/ui";
 import GoogleIcon from "../icons/google.icon.svg";
 
 const GoogleAuth = () => {
+  const [params] = useSearchParams();
+  const { authenticate } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (params.get("token")) {
+      const token = params.get("token") as string;
+
+      authenticate(token);
+      navigate("/");
+    }
+  }, []);
+
   const handleClickGoogleLogin = () => {
     window.location.href = `${apiUrl}/auth/google`;
   };
