@@ -11,12 +11,24 @@
         font-size: 14px;
         font-weight: 400;
     }
+}
 
-    .scrollbar-custom::-webkit-scrollbar {
-        width: 0;
-    }
+::-webkit-scrollbar {
+    @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply rounded-3xl bg-[#c2c2c2] dark:bg-[#555555]
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#acacac] dark:bg-[#6b6b6b]
 }
 
 .active {
-    @apply text-secondary-200 dark:text-white
+    @apply text-secondary-200 dark:text-white 
 }
