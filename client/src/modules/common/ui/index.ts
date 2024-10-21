@@ -10,6 +10,7 @@ import Loader from "./loader.component";
 import Avatar from "./avatar.component";
 import List from "./list.component";
 import ListItem from "./list.item.component";
+import ListDivider from "./list.divider";
 import Alert from "./alert.component";
 import Switch from "./switch.component";
 import Select from "./select.component";
@@ -30,6 +31,7 @@ export {
   Avatar,
   List,
   ListItem,
+  ListDivider,
   Alert,
   Switch,
   Select,
