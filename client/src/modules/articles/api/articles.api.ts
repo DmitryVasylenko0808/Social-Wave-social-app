@@ -186,6 +186,8 @@ export const articlesApi = api.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
 
+          console.log(data);
+
           const patchResults = updateFeed(dispatch, (draft) => {
             for (let i = 0; i < draft.data.length; i++) {
               if (draft.data[i]._id === id) {

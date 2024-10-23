@@ -41,7 +41,14 @@ export class ArticlesService {
 
     const article = await this.articleModel
       .findByIdAndUpdate(id, editData, { new: true })
-      .populate('author', '_id firstName secondName avatar');
+      .populate('author', '_id firstName secondName avatar')
+      .populate({
+        path: 'repostedArticle',
+        populate: {
+          path: 'author',
+          select: '_id firstName secondName avatar',
+        },
+      });
 
     if (!article) {
       throw new NotFoundException('Article is not found');
