@@ -1,4 +1,4 @@
-import { articlesImgUrl } from "../../../api/constants";
+import { articlesImgUrl } from "../../../core/constants";
 
 type ArticleImagesPreviewProps = {
   preview?: string[] | null;

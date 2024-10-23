@@ -1,11 +1,11 @@
 import {
   useGetOneUserQuery,
   useLazyGetUserFollowersQuery,
-} from "../../../api/users/users.api";
-import { usePage } from "../../../hooks/usePage";
+} from "../api/users.api";
+import { usePage } from "../../common/hooks/usePage";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { useDebounce } from "../../../hooks/useDebounce";
+import { useDebounce } from "../../common/hooks/useDebounce";
 import { InfiniteScroll, NavigateBack, NoData } from "../../common/components";
 import { Navigate, useParams } from "react-router";
 import { List, ListItem, Loader, TextField } from "../../common/ui";

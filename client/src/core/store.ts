@@ -1,27 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { authApi } from "../api/auth/auth.api";
-import authSlice from "./auth.slice";
-import { articlesApi } from "../api/articles/articles.api";
-import { usersApi } from "../api/users/users.api";
-import alertsSlice from "./alerts.slice";
-import themeSlice from "./theme.slice";
+import { api } from "./api";
+import authSlice from "../modules/auth/store/auth.slice";
+import alertsSlice from "../modules/common/store/alerts.slice";
+import themeSlice from "../modules/common/store/theme.slice";
 
 export const store = configureStore({
   reducer: {
-    [authApi.reducerPath]: authApi.reducer,
-    [articlesApi.reducerPath]: articlesApi.reducer,
-    [usersApi.reducerPath]: usersApi.reducer,
+    [api.reducerPath]: api.reducer,
     auth: authSlice,
     alerts: alertsSlice,
     theme: themeSlice,
   },
   middleware: (getDefaultMiddeware) =>
-    getDefaultMiddeware()
-      .concat(authApi.middleware)
-      .concat(articlesApi.middleware)
-      .concat(usersApi.middleware),
+    getDefaultMiddeware().concat(api.middleware),
 });
 
 setupListeners(store.dispatch);

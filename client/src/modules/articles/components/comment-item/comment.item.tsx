@@ -1,5 +1,5 @@
-import { Comment } from "../../../../api/articles/dto/get.comments.dto";
-import { useAuth } from "../../../../hooks/useAuth";
+import { Comment } from "../../api/dto/get.comments.dto";
+import { useAuth } from "../../../auth/hooks/useAuth";
 import CommentItemAuthor from "./comment.item.author.component";
 import CommentItemBody from "./comment.item.body.component";
 import CommentItemHeader from "./comment.item.header.component";

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { toggleDarkTheme } from "../redux/theme.slice";
+import { useAppDispatch, useAppSelector } from "../../../core/store";
+import { toggleDarkTheme } from "../../common/store/theme.slice";
 
 export const useTheme = () => {
   const darkTheme = useAppSelector((state) => state.theme.value);

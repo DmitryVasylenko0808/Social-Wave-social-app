@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Article } from "../../../api/articles/dto/get.articles.dto";
+import { Article } from "../api/dto/get.articles.dto";
 import { Avatar } from "../../common/ui";
-import { articlesImgUrl, userAvatarsUrl } from "../../../api/constants";
+import { articlesImgUrl, userAvatarsUrl } from "../../../core/constants";
 
 type ArticleViewProps = {
   article: Article;

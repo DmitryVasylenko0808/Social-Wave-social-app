@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Menu, MenuItem } from "../../../common/ui";
 import { Repeat2, TextQuote } from "lucide-react";
-import { useRepostArticleMutation } from "../../../../api/articles/articles.api";
-import { useClickOutside } from "../../../../hooks/useClickOutside";
+import { useRepostArticleMutation } from "../../api/articles.api";
+import { useClickOutside } from "../../../common/hooks/useClickOutside";
 import { cn } from "../../../../utils/cn";
-import { useAlerts } from "../../../../hooks/useAlerts";
+import { useAlerts } from "../../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
-import { Article } from "../../../../api/articles/dto/get.articles.dto";
-import { useModal } from "../../../../hooks/useModal";
+import { Article } from "../../api/dto/get.articles.dto";
+import { useModal } from "../../../common/hooks/useModal";
 import ArticleQuoteModal from "../article.quote.modal";
 
 type ArticleMenuRepostProps = {

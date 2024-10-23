@@ -1,6 +1,6 @@
-import { SortDate } from "../../../api/articles/dto/get.articles.dto";
+import { SortDate } from "../api/dto/get.articles.dto";
 import { PropsWithChildren, useRef, useState } from "react";
-import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useClickOutside } from "../../common/hooks/useClickOutside";
 import { Button, Menu } from "../../common/ui";
 
 type MenuSortArticlesProps = PropsWithChildren & {

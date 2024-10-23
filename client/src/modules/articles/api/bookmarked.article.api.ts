@@ -1,4 +1,4 @@
-import { store } from "../../redux/store";
+import { store } from "../../../core/store";
 import { articlesApi } from "./articles.api";
 import { GetArticlesDto } from "./dto/get.articles.dto";
 import { updateFeed } from "./utils";

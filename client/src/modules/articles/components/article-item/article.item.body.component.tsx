@@ -1,4 +1,4 @@
-import { articlesImgUrl } from "../../../../api/constants";
+import { articlesImgUrl } from "../../../../core/constants";
 import { ArticleItemProps } from "./article.item.component";
 
 type ArticleItemBodyProps = Pick<ArticleItemProps, "data">;

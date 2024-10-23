@@ -1,4 +1,4 @@
-import { useGetOneArticleQuery } from "../../../api/articles/articles.api";
+import { useGetOneArticleQuery } from "../api/articles.api";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { ArticleItem, ArticleSkeleton } from ".";
 

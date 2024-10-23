@@ -1,4 +1,4 @@
-import { userAvatarsUrl } from "../../../../api/constants";
+import { userAvatarsUrl } from "../../../../core/constants";
 import { UserDetails } from "../../../../api/users/dto/get.one.user.dto";
 import { Avatar } from "../../../common/ui";
 

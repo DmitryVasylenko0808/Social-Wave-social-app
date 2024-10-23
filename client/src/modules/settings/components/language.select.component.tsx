@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useClickOutside } from "../../common/hooks/useClickOutside";
 import { Select, SelectItem } from "../../common/ui";
 
 const lngs = {

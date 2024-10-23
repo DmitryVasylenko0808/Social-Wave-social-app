@@ -1,6 +1,6 @@
-import { useGetBookmarkedArticlesQuery } from "../../../api/articles/bookmarked.article.api";
-import { useAuth } from "../../../hooks/useAuth";
-import { usePage } from "../../../hooks/usePage";
+import { useGetBookmarkedArticlesQuery } from "../api/bookmarked.article.api";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { usePage } from "../../common/hooks/usePage";
 import { useTranslation } from "react-i18next";
 import { InfiniteScroll, NavigateBack, NoData } from "../../common/components";
 import { List, ListItem } from "../../common/ui";

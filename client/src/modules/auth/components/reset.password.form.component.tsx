@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { useSearchParams } from "react-router-dom";
-import { useAlerts } from "../../../hooks/useAlerts";
-import { useResetPasswordMutation } from "../../../api/auth/auth.api";
+import { useAlerts } from "../../common/hooks/useAlerts";
+import { useResetPasswordMutation } from "../api/auth.api";
 import { useForm } from "react-hook-form";
 import { Button, Loader, TextField } from "../../common/ui";
 import { z } from "zod";

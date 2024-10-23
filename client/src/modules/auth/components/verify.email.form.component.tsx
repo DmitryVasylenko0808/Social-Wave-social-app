@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../hooks/useAuth";
-import { useVerifyEmailMutation } from "../../../api/auth/auth.api";
+import { useAuth } from "../hooks/useAuth";
+import { useVerifyEmailMutation } from "../api/auth.api";
 import { Button, Loader, TextField } from "../../common/ui";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

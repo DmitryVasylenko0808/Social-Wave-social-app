@@ -1,5 +1,5 @@
-import { useAlerts } from "../../../hooks/useAlerts";
-import { useForgotPasswordMutation } from "../../../api/auth/auth.api";
+import { useAlerts } from "../../common/hooks/useAlerts";
+import { useForgotPasswordMutation } from "../api/auth.api";
 import { useForm } from "react-hook-form";
 import { Button, Loader, TextField } from "../../common/ui";
 import { Link } from "react-router-dom";

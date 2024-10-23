@@ -1,7 +1,7 @@
-import { useToggleLikeArticleMutation } from "../../../../api/articles/articles.api";
-import { useToggleBookmarkArticleMutation } from "../../../../api/articles/bookmarked.article.api";
-import { useAlerts } from "../../../../hooks/useAlerts";
-import { useAuth } from "../../../../hooks/useAuth";
+import { useToggleLikeArticleMutation } from "../../api/articles.api";
+import { useToggleBookmarkArticleMutation } from "../../api/bookmarked.article.api";
+import { useAlerts } from "../../../common/hooks/useAlerts";
+import { useAuth } from "../../../auth/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { Heart, MessageSquare, Bookmark } from "lucide-react";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { articlesImgUrl } from "../api/constants";
+import { articlesImgUrl } from "../../../core/constants";
 
 export const useImagePreview = (defaultImages?: string[]) => {
   const [imagesPreview, setImagesPreview] = useState<string[] | null>(null);

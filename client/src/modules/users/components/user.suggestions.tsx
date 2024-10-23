@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { UserItem } from ".";
-import { useLazyGetSuggestedUsersQuery } from "../../../api/users/users.api";
-import { useAuth } from "../../../hooks/useAuth";
+import { useLazyGetSuggestedUsersQuery } from "../api/users.api";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { List, ListItem, Loader } from "../../common/ui";
 
 const UserSuggestions = () => {

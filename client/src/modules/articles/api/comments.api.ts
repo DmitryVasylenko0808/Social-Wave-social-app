@@ -1,3 +1,4 @@
+import { api } from "../../../core/api";
 import { articlesApi } from "./articles.api";
 import { Comment, GetCommentsDto } from "./dto/get.comments.dto";
 
@@ -22,7 +23,7 @@ type EditCommentParams = {
   text: string;
 };
 
-const commentsApi = articlesApi.injectEndpoints({
+const commentsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getComments: builder.query<GetCommentsDto, GetCommentsParams>({
       query: ({ articleId, page }) =>

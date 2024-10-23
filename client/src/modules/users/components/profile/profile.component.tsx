@@ -1,5 +1,5 @@
 import { Navigate, useParams } from "react-router";
-import { useGetOneUserQuery } from "../../../../api/users/users.api";
+import { useGetOneUserQuery } from "../../api/users.api";
 import ProfileBackground from "./profile.background.component";
 import ProfileInfo from "./profile.info.component";
 import ProfileActions from "./profile.actions.component";

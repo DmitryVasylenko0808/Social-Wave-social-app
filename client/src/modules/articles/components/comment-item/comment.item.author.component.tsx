@@ -1,7 +1,7 @@
-import { Author } from "../../../../api/articles/dto/get.articles.dto";
+import { Author } from "../../api//dto/get.articles.dto";
 import { Link } from "react-router-dom";
 import { Avatar } from "../../../common/ui";
-import { userAvatarsUrl } from "../../../../api/constants";
+import { userAvatarsUrl } from "../../../../core/constants";
 
 type CommentItemAuthorProps = {
   author: Author;

@@ -1,6 +1,6 @@
-import { useCreateCommentMutation } from "../../../api/articles/comments.api";
+import { useCreateCommentMutation } from "../api/comments.api";
 import { useParams } from "react-router";
-import { useAlerts } from "../../../hooks/useAlerts";
+import { useAlerts } from "../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { TextArea, Button, Loader } from "../../common/ui";
@@ -34,7 +34,7 @@ const ArticleCommentForm = () => {
     triggerCreateComment(createCommentData)
       .unwrap()
       .then(() => reset())
-      .catch((err) => {
+      .catch((err: { data: { message: any } }) => {
         alerts.error(`${t("error")}: ${err.data.message}`);
         setError("text", { type: "server", message: err.data.message });
       });

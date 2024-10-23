@@ -1,6 +1,6 @@
-import { useLazyGetMeQuery } from "../api/auth/auth.api";
-import { setUser } from "../redux/auth.slice";
-import { useAppDispatch, useAppSelector } from "../redux/store";
+import { useLazyGetMeQuery } from "../api/auth.api";
+import { setUser } from "../store/auth.slice";
+import { useAppDispatch, useAppSelector } from "../../../core/store";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();

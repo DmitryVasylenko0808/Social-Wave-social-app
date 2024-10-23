@@ -1,4 +1,4 @@
-import { Article } from "../../../../api/articles/dto/get.articles.dto";
+import { Article } from "../../api/dto/get.articles.dto";
 import { ArticleItem } from "..";
 
 type ArticleItemRepostedProps = {

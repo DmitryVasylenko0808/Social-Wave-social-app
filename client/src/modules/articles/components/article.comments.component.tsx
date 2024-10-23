@@ -1,6 +1,6 @@
-import { useGetCommentsQuery } from "../../../api/articles/comments.api";
+import { useGetCommentsQuery } from "../api/comments.api";
 import { useParams } from "react-router";
-import { usePage } from "../../../hooks/usePage";
+import { usePage } from "../../common/hooks/usePage";
 import { useTranslation } from "react-i18next";
 import { InfiniteScroll, NoData } from "../../common/components";
 import { List, ListItem } from "../../common/ui";

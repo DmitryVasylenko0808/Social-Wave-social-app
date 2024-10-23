@@ -1,12 +1,12 @@
-import { useAlerts } from "../../../../hooks/useAlerts";
-import { useAuth } from "../../../../hooks/useAuth";
+import { useAlerts } from "../../../common/hooks/useAlerts";
+import { useAuth } from "../../../auth/hooks/useAuth";
 import {
   useFollowUserMutation,
   useUnfollowUserMutation,
-} from "../../../../api/users/users.api";
+} from "../../api/users.api";
 import { PenLine } from "lucide-react";
 import { Button } from "../../../common/ui";
-import { UserDetails } from "../../../../api/users/dto/get.one.user.dto";
+import { UserDetails } from "../../api/dto/get.one.user.dto";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

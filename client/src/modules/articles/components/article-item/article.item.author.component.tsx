@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { userAvatarsUrl } from "../../../../api/constants";
+import { userAvatarsUrl } from "../../../../core/constants";
 import { Avatar } from "../../../common/ui";
 import { ArticleItemProps } from "./article.item.component";
 import { useTranslation } from "react-i18next";

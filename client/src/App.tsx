@@ -1,5 +1,5 @@
-import { useAuth } from "./hooks/useAuth.ts";
-import { useTheme } from "./hooks/useTheme.ts";
+import { useAuth } from "./modules/auth/hooks/useAuth.ts";
+import { useTheme } from "./modules/settings/hooks/useTheme.ts";
 import { useEffect } from "react";
 import Navigation from "./navigation.tsx";
 import AlertsContainer from "./modules/common/components/alerts.container.component.tsx";

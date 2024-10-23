@@ -6,15 +6,12 @@ import {
   Loader,
 } from "../../common/ui";
 import { Navigate, useNavigate, useParams } from "react-router";
-import {
-  useEditUserMutation,
-  useGetOneUserQuery,
-} from "../../../api/users/users.api";
+import { useEditUserMutation, useGetOneUserQuery } from "../api/users.api";
+import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
-import { userAvatarsUrl } from "../../../api/constants";
+import { userAvatarsUrl } from "../../../core/constants";
 import { NavigateBack } from "../../common/components";
 import { z } from "zod";
-import { useTranslation } from "react-i18next";
 
 const editUserSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),

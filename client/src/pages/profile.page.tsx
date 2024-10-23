@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../modules/auth/hooks/useAuth";
 import {
   CreateArticleForm,
   MixedFeed,

@@ -1,4 +1,4 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../modules/auth/hooks/useAuth";
 import { Navigate, useParams } from "react-router";
 import { EditProfileForm } from "../modules/users/components";
 

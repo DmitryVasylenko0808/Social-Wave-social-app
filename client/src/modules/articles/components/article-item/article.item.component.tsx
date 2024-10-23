@@ -1,5 +1,5 @@
-import { useAuth } from "../../../../hooks/useAuth";
-import { Article } from "../../../../api/articles/dto/get.articles.dto";
+import { useAuth } from "../../../auth/hooks/useAuth";
+import { Article } from "../../api/dto/get.articles.dto";
 import ArticleItemHeader from "./article.item.header.component";
 import ArticleItemBody from "./article.item.body.component";
 import ArticleItemFooter from "./article.item.footer.component";

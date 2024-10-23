@@ -1,8 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Article, GetArticlesDto } from "./dto/get.articles.dto";
-import { store } from "../../redux/store";
-import { apiUrl } from "../constants";
+import { store } from "../../../core/store";
 import { updateFeed } from "./utils";
+import { api } from "../../../core/api";
 
 type GetUserFeedParams = {
   userId: string;
@@ -36,15 +35,7 @@ type RepostArticleParams = {
   text?: string;
 };
 
-export const articlesApi = createApi({
-  reducerPath: "articlesApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${apiUrl}`,
-    prepareHeaders: (headers) => {
-      headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
-    },
-  }),
-  tagTypes: ["Articles"],
+export const articlesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getFeed: builder.query<GetArticlesDto, number>({
       query: (page) => `/feed?page=${page}`,
@@ -286,6 +277,7 @@ export const articlesApi = createApi({
       ],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

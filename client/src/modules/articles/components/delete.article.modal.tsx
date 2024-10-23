@@ -1,9 +1,9 @@
-import { useDeleteArticleMutation } from "../../../api/articles/articles.api";
-import { useAlerts } from "../../../hooks/useAlerts";
+import { useDeleteArticleMutation } from "../api/articles.api";
+import { useAlerts } from "../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 import { Button, Loader, Modal } from "../../common/ui";
 import { ModalProps } from "../../common/ui/modal.component";
-import { Article } from "../../../api/articles/dto/get.articles.dto";
+import { Article } from "../api/dto/get.articles.dto";
 
 type DeleteArticleModalProps = ModalProps & {
   article: Article;

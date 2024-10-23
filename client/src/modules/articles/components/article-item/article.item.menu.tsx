@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useRef, useState } from "react";
-import { useClickOutside } from "../../../../hooks/useClickOutside";
-import { useModal } from "../../../../hooks/useModal";
+import { useClickOutside } from "../../../common/hooks/useClickOutside";
+import { useModal } from "../../../common/hooks/useModal";
 import { EllipsisVertical, PenLine, Trash2 } from "lucide-react";
 import { Button, Menu, MenuItem } from "../../../common/ui";
 import { DeleteArticleModal, EditArticleModal } from "..";

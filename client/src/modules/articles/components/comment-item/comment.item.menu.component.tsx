@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { useDeleteCommentMutation } from "../../../../api/articles/comments.api";
-import { useAlerts } from "../../../../hooks/useAlerts";
-import { useClickOutside } from "../../../../hooks/useClickOutside";
-import { useModal } from "../../../../hooks/useModal";
+import { useDeleteCommentMutation } from "../../api/comments.api";
+import { useAlerts } from "../../../common/hooks/useAlerts";
+import { useClickOutside } from "../../../common/hooks/useClickOutside";
+import { useModal } from "../../../common/hooks/useModal";
 import { EllipsisVertical, PenLine, Trash2 } from "lucide-react";
 import { Button, Menu, MenuItem } from "../../../common/ui";
 import { CommentItemProps } from "./comment.item";
@@ -27,7 +27,7 @@ const CommentItemMenu = ({ data }: CommentItemMenuProps) => {
   const handleClickDelete = () => {
     triggerDeleteComment({ articleId: data.article, commentId: data._id })
       .unwrap()
-      .catch((err) => {
+      .catch((err: { data: { message: any } }) => {
         alerts.error(`${t("error")}: ${err.data.message}`);
       });
   };

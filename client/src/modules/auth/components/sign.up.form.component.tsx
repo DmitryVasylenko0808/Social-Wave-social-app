@@ -1,7 +1,7 @@
 import { TextField, Button, ImageFileSelect, Loader } from "../../common/ui";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useSignUpMutation } from "../../../api/auth/auth.api";
+import { useSignUpMutation } from "../api/auth.api";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLazySearchUsersQuery } from "../../../api/users/users.api";
-import { useDebounce } from "../../../hooks/useDebounce";
-import { usePage } from "../../../hooks/usePage";
+import { useLazySearchUsersQuery } from "../api/users.api";
+import { useDebounce } from "../../common/hooks/useDebounce";
+import { usePage } from "../../common/hooks/usePage";
 import { Search } from "lucide-react";
 import { List, ListItem, Loader, TextField } from "../../common/ui";
 import { UserItem } from ".";

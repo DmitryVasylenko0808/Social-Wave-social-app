@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useGetFollowingFeedQuery } from "../../../api/articles/articles.api";
-import { usePage } from "../../../hooks/usePage";
-import { useAlerts } from "../../../hooks/useAlerts";
+import { useGetFollowingFeedQuery } from "../api/articles.api";
+import { usePage } from "../../common/hooks/usePage";
+import { useAlerts } from "../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import { InfiniteScroll } from "../../common/components";

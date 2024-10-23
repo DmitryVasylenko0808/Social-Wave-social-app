@@ -1,8 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { GetOneUserDto } from "./dto/get.one.user.dto";
 import { GetUsersDto } from "./dto/get.users.dto";
-import { apiUrl } from "../constants";
 import { GetSuggestedUsersDto } from "./dto/get.suggested.users.dto";
+import { api } from "../../../core/api";
 
 type SearchUsersParams = {
   query: string;
@@ -27,26 +26,19 @@ type EditUserParams = {
   coverImage?: File;
 };
 
-export const usersApi = createApi({
-  reducerPath: "usersApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${apiUrl}/users`,
-    prepareHeaders: (headers) => {
-      headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
-    },
-  }),
-  tagTypes: ["Users"],
+export const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getOneUser: builder.query<GetOneUserDto, string>({
-      query: (id) => `/${id}`,
+      query: (id) => `/users/${id}`,
       providesTags: ["Users"],
     }),
     searchUsers: builder.query<GetUsersDto, SearchUsersParams>({
-      query: ({ query, page }) => `/search/by/name?query=${query}&page=${page}`,
+      query: ({ query, page }) =>
+        `/users/search/by/name?query=${query}&page=${page}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
-      merge: (currentCache, newItems, { arg }) => {
+      merge: (currentCache, newItems) => {
         if (currentCache.searchValue !== newItems.searchValue) {
           return newItems;
         } else {
@@ -56,7 +48,7 @@ export const usersApi = createApi({
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
       },
-      providesTags: ["Users"],
+      keepUnusedDataFor: 0,
     }),
     editUser: builder.mutation<void, EditUserParams>({
       query: ({ _id, ...body }) => {
@@ -66,7 +58,7 @@ export const usersApi = createApi({
         );
 
         return {
-          url: `/${_id}`,
+          url: `/users/${_id}`,
           method: "PATCH",
           body: formData,
           formData: true,
@@ -76,7 +68,7 @@ export const usersApi = createApi({
     }),
     getUserFollowers: builder.query<GetUsersDto, SearchFollowersParams>({
       query: ({ id, page, search }) =>
-        `/${id}/followers?page=${page}&search=${search}`,
+        `/users/${id}/followers?page=${page}&search=${search}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
@@ -95,7 +87,7 @@ export const usersApi = createApi({
     }),
     getUserFollowings: builder.query<GetUsersDto, SearchFollowingsParams>({
       query: ({ id, page, search }) =>
-        `/${id}/followings?page=${page}&search=${search}`,
+        `/users/${id}/followings?page=${page}&search=${search}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
@@ -113,20 +105,20 @@ export const usersApi = createApi({
       providesTags: ["Users"],
     }),
     getSuggestedUsers: builder.query<GetSuggestedUsersDto, string>({
-      query: (id) => `/${id}/suggested`,
+      query: (id) => `/users/${id}/suggested`,
       providesTags: ["Users"],
       keepUnusedDataFor: 0,
     }),
     followUser: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/${id}/follow`,
+        url: `/users/${id}/follow`,
         method: "POST",
       }),
       invalidatesTags: ["Users"],
     }),
     unfollowUser: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/${id}/unfollow`,
+        url: `/users/${id}/unfollow`,
         method: "DELETE",
       }),
       invalidatesTags: ["Users"],

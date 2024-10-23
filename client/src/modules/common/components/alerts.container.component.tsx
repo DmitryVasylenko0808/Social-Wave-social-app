@@ -1,5 +1,5 @@
 import { Alert, List, ListItem } from "../ui";
-import { useAlerts } from "../../../hooks/useAlerts";
+import { useAlerts } from "../hooks/useAlerts";
 
 const AlertsContainer = () => {
   const alerts = useAlerts();

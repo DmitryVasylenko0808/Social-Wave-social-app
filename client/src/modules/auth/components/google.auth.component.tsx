@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSearchParams } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
-import { apiUrl } from "../../../api/constants";
+import { useAuth } from "../hooks/useAuth";
+import { apiUrl } from "../../../core/constants";
 import { Button } from "../../common/ui";
 import GoogleIcon from "../icons/google.icon.svg";
 

@@ -1,8 +1,8 @@
 import { TextField, Button, Loader } from "../../common/ui";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignInMutation } from "../../../api/auth/auth.api";
+import { useSignInMutation } from "../api/auth.api";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

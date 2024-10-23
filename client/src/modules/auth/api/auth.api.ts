@@ -1,6 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { apiUrl } from "../constants";
 import { SignUpDto } from "./dto/sign.up.dto";
+import { api } from "../../../core/api";
 
 type SignInParams = {
   email: string;
@@ -29,18 +28,11 @@ type ResetPasswordParams = {
   newPassword: string;
 };
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${apiUrl}/auth`,
-    prepareHeaders: (headers) => {
-      headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
-    },
-  }),
+export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation<{ token: string }, SignInParams>({
       query: (body) => ({
-        url: "/sign-in",
+        url: "/auth/sign-in",
         method: "POST",
         body,
       }),
@@ -53,7 +45,7 @@ export const authApi = createApi({
         );
 
         return {
-          url: "/sign-up",
+          url: "/auth/sign-up",
           method: "POST",
           body: formData,
           formData: true,
@@ -62,29 +54,30 @@ export const authApi = createApi({
     }),
     verifyEmail: builder.mutation<{ token: string }, VerifyEmailParams>({
       query: (body) => ({
-        url: "/verify-email",
+        url: "/auth/verify-email",
         method: "POST",
         body,
       }),
     }),
     forgotPassword: builder.mutation<void, ForgotPasswordParams>({
       query: (body) => ({
-        url: "/forgot-password",
+        url: "/auth/forgot-password",
         method: "POST",
         body,
       }),
     }),
     resetPassword: builder.mutation<void, ResetPasswordParams>({
       query: (body) => ({
-        url: "/reset-password",
+        url: "/auth/reset-password",
         method: "POST",
         body,
       }),
     }),
     getMe: builder.query<{ userId: string }, void>({
-      query: () => "/me",
+      query: () => "/auth/me",
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

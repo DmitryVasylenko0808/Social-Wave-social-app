@@ -8,7 +8,7 @@ import {
   Settings,
 } from "lucide-react";
 import { Button, List, ListDivider, ListItem } from "../ui";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 
 const SideBar = () => {
