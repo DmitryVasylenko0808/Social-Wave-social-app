@@ -1,6 +1,8 @@
 import { api } from "../../../core/api";
+import { store } from "../../../core/store";
 import { articlesApi } from "./articles.api";
 import { Comment, GetCommentsDto } from "./dto/get.comments.dto";
+import { updateFeed } from "./utils";
 
 type GetCommentsParams = {
   articleId: string;
@@ -68,6 +70,18 @@ const commentsApi = api.injectEndpoints({
               }
             )
           );
+
+          updateFeed(dispatch, (draft) => {
+            for (const item of draft.data) {
+              if (item._id === articleId) {
+                item.commentsCount++;
+              }
+
+              if (item.repostedArticle?._id === articleId) {
+                item.repostedArticle.commentsCount++;
+              }
+            }
+          });
         } catch {}
       },
     }),
@@ -104,6 +118,18 @@ const commentsApi = api.injectEndpoints({
               }
             )
           );
+
+          updateFeed(dispatch, (draft) => {
+            for (const item of draft.data) {
+              if (item._id === articleId) {
+                item.commentsCount--;
+              }
+
+              if (item.repostedArticle?._id === articleId) {
+                item.repostedArticle.commentsCount--;
+              }
+            }
+          });
         } catch {}
       },
     }),
