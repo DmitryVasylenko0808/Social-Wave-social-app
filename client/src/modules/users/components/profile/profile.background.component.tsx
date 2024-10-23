@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { UserDetails } from "../../../../api/users/dto/get.one.user.dto";
+import { UserDetails } from "../../api/dto/get.one.user.dto";
 import { Button } from "../../../common/ui";
 import { userAvatarsUrl } from "../../../../core/constants";
 import { useNavigate } from "react-router";
