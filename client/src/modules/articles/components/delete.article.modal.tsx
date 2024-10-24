@@ -8,12 +8,12 @@ import { Article } from "../api/dto/get.articles.dto";
 type DeleteArticleModalProps = ModalProps & {
   article: Article;
 
-  deleteAfter?: () => void;
+  afterDelete?: () => void;
 };
 
 const DeleteArticleModal = ({
   article,
-  deleteAfter,
+  afterDelete,
   ...modalProps
 }: DeleteArticleModalProps) => {
   const alerts = useAlerts();
@@ -25,7 +25,7 @@ const DeleteArticleModal = ({
       .unwrap()
       .then(() => {
         modalProps.onClose();
-        deleteAfter?.();
+        afterDelete?.();
       })
       .catch((err) => {
         alerts.error(`${t("error")}: ${err.data.message}`);

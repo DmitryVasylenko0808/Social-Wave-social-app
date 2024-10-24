@@ -9,7 +9,7 @@ import { ArticleItemProps } from "./article.item.component";
 
 type ArticleItemMenuProps = ArticleItemProps;
 
-const ArticleItemMenu = ({ data, deleteAfter }: ArticleItemMenuProps) => {
+const ArticleItemMenu = ({ data, afterDelete }: ArticleItemMenuProps) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const { t } = useTranslation();
   const deleteModal = useModal();
@@ -54,7 +54,7 @@ const ArticleItemMenu = ({ data, deleteAfter }: ArticleItemMenuProps) => {
           article={data}
           open={deleteModal.open}
           onClose={deleteModal.onClose}
-          deleteAfter={deleteAfter}
+          afterDelete={afterDelete}
         />
       )}
     </>

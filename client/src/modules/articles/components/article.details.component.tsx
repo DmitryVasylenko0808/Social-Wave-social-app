@@ -21,7 +21,7 @@ const ArticleDetails = () => {
     <div>
       {isLoading && <ArticleSkeleton />}
       {article && (
-        <ArticleItem data={article} deleteAfter={goBackAfterDelete} />
+        <ArticleItem data={article} afterDelete={goBackAfterDelete} />
       )}
     </div>
   );

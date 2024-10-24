@@ -14,10 +14,10 @@ export type ArticleItemProps = {
   data: Article;
   reposted?: boolean;
 
-  deleteAfter?: () => void;
+  afterDelete?: () => void;
 };
 
-const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
+const ArticleItem = ({ data, reposted, afterDelete }: ArticleItemProps) => {
   const { user } = useAuth();
 
   const isUserArticle = data.author._id === user.userId;
@@ -29,7 +29,7 @@ const ArticleItem = ({ data, reposted, deleteAfter }: ArticleItemProps) => {
         <ArticleItemAuthor data={data} />
         <ArticleItemMeta data={data}>
           {isShowMenu && (
-            <ArticleItemMenu data={data} deleteAfter={deleteAfter} />
+            <ArticleItemMenu data={data} afterDelete={afterDelete} />
           )}
         </ArticleItemMeta>
       </ArticleItemHeader>
