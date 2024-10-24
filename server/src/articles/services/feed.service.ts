@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Article } from '../schemas/article.schema';
 import { Model } from 'mongoose';
 import { PaginatedResponse } from '../types/paginated.response';
-import { UsersService } from 'src/users/users.service';
 import { SortDate } from '../types/sort.date';
+import { SubscriptionsService } from 'src/users/services/subscriptions.service';
 
 @Injectable()
 export class FeedService {
@@ -12,7 +12,7 @@ export class FeedService {
 
   constructor(
     @InjectModel(Article.name) private readonly articleModel: Model<Article>,
-    private readonly usersService: UsersService,
+    private readonly subcriptionsService: SubscriptionsService,
   ) {
     this.limit = 10;
   }
@@ -72,7 +72,7 @@ export class FeedService {
   }
 
   async getFollowingFeedByUserId(userId: string, page: number) {
-    const followingsIds = await this.usersService.getFollowingsIds(userId);
+    const followingsIds = await this.subcriptionsService.getFollowingsIds(userId);
     const articles = await this.articleModel
       .find({
         author: { $in: followingsIds },

@@ -13,15 +13,19 @@ import {
   Post,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './services/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { EditUserDto } from './dto/edit.user.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { avatarsStorage } from 'src/multer.config';
+import { SubscriptionsService } from './services/subscriptions.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly subcriptionsService: SubscriptionsService,
+  ) {}
 
   @Get(':id')
   async getOne(@Param('id') id: string) {
@@ -49,20 +53,19 @@ export class UsersController {
     @Body() editUserDto: EditUserDto,
     @UploadedFiles() files: { avatar: Express.Multer.File[]; coverImage: Express.Multer.File[] },
   ) {
-    console.log(files);
     return await this.usersService.edit(id, editUserDto, files);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post(':id/follow')
   async follow(@Param('id') id: string, @Request() req: any) {
-    await this.usersService.follow(id, req.user.userId);
+    await this.subcriptionsService.follow(id, req.user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id/unfollow')
   async unfollow(@Param('id') id: string, @Request() req: any) {
-    await this.usersService.unfollow(id, req.user.userId);
+    await this.subcriptionsService.unfollow(id, req.user.userId);
   }
 
   @Get(':id/followers')
@@ -71,7 +74,7 @@ export class UsersController {
     @Query('page', ParseIntPipe) page: number,
     @Query('search') search: string,
   ) {
-    return await this.usersService.getFollowers(id, page, search);
+    return await this.subcriptionsService.getFollowers(id, page, search);
   }
 
   @Get(':id/followings')
@@ -80,7 +83,7 @@ export class UsersController {
     @Query('page', ParseIntPipe) page: number,
     @Query('search') search: string,
   ) {
-    return await this.usersService.getFollowings(id, page, search);
+    return await this.subcriptionsService.getFollowings(id, page, search);
   }
 
   @Get(':id/suggested')

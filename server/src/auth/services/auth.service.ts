@@ -1,14 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/users/services/users.service';
 import { SignUpDto } from '../dto/sign.up.dto';
 import * as bcrypt from 'bcrypt';
 import { Types } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Profile } from 'passport';
-import { VerifyEmailData } from '../types/verify.email.data';
 import { VerifyEmailDto } from '../dto/verify.email.dto';
 import { ForgotPasswordDto } from '../dto/forgot.password.dto';
-import * as crypto from 'crypto';
 import { ResetPasswordDto } from '../dto/reset.password.dto';
 import { VerificationCodesService } from './verification.codes.service';
 import { EmailService } from 'src/email/email.service';
@@ -32,7 +30,6 @@ export class AuthService {
     }
 
     const hash = await bcrypt.hash(data.password, 10);
-
     const createdUser = await this.usersService.create({
       ...data,
       passwordHash: hash,
@@ -41,6 +38,7 @@ export class AuthService {
     const { _id: userId, email, firstName, secondName } = createdUser;
 
     const verificationCode = await this.verificationCodesService.generate(userId);
+
     await this.emailService.sendVerifyCode(email, verificationCode.code, firstName, secondName);
 
     const res = { userId, email };
