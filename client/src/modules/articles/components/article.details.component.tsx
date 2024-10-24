@@ -1,17 +1,18 @@
 import { useGetOneArticleQuery } from "../api/articles.api";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { ArticleItem, ArticleSkeleton } from ".";
 
-const ArticleDetails = () => {
+type ArticleDetailsProps = {
+  afterDelete?: () => void;
+};
+
+const ArticleDetails = ({ afterDelete }: ArticleDetailsProps) => {
   const { articleId } = useParams();
   const {
     data: article,
     isLoading,
     isError,
   } = useGetOneArticleQuery(articleId as string);
-  const navigate = useNavigate();
-
-  const goBackAfterDelete = () => navigate(-1);
 
   if (isError) {
     return <Navigate to="*" replace />;
@@ -20,9 +21,7 @@ const ArticleDetails = () => {
   return (
     <div>
       {isLoading && <ArticleSkeleton />}
-      {article && (
-        <ArticleItem data={article} afterDelete={goBackAfterDelete} />
-      )}
+      {article && <ArticleItem data={article} afterDelete={afterDelete} />}
     </div>
   );
 };

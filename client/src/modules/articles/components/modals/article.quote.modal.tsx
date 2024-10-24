@@ -1,12 +1,12 @@
-import { useRepostArticleMutation } from "../api/articles.api";
+import { useRepostArticleMutation } from "../../api/articles.api";
 import { useForm } from "react-hook-form";
-import { Article } from "../api/dto/get.articles.dto";
-import { Button, Loader, TextArea } from "../../common/ui";
-import Modal, { ModalProps } from "../../common/ui/modal.component";
-import ArticleView from "./article.view";
+import { Article } from "../../api/dto/get.articles.dto";
+import { Button, Loader, TextArea } from "../../../common/ui";
+import Modal, { ModalProps } from "../../../common/ui/modal.component";
+import ArticleView from "../article.view";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAlerts } from "../../common/hooks/useAlerts";
+import { useAlerts } from "../../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 
 const quoteArticleSchema = z.object({

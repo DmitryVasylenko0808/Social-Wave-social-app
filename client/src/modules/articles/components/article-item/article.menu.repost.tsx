@@ -8,7 +8,7 @@ import { useAlerts } from "../../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 import { Article } from "../../api/dto/get.articles.dto";
 import { useModal } from "../../../common/hooks/useModal";
-import ArticleQuoteModal from "../article.quote.modal";
+import ArticleQuoteModal from "../modals/article.quote.modal";
 
 type ArticleMenuRepostProps = {
   article: Article;

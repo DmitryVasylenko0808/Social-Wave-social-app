@@ -1,10 +1,10 @@
-import { Comment } from "../api/dto/get.comments.dto";
-import { useEditCommentMutation } from "../api/comments.api";
-import { useAlerts } from "../../common/hooks/useAlerts";
+import { Comment } from "../../api/dto/get.comments.dto";
+import { useEditCommentMutation } from "../../api/comments.api";
+import { useAlerts } from "../../../common/hooks/useAlerts";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
-import { TextArea, Button, Loader } from "../../common/ui";
-import Modal, { ModalProps } from "../../common/ui/modal.component";
+import { TextArea, Button, Loader } from "../../../common/ui";
+import Modal, { ModalProps } from "../../../common/ui/modal.component";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 

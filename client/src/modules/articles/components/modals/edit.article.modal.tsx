@@ -1,16 +1,16 @@
 import {
   useEditArticleMutation,
   useGetOneArticleQuery,
-} from "../api/articles.api";
-import { useImagePreview } from "../../common/hooks/useImagePreview";
-import { useAlerts } from "../../common/hooks/useAlerts";
+} from "../../api/articles.api";
+import { useImagePreview } from "../../../common/hooks/useImagePreview";
+import { useAlerts } from "../../../common/hooks/useAlerts";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
-import Modal, { ModalProps } from "../../common/ui/modal.component";
-import { Article } from "../api/dto/get.articles.dto";
-import { Button, Loader, TextArea } from "../../common/ui";
-import { ArticleImageFilesSelect, ArticleImagesPreview } from ".";
+import Modal, { ModalProps } from "../../../common/ui/modal.component";
+import { Article } from "../../api/dto/get.articles.dto";
+import { Button, Loader, TextArea } from "../../../common/ui";
+import { ArticleImageFilesSelect, ArticleImagesPreview } from "..";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
