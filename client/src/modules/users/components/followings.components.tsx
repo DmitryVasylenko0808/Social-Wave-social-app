@@ -53,43 +53,45 @@ const Followings = () => {
   }
 
   return (
-    <div className="px-6 py-2">
+    <>
       <NavigateBack
         title={t("followers.title", {
           firstName: user?.firstName,
           secondName: user?.secondName,
         })}
       />
-      <TextField
-        className="mb-4"
-        placeholder="Search user..."
-        leftAddon={
-          isShowLoader ? (
-            <Loader size="small" />
-          ) : (
-            <Search className="text-primary-200" />
-          )
-        }
-        onChange={handleChange}
-      />
-      <div>
-        {isNoData && <NoData message={t("noData.followings")} />}
-        <InfiniteScroll
-          currentPage={page}
-          totalPages={data?.totalPages || 0}
-          isFetching={isFetching}
-          next={nextPage}
-        >
-          <List className="gap-4">
-            {data?.data.map((user) => (
-              <ListItem key={user._id}>
-                <UserItem data={user} />
-              </ListItem>
-            ))}
-          </List>
-        </InfiniteScroll>
+      <div className="pt-6 pb-4 px-6">
+        <TextField
+          className="mb-4"
+          placeholder="Search user..."
+          leftAddon={
+            isShowLoader ? (
+              <Loader size="small" />
+            ) : (
+              <Search className="text-primary-200" />
+            )
+          }
+          onChange={handleChange}
+        />
+        <div>
+          {isNoData && <NoData message={t("noData.followings")} />}
+          <InfiniteScroll
+            currentPage={page}
+            totalPages={data?.totalPages || 0}
+            isFetching={isFetching}
+            next={nextPage}
+          >
+            <List className="gap-4">
+              {data?.data.map((user) => (
+                <ListItem key={user._id}>
+                  <UserItem data={user} />
+                </ListItem>
+              ))}
+            </List>
+          </InfiniteScroll>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

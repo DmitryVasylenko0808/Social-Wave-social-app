@@ -1,18 +1,25 @@
+import { useNavigate } from "react-router";
+import { ComponentProps } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "../ui";
-import { useNavigate } from "react-router";
+import { cn } from "../../../utils/cn";
 
-type NavigateBackProps = {
+type NavigateBackProps = ComponentProps<"div"> & {
   title?: string;
 };
 
-const NavigateBack = ({ title }: NavigateBackProps) => {
+const NavigateBack = ({ title, className }: NavigateBackProps) => {
   const navigate = useNavigate();
 
   const handleClickBack = () => navigate(-1);
 
+  const classes = cn(
+    "sticky top-0 z-10 py-2 px-6 bg-white border-b border-secondary-50 flex items-center gap-3.5 shadow-sm dark:bg-dark-100 dark:border-dark-200",
+    className
+  );
+
   return (
-    <div className="mb-10 flex items-center gap-3.5">
+    <div className={classes}>
       <Button variant="terciary" onClick={handleClickBack}>
         <ArrowLeft />
       </Button>

@@ -25,23 +25,25 @@ const BookmarksArticles = () => {
   }
 
   return (
-    <div className="px-6 py-2">
+    <>
       <NavigateBack />
-      <InfiniteScroll
-        next={nextPage}
-        currentPage={page}
-        isFetching={isFetching}
-        totalPages={data?.totalPages || 0}
-      >
-        <List>
-          {data?.data.map((article) => (
-            <ListItem key={article._id}>
-              <ArticleItem data={article} />
-            </ListItem>
-          ))}
-        </List>
-      </InfiniteScroll>
-    </div>
+      <div className="pt-6 pb-4 px-6">
+        <InfiniteScroll
+          next={nextPage}
+          currentPage={page}
+          isFetching={isFetching}
+          totalPages={data?.totalPages || 0}
+        >
+          <List>
+            {data?.data.map((article) => (
+              <ListItem key={article._id}>
+                <ArticleItem data={article} />
+              </ListItem>
+            ))}
+          </List>
+        </InfiniteScroll>
+      </div>
+    </>
   );
 };
 
