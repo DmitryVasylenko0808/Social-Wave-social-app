@@ -75,7 +75,7 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
       <div className="flex gap-8">
         <Button
           className="text-sm gap-2"
-          variant="terciary"
+          variant="tertiary"
           onClick={handleClickLike}
         >
           <Heart size={22} className={heartClasses} />
@@ -88,7 +88,7 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
         />
         <Button
           className="text-sm gap-2"
-          variant="terciary"
+          variant="tertiary"
           onClick={handleClickComments}
         >
           <MessageSquare size={22} />
@@ -98,7 +98,7 @@ const ArticleItemActions = ({ data }: ArticleItemActionsProps) => {
       <div className="">
         <Button
           className="text-sm gap-2"
-          variant="terciary"
+          variant="tertiary"
           onClick={handleClickBookmark}
         >
           <Bookmark size={22} className={bookmarkClasses} />

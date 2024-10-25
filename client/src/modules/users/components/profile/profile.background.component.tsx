@@ -22,7 +22,7 @@ const ProfileBackground = ({ data }: ProfileBackgroundProps) => {
     >
       <div className="py-2 px-6 hover:bg-black/50">
         <div className="flex items-center gap-3.5">
-          <Button variant="terciary" onClick={handleClickBack}>
+          <Button variant="tertiary" onClick={handleClickBack}>
             <ArrowLeft />
           </Button>
           <h2 className="text-xl text-primary-200 font-bold">

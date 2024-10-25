@@ -64,7 +64,7 @@ const ForgotPasswordForm = () => {
 
       <Button
         type="submit"
-        variant="secondary"
+        variant="primary"
         className="mb-8 w-full"
         disabled={isLoading}
       >

@@ -23,7 +23,7 @@ const Modal = ({ open, title, children, onClose }: ModalProps) => {
             <span className="text-black text-xl font-bold dark:text-white">
               {title}
             </span>
-            <Button variant="terciary" onClick={onClose}>
+            <Button variant="tertiary" onClick={onClose}>
               <X />
             </Button>
           </div>

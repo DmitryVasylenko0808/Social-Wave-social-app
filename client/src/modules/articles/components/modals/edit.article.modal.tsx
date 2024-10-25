@@ -110,7 +110,7 @@ const EditArticleModal = ({
                 />
               )}
             />
-            <Button variant="secondary" type="submit" disabled={isLoadingEdit}>
+            <Button variant="primary" type="submit" disabled={isLoadingEdit}>
               {isLoadingEdit ? (
                 <Loader size="small" variant="secondary" />
               ) : (

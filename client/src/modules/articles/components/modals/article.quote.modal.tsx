@@ -59,7 +59,7 @@ const ArticleQuoteModal = ({
           <ArticleView article={article} />
         </div>
         <div className="flex justify-end">
-          <Button type="submit" variant="secondary" disabled={isLoading}>
+          <Button type="submit" variant="primary" disabled={isLoading}>
             {isLoading ? (
               <Loader variant="secondary" size="small" />
             ) : (

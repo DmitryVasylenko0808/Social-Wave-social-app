@@ -37,7 +37,7 @@ const DeleteArticleModal = ({
       <p className="mb-8 dark:text-secondary-50">{t("deleteArticle.body")}</p>
       <div className="flex justify-end">
         <Button
-          variant="secondary"
+          variant="primary"
           onClick={handleClickDelete}
           disabled={isLoading}
         >

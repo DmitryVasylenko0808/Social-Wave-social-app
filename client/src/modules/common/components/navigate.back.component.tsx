@@ -20,7 +20,7 @@ const NavigateBack = ({ title, className }: NavigateBackProps) => {
 
   return (
     <div className={classes}>
-      <Button variant="terciary" onClick={handleClickBack}>
+      <Button variant="tertiary" onClick={handleClickBack}>
         <ArrowLeft />
       </Button>
       {title && <h2 className="text-xl text-primary-200 font-bold">{title}</h2>}

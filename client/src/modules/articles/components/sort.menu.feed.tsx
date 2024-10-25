@@ -19,7 +19,7 @@ const MenuSortArticles = ({ children, value }: MenuSortArticlesProps) => {
 
   return (
     <div className="relative">
-      <Button variant="terciary" onClick={handleClickMenu}>
+      <Button variant="tertiary" onClick={handleClickMenu}>
         {t("sortMenuFeed.title")}:{" "}
         {value === "desc"
           ? t("sortMenuFeed.items.newest")

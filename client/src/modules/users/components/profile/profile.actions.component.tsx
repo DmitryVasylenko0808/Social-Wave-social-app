@@ -46,11 +46,11 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
       {!isCurrentUserProfile && (
         <>
           {!isFollowed ? (
-            <Button variant="secondary" onClick={handleClickFollow}>
+            <Button variant="primary" onClick={handleClickFollow}>
               {t("profile.actions.followBtn")}
             </Button>
           ) : (
-            <Button variant="remove" onClick={handleClickUnfollow}>
+            <Button variant="secondary" onClick={handleClickUnfollow}>
               {t("profile.actions.unfollowBtn")}
             </Button>
           )}

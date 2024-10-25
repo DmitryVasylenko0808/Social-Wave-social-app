@@ -50,7 +50,7 @@ const ArticleCommentForm = () => {
         {...register("text")}
       />
       <div className="flex justify-end items-center">
-        <Button type="submit" variant="secondary" disabled={isLoading}>
+        <Button type="submit" variant="primary" disabled={isLoading}>
           {isLoading ? (
             <Loader size="small" variant="secondary" />
           ) : (

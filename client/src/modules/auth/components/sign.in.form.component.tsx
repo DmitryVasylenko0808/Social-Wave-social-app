@@ -71,7 +71,7 @@ const SignInForm = () => {
         </Link>
       </p>
 
-      <Button variant="secondary" className="mb-8 w-full" disabled={isLoading}>
+      <Button variant="primary" className="mb-8 w-full" disabled={isLoading}>
         {isLoading ? (
           <Loader size="small" variant="secondary" />
         ) : (

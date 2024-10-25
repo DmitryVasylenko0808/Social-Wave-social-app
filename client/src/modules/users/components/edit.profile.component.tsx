@@ -172,7 +172,7 @@ const EditProfileForm = () => {
               </p>
               <div className="flex justify-end">
                 <Button
-                  variant="secondary"
+                  variant="primary"
                   type="submit"
                   disabled={isLoadingUser || isLoading}
                 >

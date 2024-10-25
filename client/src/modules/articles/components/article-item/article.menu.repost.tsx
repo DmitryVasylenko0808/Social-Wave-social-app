@@ -60,7 +60,7 @@ const ArticleMenuRepost = ({
         <Button
           disabled={disabled}
           className="text-sm gap-2"
-          variant="terciary"
+          variant="tertiary"
           onClick={handleClickMenuRepost}
         >
           <Repeat2 size={22} className={repostClasses} />

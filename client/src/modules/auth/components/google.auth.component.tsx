@@ -36,7 +36,7 @@ const GoogleAuth = () => {
 
       <Button
         type="button"
-        variant="terciary"
+        variant="tertiary"
         className="w-full border border-secondary-100 rounded-3xl hover:bg-secondary-50 dark:hover:bg-dark-200"
         onClick={handleClickGoogleLogin}
       >

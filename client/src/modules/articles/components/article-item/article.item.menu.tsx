@@ -25,7 +25,7 @@ const ArticleItemMenu = ({ data, afterDelete }: ArticleItemMenuProps) => {
   return (
     <>
       <div className="relative">
-        <Button variant="terciary" onClick={handleClickOpenMenu}>
+        <Button variant="tertiary" onClick={handleClickOpenMenu}>
           <EllipsisVertical />
         </Button>
 

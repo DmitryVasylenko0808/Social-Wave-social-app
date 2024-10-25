@@ -59,14 +59,14 @@ const SideBar = () => {
           <ListDivider />
           {isAuthenticated ? (
             <ListItem>
-              <Button variant="terciary" onClick={logOut}>
+              <Button variant="tertiary" onClick={logOut}>
                 <LogOut />
                 {t("sidebar.logOutBtn")}
               </Button>
             </ListItem>
           ) : (
             <ListItem>
-              <Button as="link" variant="terciary" to="/auth/sign-in">
+              <Button as="link" variant="tertiary" to="/auth/sign-in">
                 <LogIn />
                 {t("sidebar.signInBtn")}
               </Button>

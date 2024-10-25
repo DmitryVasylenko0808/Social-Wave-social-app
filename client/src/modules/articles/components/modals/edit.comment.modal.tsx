@@ -61,7 +61,7 @@ const EditCommentModal = ({
           {...register("text")}
         />
         <div className="flex justify-end">
-          <Button variant="secondary" type="submit" disabled={isLoading}>
+          <Button variant="primary" type="submit" disabled={isLoading}>
             {isLoading ? (
               <Loader size="small" variant="secondary" />
             ) : (
