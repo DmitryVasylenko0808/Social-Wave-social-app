@@ -46,8 +46,12 @@ const UserFeed = () => {
     <div className="px-6 py-2">
       <div className="flex justify-end">
         <MenuSortArticles value={sortDate}>
-          <MenuItem onClick={() => handleClickSort("desc")}>Newest</MenuItem>
-          <MenuItem onClick={() => handleClickSort("asc")}>Oldest</MenuItem>
+          <MenuItem onClick={() => handleClickSort("desc")}>
+            {t("sortMenuFeed.items.newest")}
+          </MenuItem>
+          <MenuItem onClick={() => handleClickSort("asc")}>
+            {t("sortMenuFeed.items.oldest")}
+          </MenuItem>
         </MenuSortArticles>
       </div>
       <InfiniteScroll

@@ -69,10 +69,10 @@ const ArticleMenuRepost = ({
         <Menu open={openMenu} ref={ref}>
           <MenuItem onClick={handleClickRepost}>
             <Repeat2 size={18} />
-            Repost
+            {t("article.repostMenu.repost")}
           </MenuItem>
           <MenuItem onClick={handleClickQuoteRepost}>
-            <TextQuote size={18} /> Quote repost
+            <TextQuote size={18} /> {t("article.repostMenu.repostQuote")}
           </MenuItem>
         </Menu>
       </div>

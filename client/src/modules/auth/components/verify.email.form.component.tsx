@@ -5,6 +5,7 @@ import { useVerifyEmailMutation } from "../api/auth.api";
 import { Button, Loader, TextField } from "../../common/ui";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 
 const verifyEmailSchema = z.object({
   code: z.string().min(1, "Verification code is required"),
@@ -25,6 +26,7 @@ const VerifyEmailForm = () => {
     resolver: zodResolver(verifyEmailSchema),
   });
   const { authenticate } = useAuth();
+  const { t } = useTranslation();
 
   const submitHandler = (data: VerifyEmailFormFields) => {
     const verifyData = { userId: location.state.userId, code: data.code };
@@ -43,17 +45,16 @@ const VerifyEmailForm = () => {
   return (
     <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
       <h2 className="mb-4 text-primary-200 text-2xl text-center font-bold">
-        Email Confirmation
+        {t("verifyEmail.title")}
       </h2>
       <p className="mb-7 text-center dark:text-secondary-100">
-        Thank you for registering! We have sent a verification code to your
-        email address. Please check your inbox and enter the code below:
+        {t("verifyEmail.text")}
       </p>
 
       <div className="mb-5 flex flex-col space-y-4">
         <TextField
           {...register("code")}
-          label="Verification code"
+          label={t("verifyEmail.fields.code")}
           error={errors.code?.message}
         />
       </div>
@@ -68,7 +69,11 @@ const VerifyEmailForm = () => {
         className="mb-8 w-full"
         disabled={isLoading}
       >
-        {isLoading ? <Loader size="small" variant="secondary" /> : "Confirm"}
+        {isLoading ? (
+          <Loader size="small" variant="secondary" />
+        ) : (
+          t("verifyEmail.submitBtn")
+        )}
       </Button>
     </form>
   );

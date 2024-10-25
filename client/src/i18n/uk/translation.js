@@ -12,7 +12,7 @@ export const uk = {
             bookmarks: "Закладки",
             settings: "Налаштування",
             profile: "Профіль",
-            signInBtn: "Ввійти",
+            signInBtn: "Увійти",
             logOutBtn: "Вихід"
         },
         signIn: {
@@ -21,8 +21,11 @@ export const uk = {
                 email: "Ел. пошта",
                 password: "Пароль"
             },
-            submitBtn: "Ввійти",
-            withoutAcc: "<CustomParagraph>Немає аккаунту? <CustomLink>Зареєструватись</CustomLink></CustomParagraph>"
+            submitBtn: "Увійти",
+            withoutAcc: "<CustomParagraph>Немає аккаунту? <CustomLink>Зареєструватись</CustomLink></CustomParagraph>",
+            forgotPassword: "Забув пароль",
+            googleAuthBtn: "Увійти через Google",
+            or: "або",
         },
         signUp: {
             title: "Реєстрація",
@@ -35,7 +38,34 @@ export const uk = {
                 profilePhoto: "Фото профілю"
             },
             submitBtn: "Зареєструватись",
-            withAcc: "<CustomParagraph>Вже маєте аккаунт? <CustomLink>Ввійти</CustomLink></CustomParagraph>"
+            withAcc: "<CustomParagraph>Вже маєте аккаунт? <CustomLink>Увійти</CustomLink></CustomParagraph>"
+        },
+        verifyEmail: {
+            title: "Підтвердження електронної пошти",
+            text: "Дякую за реєстрацію! Ми відправили код підтверждення на вашу електронну пошту. Будь ласка, перевірте вашу поштову скриньку та введіть код нижче:",
+            fields: {
+                code: "Код підтвердження",
+            },
+            submitBtn: "Підтвердити",
+        },
+        forgotPassword: {
+            title: "Забув пароль",
+            text: "Будь ласка, введіть вашу електронну пошту нижче. Ми надішлемо вам посилання для відновлення пароля.",
+            fields: {
+                email: "Ел. пошта",
+            },
+            back: "Повернутися до входу",
+            submitBtn: "Надіслати посилання",
+            success: "Посилання було успішно відправлено. Якщо існує аккаунт з цією електронною поштою, то ви отримаєте посилання для відновлення пароля."
+        },
+        resetPassword: {
+            title: "Відновлення пароля",
+            fields: {
+                password: "Пароль",
+                confirmPassword: "Повторити пароль",
+            },
+            submitBtn: "Відновити пароль",
+            success: "Ваш пароль успішно змінений. Увійдіть с новим паролем."
         },
         followers: {
             title: "{{firstName}} {{secondName}}: Підписники"
@@ -97,7 +127,17 @@ export const uk = {
             menu: {
                 delete: "Видалити",
                 edit: "Редагувати"
+            },
+            repostMenu: {
+                repost: "Поширити",
+                repostQuote: "Цитувати"
             }
+        },
+        articleQuote: {
+            title: "Цитування статті",
+            placeholder: "Напишіть текст...",
+            publishedDate: "Опубліковано",
+            btn: "Цитувати"
         },
         comment: {
             menu: {
@@ -105,9 +145,23 @@ export const uk = {
                 edit: "Редагувати"
             }
         },
+        sortMenuFeed: {
+            title: "Сортувати",
+            items: {
+                newest: "Останнє",
+                oldest: "Найдавніші"
+            }
+        },
+        userFeedTabs: {
+            my: "Моя",
+            followings: "Підписки",
+        },
         settings: {
             toggleDarkThemeLabel: "Нічна тема",
             selectLanguageLabel: "Мова"
-        }
+        },
+        search: "Пошук...",
+        userSuggestions: "Рекомендації",
+
     }
 }

@@ -63,7 +63,7 @@ const Followings = () => {
       <div className="pt-6 pb-4 px-6">
         <TextField
           className="mb-4"
-          placeholder="Search user..."
+          placeholder={t("search")}
           leftAddon={
             isShowLoader ? (
               <Loader size="small" />

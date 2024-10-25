@@ -67,7 +67,7 @@ const SignInForm = () => {
 
       <p className="mb-5 text-center text-primary-100 hover:text-primary-200">
         <Link to="/auth/forgot-password" className="underline">
-          Forgot Password
+          {t("signIn.forgotPassword")}
         </Link>
       </p>
 

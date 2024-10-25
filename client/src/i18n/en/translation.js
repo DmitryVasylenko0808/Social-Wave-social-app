@@ -22,7 +22,10 @@ export const en = {
                 password: "Password"
             },
             submitBtn: "Sign In",
-            withoutAcc: "<CustomParagraph>Don't have an account? <CustomLink>Sign Up</CustomLink></CustomParagraph>"
+            withoutAcc: "<CustomParagraph>Don't have an account? <CustomLink>Sign Up</CustomLink></CustomParagraph>",
+            forgotPassword: "Forgot password",
+            googleAuthBtn: "Sign In with Google",
+            or: "or",
         },
         signUp: {
             title: "Sign Up",
@@ -36,6 +39,33 @@ export const en = {
             },
             submitBtn: "Sign Up",
             withAcc: "<CustomParagraph>Already have an account? <CustomLink>Sign In</CustomLink></CustomParagraph>"
+        },
+        verifyEmail: {
+            title: "Email Confirmation",
+            text: "Thank you for registering! We have sent a verification code to your email address. Please check your inbox and enter the code below:",
+            fields: {
+                code: "Verification code",
+            },
+            submitBtn: "Confirm",
+        },
+        forgotPassword: {
+            title: "Forgot Password",
+            text: "Please enter your email address below. We will send you a link to reset your password.",
+            fields: {
+                email: "Email",
+            },
+            back: "Back to Sign In",
+            submitBtn: "Send Reset Link",
+            success: "The link has been sent. If an account exist for this email, you will receive link to reset your password."
+        },
+        resetPassword: {
+            title: "Reset Password",
+            fields: {
+                password: "Password",
+                confirmPassword: "Confirm Password",
+            },
+            submitBtn: "Reset Password",
+            success: "Your password has been successfully changed. Sign in with new password."
         },
         followers: {
             title: "{{firstName}} {{secondName}}: Followers"
@@ -97,7 +127,17 @@ export const en = {
             menu: {
                 delete: "Delete",
                 edit: "Edit"
+            },
+            repostMenu: {
+                repost: "Repost",
+                repostQuote: "Quote repost"
             }
+        },
+        articleQuote: {
+            title: "Quoting article",
+            placeholder: "Write a text...",
+            publishedDate: "Published",
+            btn: "Quote"
         },
         comment: {
             menu: {
@@ -105,9 +145,22 @@ export const en = {
                 edit: "Edit"
             }
         },
+        sortMenuFeed: {
+            title: "Sort by",
+            items: {
+                newest: "Newest",
+                oldest: "Oldest"
+            }
+        },
+        userFeedTabs: {
+            my: "My",
+            followings: "Followings",
+        },
         settings: {
             toggleDarkThemeLabel: "Dark Theme",
             selectLanguageLabel: "Language"
-        }
+        },
+        search: "Search...",
+        userSuggestions: "Who to follow",
     }
 }

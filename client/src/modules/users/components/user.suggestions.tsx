@@ -3,11 +3,13 @@ import { UserItem } from ".";
 import { useLazyGetSuggestedUsersQuery } from "../api/users.api";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { List, ListItem, Loader } from "../../common/ui";
+import { useTranslation } from "react-i18next";
 
 const UserSuggestions = () => {
   const { isAuthenticated, user } = useAuth();
   const [triggerGetSuggestedUsers, { data, isLoading }] =
     useLazyGetSuggestedUsersQuery();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user.userId) {
@@ -22,7 +24,7 @@ const UserSuggestions = () => {
   return (
     <div>
       <h2 className="mb-4 text-2xl text-black font-bold dark:text-white">
-        Who to follow
+        {t("userSuggestions")}
       </h2>
       {isLoading && <Loader position="center" />}
       {data && (

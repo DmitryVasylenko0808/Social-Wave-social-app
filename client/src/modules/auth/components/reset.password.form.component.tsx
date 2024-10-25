@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Button, Loader, TextField } from "../../common/ui";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 
 const resetPasswordSchema = z
   .object({
@@ -32,6 +33,7 @@ const ResetPasswordForm = () => {
   } = useForm<ResetPasswordFormFields>({
     resolver: zodResolver(resetPasswordSchema),
   });
+  const { t } = useTranslation();
 
   const submitHandler = (data: ResetPasswordFormFields) => {
     const resetPasswordData = {
@@ -42,9 +44,7 @@ const ResetPasswordForm = () => {
     triggerResetPassword(resetPasswordData)
       .unwrap()
       .then(() => {
-        alerts.success(
-          "Your password has been successfully changed. Sign in with new password."
-        );
+        alerts.success(t("resetPassword.success"));
         navigate("/auth/sign-in");
       })
       .catch((error) =>
@@ -55,19 +55,19 @@ const ResetPasswordForm = () => {
   return (
     <form className="w-[320px]" onSubmit={handleSubmit(submitHandler)}>
       <h2 className="mb-7 text-primary-200 text-2xl text-center font-bold">
-        Reset Password
+        {t("resetPassword.title")}
       </h2>
 
       <div className="mb-5 flex flex-col space-y-4">
         <TextField
           {...register("newPassword")}
-          label="Password"
+          label={t("resetPassword.fields.password")}
           type="password"
           error={errors.newPassword?.message}
         />
         <TextField
           {...register("confirmNewPassword")}
-          label="Confirm Password"
+          label={t("resetPassword.fields.confirmPassword")}
           type="password"
           error={errors.confirmNewPassword?.message}
         />
@@ -86,7 +86,7 @@ const ResetPasswordForm = () => {
         {isLoading ? (
           <Loader size="small" variant="secondary" />
         ) : (
-          "Reset Password"
+          t("resetPassword.submitBtn")
         )}
       </Button>
     </form>

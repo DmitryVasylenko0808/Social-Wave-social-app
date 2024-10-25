@@ -47,11 +47,11 @@ const ArticleQuoteModal = ({
   };
 
   return (
-    <Modal title="Quoting article" {...modalProps}>
+    <Modal title={t("articleQuote.title")} {...modalProps}>
       <form className="w-[620px]" onSubmit={handleSubmit(submitHandler)}>
         <div className="mb-8 flex flex-col gap-5">
           <TextArea
-            placeholder="Write a text..."
+            placeholder={t("articleQuote.placeholder")}
             rows={1}
             error={errors.text?.message}
             {...register("text")}
@@ -60,7 +60,11 @@ const ArticleQuoteModal = ({
         </div>
         <div className="flex justify-end">
           <Button type="submit" variant="secondary" disabled={isLoading}>
-            {isLoading ? <Loader variant="secondary" size="small" /> : "Quote"}
+            {isLoading ? (
+              <Loader variant="secondary" size="small" />
+            ) : (
+              t("articleQuote.btn")
+            )}
           </Button>
         </div>
       </form>

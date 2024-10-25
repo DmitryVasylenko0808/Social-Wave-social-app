@@ -6,6 +6,7 @@ import { Search } from "lucide-react";
 import { List, ListItem, Loader, TextField } from "../../common/ui";
 import { UserItem } from ".";
 import { InfiniteScroll } from "../../common/components";
+import { useTranslation } from "react-i18next";
 
 const UserSearch = () => {
   const [search, setSearch] = useState<string>("");
@@ -13,6 +14,7 @@ const UserSearch = () => {
   const { page, nextPage, setPage } = usePage();
   const [triggerSearchUser, { data: users, isFetching }] =
     useLazySearchUsersQuery();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setPage(1);
@@ -35,7 +37,7 @@ const UserSearch = () => {
   return (
     <div className="relative mb-10">
       <TextField
-        placeholder="Search user..."
+        placeholder={t("search")}
         leftAddon={
           isShowLoader ? (
             <Loader size="small" />

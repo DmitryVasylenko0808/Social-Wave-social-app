@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import { Article } from "../api/dto/get.articles.dto";
 import { Avatar } from "../../common/ui";
 import { articlesImgUrl, userAvatarsUrl } from "../../../core/constants";
+import { useTranslation } from "react-i18next";
 
 type ArticleViewProps = {
   article: Article;
 };
 
 const ArticleView = ({ article }: ArticleViewProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="p-4 border-2 rounded-2xl border-secondary-50 dark:border-dark-300">
       <header className="mb-4">
@@ -50,7 +53,7 @@ const ArticleView = ({ article }: ArticleViewProps) => {
       </main>
       <footer>
         <p className="text-sm font-medium text-secondary-100">
-          Published:{" "}
+          {t("articleQuote.publishedDate")}:{" "}
           <span className="text-black dark:text-white">
             {new Date(article.createdAt).toLocaleString()}
           </span>
