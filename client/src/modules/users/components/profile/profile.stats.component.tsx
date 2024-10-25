@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { UserDetails } from "../../../../api/users/dto/get.one.user.dto";
+import { UserDetails } from "../../api/dto/get.one.user.dto";
 import { Trans } from "react-i18next";
 
 type ProfileStatsProps = {

@@ -1,4 +1,4 @@
-import { UserDetails } from "../../../../api/users/dto/get.one.user.dto";
+import { UserDetails } from "../../api/dto/get.one.user.dto";
 
 type ProfileBioProps = {
   data?: UserDetails;
