@@ -31,7 +31,13 @@ export class MessagesService {
   }
 
   async edit(data: EditMessagePayload) {
-    const message = await this.messagesModel.findByIdAndUpdate(data, { new: true });
+    const { messageId, content } = data;
+
+    const message = await this.messagesModel.findByIdAndUpdate(
+      messageId,
+      { content },
+      { new: true },
+    );
 
     return message;
   }

@@ -14,6 +14,7 @@ import { ChatDeletePayload } from './types/chat.delete.payload';
 import { MessagesService } from './services/messages.service';
 import { SendMessagePayload } from './types/send.message.payload';
 import { DeleteMessagePayload } from './types/delete.message.payload';
+import { EditMessagePayload } from './types/edit.message.payload';
 
 @WebSocketGateway()
 export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -130,6 +131,22 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 
     await this.messagesService.delete({ chatId, messageId });
+    await this.updateMessages(chatId);
+    await this.updateChats(membersIds);
+  }
+
+  @SubscribeMessage('messages:edit')
+  async handleEditMessage(client: Socket, payload: EditMessagePayload) {
+    const { chatId, messageId, content } = payload;
+
+    const chat = await this.chatsService.get(chatId);
+    const membersIds = chat.members.map((m) => m.toString());
+
+    if (!chat) {
+      throw Error('Chat is not found');
+    }
+
+    await this.messagesService.edit({ chatId, messageId, content });
     await this.updateMessages(chatId);
     await this.updateChats(membersIds);
   }
