@@ -47,4 +47,8 @@ export class MessagesService {
 
     return message;
   }
+
+  async deleteAllByChatId(chatId: string) {
+    await this.messagesModel.deleteMany({ chat: chatId });
+  }
 }

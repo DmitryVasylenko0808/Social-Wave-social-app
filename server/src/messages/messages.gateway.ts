@@ -33,18 +33,12 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log('Connected');
-
     const { userId } = client.handshake.query;
 
     this.usersMap.set(userId as string, client.id);
-
-    console.log(this.usersMap);
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log('Disconnected');
-
     let userId: string;
 
     for (const [k, v] of this.usersMap.entries()) {
@@ -56,8 +50,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 
     this.usersMap.delete(userId);
-
-    console.log(this.usersMap);
   }
 
   @SubscribeMessage('chats:get')
@@ -80,6 +72,8 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     if (!deletedChat) {
       throw Error('Chat is not found');
     }
+
+    await this.messagesService.deleteAllByChatId(payload.chatId);
 
     const membersIds = deletedChat.members.map((m) => m.toString());
 
@@ -108,7 +102,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const { userId, chatId, content } = payload;
 
     const chat = await this.chatsService.get(chatId);
-    const membersIds = chat.members.map((m) => m.toString());
 
     if (!chat) {
       throw Error('Chat is not found');
@@ -116,7 +109,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
     await this.messagesService.create({ userId, chatId, content });
     await this.updateMessages(chatId);
-    await this.updateChats(membersIds);
   }
 
   @SubscribeMessage('messages:delete')
@@ -124,15 +116,18 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const { chatId, messageId } = payload;
 
     const chat = await this.chatsService.get(chatId);
-    const membersIds = chat.members.map((m) => m.toString());
 
     if (!chat) {
       throw Error('Chat is not found');
     }
 
-    await this.messagesService.delete({ chatId, messageId });
+    const deletedMessage = await this.messagesService.delete({ chatId, messageId });
+
+    if (!deletedMessage) {
+      throw Error('Message is not found');
+    }
+
     await this.updateMessages(chatId);
-    await this.updateChats(membersIds);
   }
 
   @SubscribeMessage('messages:edit')
@@ -140,15 +135,18 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const { chatId, messageId, content } = payload;
 
     const chat = await this.chatsService.get(chatId);
-    const membersIds = chat.members.map((m) => m.toString());
 
     if (!chat) {
       throw Error('Chat is not found');
     }
 
-    await this.messagesService.edit({ chatId, messageId, content });
+    const editedMessage = await this.messagesService.edit({ chatId, messageId, content });
+
+    if (!editedMessage) {
+      throw Error('Message is not found');
+    }
+
     await this.updateMessages(chatId);
-    await this.updateChats(membersIds);
   }
 
   async updateChats(userIds: string[]) {
