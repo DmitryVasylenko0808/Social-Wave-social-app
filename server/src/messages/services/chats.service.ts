@@ -9,6 +9,12 @@ import { ChatDeletePayload } from '../types/chat.delete.payload';
 export class ChatsService {
   constructor(@InjectModel(Chat.name) private readonly chatModel: Model<Chat>) {}
 
+  async get(id: string) {
+    const chat = await this.chatModel.findById(id);
+
+    return chat;
+  }
+
   async getByUserId(userId: string) {
     const chats = await this.chatModel
       .find({

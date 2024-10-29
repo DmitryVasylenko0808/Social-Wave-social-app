@@ -11,6 +11,9 @@ import { Socket, Server } from 'socket.io';
 import { ChatCreatePayload } from './types/chat.create.payload';
 import { ChatsService } from './services/chats.service';
 import { ChatDeletePayload } from './types/chat.delete.payload';
+import { MessagesService } from './services/messages.service';
+import { SendMessagePayload } from './types/send.message.payload';
+import { DeleteMessagePayload } from './types/delete.message.payload';
 
 @WebSocketGateway()
 export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -19,7 +22,10 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   @WebSocketServer() wss: Server;
 
-  constructor(private readonly chatsService: ChatsService) {}
+  constructor(
+    private readonly chatsService: ChatsService,
+    private readonly messagesService: MessagesService,
+  ) {}
 
   afterInit(server: any) {
     this.logger.log('Initialized');
@@ -76,8 +82,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
     const membersIds = deletedChat.members.map((m) => m.toString());
 
-    console.log(deletedChat.members);
-
     await this.updateChats(membersIds);
   }
 
@@ -89,6 +93,45 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @SubscribeMessage('chats:leave')
   handleLeaveChat(client: Socket, payload: { chatId: string }) {
     client.leave(payload.chatId);
+  }
+
+  @SubscribeMessage('messages:get')
+  async handleGetMessages(client: Socket, payload: { chatId: string }) {
+    const messages = await this.messagesService.getByChatId(payload.chatId);
+
+    client.emit('messages', messages);
+  }
+
+  @SubscribeMessage('messages:send')
+  async handleSendMessage(client: Socket, payload: SendMessagePayload) {
+    const { userId, chatId, content } = payload;
+
+    const chat = await this.chatsService.get(chatId);
+    const membersIds = chat.members.map((m) => m.toString());
+
+    if (!chat) {
+      throw Error('Chat is not found');
+    }
+
+    await this.messagesService.create({ userId, chatId, content });
+    await this.updateMessages(chatId);
+    await this.updateChats(membersIds);
+  }
+
+  @SubscribeMessage('messages:delete')
+  async handleDeleteMessage(client: Socket, payload: DeleteMessagePayload) {
+    const { chatId, messageId } = payload;
+
+    const chat = await this.chatsService.get(chatId);
+    const membersIds = chat.members.map((m) => m.toString());
+
+    if (!chat) {
+      throw Error('Chat is not found');
+    }
+
+    await this.messagesService.delete({ chatId, messageId });
+    await this.updateMessages(chatId);
+    await this.updateChats(membersIds);
   }
 
   async updateChats(userIds: string[]) {
@@ -103,5 +146,11 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const receiverChats = await this.chatsService.getByUserId(receiverId);
 
     this.wss.to(receiverSocketId).emit('chats', receiverChats);
+  }
+
+  async updateMessages(chatId: string) {
+    const messages = await this.messagesService.getByChatId(chatId);
+
+    this.wss.to(chatId).emit('messages', messages);
   }
 }
