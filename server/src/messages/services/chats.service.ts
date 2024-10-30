@@ -26,6 +26,14 @@ export class ChatsService {
   }
 
   async create(data: ChatCreatePayload) {
+    const existedChat = await this.chatModel.findOne({
+      members: { $all: data.members },
+    });
+
+    if (existedChat) {
+      return existedChat;
+    }
+
     const createdChat = new this.chatModel(data);
 
     return createdChat.save();

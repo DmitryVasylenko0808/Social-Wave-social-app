@@ -16,6 +16,7 @@ import {
   ResetPasswordToken,
   ResetPasswordTokenSchema,
 } from './schemas/reset.password.token.schema';
+import { WsAuthService } from './services/ws.auth.service';
 
 @Module({
   imports: [
@@ -40,7 +41,9 @@ import {
     GoogleStrategy,
     VerificationCodesService,
     ResetPasswordTokensService,
+    WsAuthService,
   ],
   controllers: [AuthController],
+  exports: [WsAuthService],
 })
 export class AuthModule {}

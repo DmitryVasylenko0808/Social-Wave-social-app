@@ -8,13 +8,14 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { ChatCreatePayload } from './types/chat.create.payload';
 import { ChatsService } from './services/chats.service';
-import { ChatDeletePayload } from './types/chat.delete.payload';
 import { MessagesService } from './services/messages.service';
+import { ChatCreatePayload } from './types/chat.create.payload';
+import { ChatDeletePayload } from './types/chat.delete.payload';
 import { SendMessagePayload } from './types/send.message.payload';
 import { DeleteMessagePayload } from './types/delete.message.payload';
 import { EditMessagePayload } from './types/edit.message.payload';
+import { WsAuthService } from 'src/auth/services/ws.auth.service';
 
 @WebSocketGateway()
 export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -24,16 +25,19 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @WebSocketServer() wss: Server;
 
   constructor(
+    private readonly wsAuthService: WsAuthService,
     private readonly chatsService: ChatsService,
     private readonly messagesService: MessagesService,
   ) {}
 
-  afterInit(server: any) {
+  afterInit(server: Server) {
     this.logger.log('Initialized');
+
+    server.use(this.wsAuthService.getSocketMiddleware());
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    const { userId } = client.handshake.query;
+    const userId = client['userId'];
 
     this.usersMap.set(userId as string, client.id);
   }
@@ -61,8 +65,11 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   @SubscribeMessage('chats:create')
   async handleCreateChat(client: Socket, payload: ChatCreatePayload) {
-    await this.chatsService.create(payload);
+    const createdChat = await this.chatsService.create(payload);
+
     await this.updateChats(payload.members);
+
+    client.emit('chats:created', createdChat);
   }
 
   @SubscribeMessage('chats:delete')

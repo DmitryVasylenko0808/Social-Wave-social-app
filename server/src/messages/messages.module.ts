@@ -5,6 +5,7 @@ import { Message, MessageSchema } from './schemas/message.schema';
 import { MessagesGateway } from './messages.gateway';
 import { ChatsService } from './services/chats.service';
 import { MessagesService } from './services/messages.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MessagesService } from './services/messages.service';
       { name: Chat.name, schema: ChatSchema },
       { name: Message.name, schema: MessageSchema },
     ]),
+    AuthModule,
   ],
   providers: [MessagesGateway, ChatsService, MessagesService],
 })
