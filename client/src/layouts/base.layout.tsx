@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { Header, UserExplorer } from "../modules/common/components";
 import { Container, Loader } from "../modules/common/ui";
 import { SideBar } from "../modules/common/components";
@@ -6,6 +6,10 @@ import { Suspense } from "react";
 import { UserSearch, UserSuggestions } from "../modules/users/components";
 
 const BaseLayout = () => {
+  const { pathname } = useLocation();
+
+  const isShowUserExplorer = !pathname.startsWith("/messages");
+
   return (
     <main className="dark:bg-dark-100">
       <Header />
@@ -17,10 +21,12 @@ const BaseLayout = () => {
               <Outlet />
             </Suspense>
           </section>
-          <UserExplorer>
-            <UserSearch />
-            <UserSuggestions />
-          </UserExplorer>
+          {isShowUserExplorer && (
+            <UserExplorer>
+              <UserSearch />
+              <UserSuggestions />
+            </UserExplorer>
+          )}
         </Container>
       </main>
     </main>
