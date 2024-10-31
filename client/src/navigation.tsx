@@ -7,6 +7,7 @@ import { ScrollToTop, RequireAuth } from "./modules/common/components";
 
 import ErrorPage from "./pages/error.page.tsx";
 const HomePage = lazy(() => import("./pages/home.page"));
+const MessagesPage = lazy(() => import("./pages/messages.page.tsx"));
 const BookmarksPage = lazy(() => import("./pages/bookmarks.page.tsx"));
 const ProfilePage = lazy(() => import("./pages/profile.page.tsx"));
 const FollowersPage = lazy(() => import("./pages/followers.page.tsx"));
@@ -36,6 +37,7 @@ const Navigation = () => {
           <Route path="/" element={<BaseLayout />}>
             <Route index element={<HomePage />} />
             <Route element={<RequireAuth />}>
+              <Route path="messages" element={<MessagesPage />} />
               <Route path="bookmarks" element={<BookmarksPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>

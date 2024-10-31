@@ -6,6 +6,7 @@ import {
   LogOut,
   LogIn,
   Settings,
+  Mail,
 } from "lucide-react";
 import { Button, List, ListDivider, ListItem } from "../ui";
 import { useAuth } from "../../auth/hooks/useAuth";
@@ -27,6 +28,15 @@ const SideBar = () => {
           </ListItem>
           {isAuthenticated && (
             <>
+              <ListItem>
+                <NavLink
+                  to="/messages"
+                  className="py-3 flex items-center gap-5"
+                >
+                  <Mail />
+                  Messages
+                </NavLink>
+              </ListItem>
               <ListItem>
                 <NavLink
                   to="/bookmarks"
