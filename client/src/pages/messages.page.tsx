@@ -1,5 +1,7 @@
+import { MessagingSystem } from "../modules/messages/components";
+
 const MessagesPage = () => {
-  return <div>MessagesPage</div>;
+  return <MessagingSystem />;
 };
 
 export default MessagesPage;

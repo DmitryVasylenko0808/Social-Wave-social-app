@@ -1,5 +1,5 @@
 import { userAvatarsUrl } from "../../../core/constants";
-import { User } from "../../../api/users/dto/get.users.dto";
+import { User } from "../api/dto/get.users.dto";
 import { Link } from "react-router-dom";
 import Avatar from "../../common/ui/avatar.component";
 import { memo } from "react";
