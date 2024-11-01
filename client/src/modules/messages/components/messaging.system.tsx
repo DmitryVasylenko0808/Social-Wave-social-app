@@ -2,6 +2,7 @@ import { MailPlus } from "lucide-react";
 import { Button } from "../../common/ui";
 import ChastList from "./chats.list";
 import Messages from "./messages";
+import MessagesPlaceholder from "./messages.placeholder";
 
 const MessagingSystem = () => {
   return (
@@ -19,7 +20,8 @@ const MessagingSystem = () => {
         <ChastList />
       </div>
 
-      <Messages />
+      {/* <Messages /> */}
+      <MessagesPlaceholder />
     </div>
   );
 };
