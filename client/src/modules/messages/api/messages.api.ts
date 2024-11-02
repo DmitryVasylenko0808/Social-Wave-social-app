@@ -10,6 +10,11 @@ type SendMessagePayload = {
   content: string;
 };
 
+type DeleteMessagePayload = {
+  chatId: string;
+  messageId: string;
+};
+
 export const messagesApi = createApi({
   reducerPath: "messagesApi",
   baseQuery: fetchBaseQuery({
@@ -93,8 +98,22 @@ export const messagesApi = createApi({
         });
       },
     }),
+    deleteMessage: builder.mutation<boolean, DeleteMessagePayload>({
+      queryFn: (deleteMessagePayload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit("messages:delete", deleteMessagePayload);
+          resolve({ data: true });
+        });
+      },
+    }),
   }),
 });
 
-export const { useGetChatsQuery, useGetMessagesQuery, useSendMessageMutation } =
-  messagesApi;
+export const {
+  useGetChatsQuery,
+  useGetMessagesQuery,
+  useSendMessageMutation,
+  useDeleteMessageMutation,
+} = messagesApi;
