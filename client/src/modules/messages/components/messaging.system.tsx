@@ -3,8 +3,19 @@ import { Button } from "../../common/ui";
 import ChastList from "./chats.list";
 import Messages from "./messages";
 import MessagesPlaceholder from "./messages.placeholder";
+import { useGetChatsQuery } from "../api/messages.api";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { useState } from "react";
 
 const MessagingSystem = () => {
+  const { user } = useAuth();
+  const { data } = useGetChatsQuery(user.userId as string);
+
+  const [currentChat, setCurrentChat] = useState<string>("");
+
+  const handleSelectChat = (id: string) => setCurrentChat(id);
+  console.log(currentChat);
+
   return (
     <div className="h-[calc(100vh-90px)] flex">
       <div className="min-w-[400px] border-r border-secondary-50 dark:border-dark-200">
@@ -17,11 +28,14 @@ const MessagingSystem = () => {
             <MailPlus />
           </Button>
         </div>
-        <ChastList />
+        <ChastList
+          data={data || []}
+          current={currentChat}
+          onSelectChat={handleSelectChat}
+        />
       </div>
 
-      {/* <Messages /> */}
-      <MessagesPlaceholder />
+      {currentChat ? <Messages /> : <MessagesPlaceholder />}
     </div>
   );
 };

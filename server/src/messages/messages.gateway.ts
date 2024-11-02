@@ -17,7 +17,7 @@ import { DeleteMessagePayload } from './types/delete.message.payload';
 import { EditMessagePayload } from './types/edit.message.payload';
 import { WsAuthService } from 'src/auth/services/ws.auth.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: '*' })
 export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger('MessagesGateway');
   private readonly usersMap = new Map<string, string>();
@@ -40,6 +40,8 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const userId = client['userId'];
 
     this.usersMap.set(userId as string, client.id);
+
+    console.log('connected');
   }
 
   handleDisconnect(client: Socket) {
@@ -54,6 +56,8 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 
     this.usersMap.delete(userId);
+
+    console.log('disconnected');
   }
 
   @SubscribeMessage('chats:get')
