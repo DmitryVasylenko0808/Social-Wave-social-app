@@ -29,11 +29,9 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
   });
 
   const submitHandler = (data: MessageFormFields) => {
-    console.log(data);
     triggerSendMessage({ userId: user.userId as string, chatId, ...data })
       .unwrap()
       .then(() => {
-        console.log("yes");
         reset();
       });
   };
