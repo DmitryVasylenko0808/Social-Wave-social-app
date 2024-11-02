@@ -44,7 +44,7 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
           ))}
         </List>
       </div>
-      <MessageForm />
+      <MessageForm chatId={chat._id} />
     </div>
   );
 };

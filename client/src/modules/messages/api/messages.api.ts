@@ -4,6 +4,12 @@ import { getSocket } from "../../../core/socket";
 import { GetChatsDto } from "./dto/get.chats.dto";
 import { GetMessagesDto } from "./dto/get.messages.dto";
 
+type SendMessagePayload = {
+  userId: string;
+  chatId: string;
+  content: string;
+};
+
 export const messagesApi = createApi({
   reducerPath: "messagesApi",
   baseQuery: fetchBaseQuery({
@@ -77,7 +83,18 @@ export const messagesApi = createApi({
         } catch {}
       },
     }),
+    sendMessage: builder.mutation<boolean, SendMessagePayload>({
+      queryFn: (sendMessagePayload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit("messages:send", sendMessagePayload);
+          resolve({ data: true });
+        });
+      },
+    }),
   }),
 });
 
-export const { useGetChatsQuery, useGetMessagesQuery } = messagesApi;
+export const { useGetChatsQuery, useGetMessagesQuery, useSendMessageMutation } =
+  messagesApi;
