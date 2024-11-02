@@ -6,14 +6,15 @@ import MessagesPlaceholder from "./messages.placeholder";
 import { useGetChatsQuery } from "../api/messages.api";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { useState } from "react";
+import { Chat } from "../api/dto/get.chats.dto";
 
 const MessagingSystem = () => {
   const { user } = useAuth();
   const { data } = useGetChatsQuery(user.userId as string);
 
-  const [currentChat, setCurrentChat] = useState<string>("");
+  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
 
-  const handleSelectChat = (id: string) => setCurrentChat(id);
+  const handleSelectChat = (chat: Chat) => setCurrentChat(chat);
   console.log(currentChat);
 
   return (

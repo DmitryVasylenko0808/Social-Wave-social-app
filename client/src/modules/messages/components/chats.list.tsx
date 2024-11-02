@@ -4,9 +4,9 @@ import ChatItem from "./chat.item";
 
 type ChastListProps = {
   data: Chat[];
-  onSelectChat: (id: string) => void;
+  onSelectChat: (chat: Chat) => void;
 
-  current?: string;
+  current: Chat | null;
 };
 
 const ChastList = ({ data, current, onSelectChat }: ChastListProps) => {
@@ -17,8 +17,8 @@ const ChastList = ({ data, current, onSelectChat }: ChastListProps) => {
           <ListItem key={chat._id}>
             <ChatItem
               chat={chat}
-              active={current === chat._id}
-              onSelect={() => onSelectChat(chat._id)}
+              active={current?._id === chat._id}
+              onSelect={() => onSelectChat(chat)}
             />
           </ListItem>
         ))}
