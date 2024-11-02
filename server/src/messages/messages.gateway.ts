@@ -94,11 +94,15 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @SubscribeMessage('chats:join')
   handleJoinChat(client: Socket, payload: { chatId: string }) {
     client.join(payload.chatId);
+
+    console.log('jouned');
   }
 
   @SubscribeMessage('chats:leave')
   handleLeaveChat(client: Socket, payload: { chatId: string }) {
     client.leave(payload.chatId);
+
+    console.log('left');
   }
 
   @SubscribeMessage('messages:get')

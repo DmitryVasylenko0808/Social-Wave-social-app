@@ -15,7 +15,7 @@ const MessagingSystem = () => {
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
 
   const handleSelectChat = (chat: Chat) => setCurrentChat(chat);
-  console.log(currentChat);
+  const handleLeaveChat = () => setCurrentChat(null);
 
   return (
     <div className="h-[calc(100vh-90px)] flex">
@@ -36,7 +36,11 @@ const MessagingSystem = () => {
         />
       </div>
 
-      {currentChat ? <Messages /> : <MessagesPlaceholder />}
+      {currentChat ? (
+        <Messages chat={currentChat} leaveChat={handleLeaveChat} />
+      ) : (
+        <MessagesPlaceholder />
+      )}
     </div>
   );
 };

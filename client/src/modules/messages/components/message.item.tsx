@@ -1,10 +1,12 @@
 import { cn } from "../../../utils/cn";
+import { Message } from "../api/dto/get.messages.dto";
 
 type MessageItemProps = {
+  message: Message;
   variant: "user" | "other";
 };
 
-const MessageItem = ({ variant }: MessageItemProps) => {
+const MessageItem = ({ message, variant }: MessageItemProps) => {
   const containerClasses = cn("relative w-full flex", {
     "flex-row-reverse": variant === "user",
   });
@@ -22,13 +24,10 @@ const MessageItem = ({ variant }: MessageItemProps) => {
   return (
     <div className={containerClasses}>
       <div className={messageClasses}>
-        <p className="">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo,
-          quod dignissimos earum impedit, illo placeat quaerat aliquam
-          voluptatibus corporis et aperiam sapiente officiis odit veritatis
-          tempora! Dolorem cum ad sit.
+        <p className="">{message.content}</p>
+        <p className={dateClasses}>
+          {new Date(message.createdAt).toLocaleString()}
         </p>
-        <p className={dateClasses}>20.03.2020</p>
       </div>
     </div>
   );
