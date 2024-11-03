@@ -7,16 +7,23 @@ import { ModalProps } from "../../../common/ui/modal.component";
 import { useLazySearchUsersQuery } from "../../../users/api/users.api";
 import { Search } from "lucide-react";
 import { InfiniteScroll } from "../../../common/components";
-import { UserItem } from "../../../users/components";
+import ChatCreateItem from "../chat.create.item";
+import { useCreateChatMutation } from "../../api/messages.api";
+import { useAuth } from "../../../auth/hooks/useAuth";
 
 type CreateChatModalProps = ModalProps;
 
 const CreateChatModal = ({ ...modalProps }: CreateChatModalProps) => {
+  const { user } = useAuth();
+
   const [search, setSearch] = useState<string>("");
   const debounced = useDebounce(search, 500);
+
   const { page, nextPage, setPage } = usePage();
   const [triggerSearchUser, { data: users, isFetching }] =
     useLazySearchUsersQuery();
+  const [triggerCreateChat] = useCreateChatMutation();
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -34,11 +41,17 @@ const CreateChatModal = ({ ...modalProps }: CreateChatModalProps) => {
     setSearch(e.target.value);
   };
 
+  const handleCreateChat = (targetUserId: string) => {
+    triggerCreateChat({ members: [user.userId as string, targetUserId] })
+      .unwrap()
+      .then(() => modalProps.onClose());
+  };
+
   const isShowLoader = isFetching && page === 1;
 
   return (
     <Modal {...modalProps}>
-      <div className="w-96">
+      <div className="w-[460px]">
         <TextField
           placeholder={t("search")}
           leftAddon={
@@ -60,7 +73,10 @@ const CreateChatModal = ({ ...modalProps }: CreateChatModalProps) => {
             <List className="gap-1">
               {users?.data.map((user) => (
                 <ListItem key={user._id}>
-                  <UserItem data={user} />
+                  <ChatCreateItem
+                    user={user}
+                    onClickCreateChat={() => handleCreateChat(user._id)}
+                  />
                 </ListItem>
               ))}
             </List>

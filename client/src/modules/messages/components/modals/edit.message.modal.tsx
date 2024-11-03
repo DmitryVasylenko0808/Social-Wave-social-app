@@ -1,4 +1,3 @@
-import React from "react";
 import Modal, { ModalProps } from "../../../common/ui/modal.component";
 import { Button, TextField } from "../../../common/ui";
 import { Message } from "../../api/dto/get.messages.dto";

@@ -14,8 +14,9 @@ import { useAuth } from "../../auth/hooks/useAuth";
 import {
   useDeleteMessageMutation,
   useGetMessagesQuery,
+  useLazyGetMessagesQuery,
 } from "../api/messages.api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Message } from "../api/dto/get.messages.dto";
 import { useModal } from "../../common/hooks/useModal";
 import EditMessageModal from "./modals/edit.message.modal";
@@ -27,12 +28,18 @@ type MessagesProps = {
 
 const Messages = ({ chat, leaveChat }: MessagesProps) => {
   const { user } = useAuth();
-  const { data } = useGetMessagesQuery(chat._id);
+  // const { data } = useGetMessagesQuery(chat._id);
+  const [triggerGetMessages, { data }] = useLazyGetMessagesQuery();
   const [triggerDeleteMessage] = useDeleteMessageMutation();
 
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   const editModal = useModal();
+
+  useEffect(() => {
+    console.log(chat._id);
+    triggerGetMessages(chat._id).unwrap();
+  }, [chat._id]);
 
   const handleClickMessage = (message: Message) => {
     if (message._id === selectedMessage?._id) {
@@ -61,7 +68,7 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
 
   const participant = chat.members.find((m) => m._id !== user.userId);
 
-  console.log(selectedMessage);
+  // console.log(selectedMessage);
 
   return (
     <div className="relative flex-auto flex flex-col">
@@ -91,7 +98,7 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
           </div>
         </div>
       )}
-      <div className="flex-1 py-5 overflow-y-scroll">
+      <div className="flex-1 py-5 overflow-y-auto">
         <List className="gap-0">
           {data?.map((message) => (
             <ListItem key={message._id}>

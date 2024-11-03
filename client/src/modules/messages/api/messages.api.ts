@@ -4,6 +4,10 @@ import { getSocket } from "../../../core/socket";
 import { GetChatsDto } from "./dto/get.chats.dto";
 import { GetMessagesDto } from "./dto/get.messages.dto";
 
+type CreateChatPayload = {
+  members: string[];
+};
+
 type SendMessagePayload = {
   userId: string;
   chatId: string;
@@ -60,9 +64,20 @@ export const messagesApi = createApi({
 
           socket.off("connect");
           socket.off("chats");
+          socket.off("messages");
 
           socket.disconnect();
         } catch {}
+      },
+    }),
+    createChat: builder.mutation<boolean, CreateChatPayload>({
+      queryFn: (createChatPayload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit("chats:create", createChatPayload);
+          resolve({ data: true });
+        });
       },
     }),
     getMessages: builder.query<GetMessagesDto, string>({
@@ -89,9 +104,9 @@ export const messagesApi = createApi({
           await cacheEntryRemoved;
 
           socket.emit("chats:leave", { chatId });
-
-          socket.off("messages");
-        } catch {}
+        } catch {
+          console.log("throws");
+        }
       },
     }),
     sendMessage: builder.mutation<boolean, SendMessagePayload>({
@@ -129,8 +144,11 @@ export const messagesApi = createApi({
 
 export const {
   useGetChatsQuery,
+  useCreateChatMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
   useDeleteMessageMutation,
   useEditMessageMutation,
+
+  useLazyGetMessagesQuery,
 } = messagesApi;
