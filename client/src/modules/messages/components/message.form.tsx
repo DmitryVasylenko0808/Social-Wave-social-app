@@ -18,7 +18,8 @@ type MessageFormProps = {
 
 const MessageForm = ({ chatId }: MessageFormProps) => {
   const { user } = useAuth();
-  const [triggerSendMessage, { isLoading }] = useSendMessageMutation();
+  const [triggerSendMessage, { isLoading: isSending }] =
+    useSendMessageMutation();
   const {
     register,
     handleSubmit,

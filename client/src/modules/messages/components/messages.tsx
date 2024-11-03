@@ -17,6 +17,8 @@ import {
 } from "../api/messages.api";
 import { useState } from "react";
 import { Message } from "../api/dto/get.messages.dto";
+import { useModal } from "../../common/hooks/useModal";
+import EditMessageModal from "./modals/edit.message.modal";
 
 type MessagesProps = {
   chat: Chat;
@@ -28,31 +30,38 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
   const { data } = useGetMessagesQuery(chat._id);
   const [triggerDeleteMessage] = useDeleteMessageMutation();
 
-  const [selectedMessageId, setSelectedMessageId] = useState<string>("");
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+
+  const editModal = useModal();
 
   const handleClickMessage = (message: Message) => {
-    if (message._id === selectedMessageId) {
-      setSelectedMessageId("");
+    if (message._id === selectedMessage?._id) {
+      setSelectedMessage(null);
     } else {
-      setSelectedMessageId(message._id);
+      setSelectedMessage(message);
     }
   };
 
   const handleClickDeleteMessage = () => {
-    if (!selectedMessageId) {
+    if (!selectedMessage) {
       return;
     }
 
-    triggerDeleteMessage({ chatId: chat._id, messageId: selectedMessageId })
+    triggerDeleteMessage({ chatId: chat._id, messageId: selectedMessage._id })
       .unwrap()
       .then(() => {
-        setSelectedMessageId("");
+        setSelectedMessage(null);
       });
+  };
+
+  const afterEditMessage = () => {
+    editModal.onClose();
+    setSelectedMessage(null);
   };
 
   const participant = chat.members.find((m) => m._id !== user.userId);
 
-  console.log(selectedMessageId);
+  console.log(selectedMessage);
 
   return (
     <div className="relative flex-auto flex flex-col">
@@ -69,14 +78,14 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
           <EllipsisVertical />
         </Button>
       </div>
-      {selectedMessageId && (
+      {selectedMessage && (
         <div className="absolute top-16 left-0 z-10 w-full min-h-16 flex justify-center shadow-sm border-b bg-white border-secondary-50 dark:border-dark-200">
           <div className="flex gap-16">
             <Button variant="tertiary" onClick={handleClickDeleteMessage}>
               <Trash2 />
               Delete
             </Button>
-            <Button variant="tertiary">
+            <Button variant="tertiary" onClick={editModal.onOpen}>
               <PencilLine /> Edit
             </Button>
           </div>
@@ -88,7 +97,7 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
             <ListItem key={message._id}>
               <MessageItem
                 message={message}
-                selected={message._id === selectedMessageId}
+                selected={message._id === selectedMessage?._id}
                 variant={user.userId === message.user._id ? "user" : "other"}
                 onClick={
                   user.userId === message.user._id
@@ -101,6 +110,14 @@ const Messages = ({ chat, leaveChat }: MessagesProps) => {
         </List>
       </div>
       <MessageForm chatId={chat._id} />
+      {selectedMessage && (
+        <EditMessageModal
+          message={selectedMessage}
+          open={editModal.open}
+          onClose={editModal.onClose}
+          afterEdit={afterEditMessage}
+        />
+      )}
     </div>
   );
 };

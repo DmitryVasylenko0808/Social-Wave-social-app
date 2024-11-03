@@ -15,6 +15,12 @@ type DeleteMessagePayload = {
   messageId: string;
 };
 
+type EditMessagePayload = {
+  chatId: string;
+  messageId: string;
+  content: string;
+};
+
 export const messagesApi = createApi({
   reducerPath: "messagesApi",
   baseQuery: fetchBaseQuery({
@@ -108,6 +114,16 @@ export const messagesApi = createApi({
         });
       },
     }),
+    editMessage: builder.mutation<boolean, EditMessagePayload>({
+      queryFn: (editMessagePayload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit("messages:edit", editMessagePayload);
+          resolve({ data: true });
+        });
+      },
+    }),
   }),
 });
 
@@ -116,4 +132,5 @@ export const {
   useGetMessagesQuery,
   useSendMessageMutation,
   useDeleteMessageMutation,
+  useEditMessageMutation,
 } = messagesApi;
