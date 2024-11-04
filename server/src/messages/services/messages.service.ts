@@ -1,16 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Message } from '../schemas/message.schema';
 import { Model } from 'mongoose';
-import { SendMessagePayload } from '../types/send.message.payload';
-import { EditMessagePayload } from '../types/edit.message.payload';
-import { DeleteMessagePayload } from '../types/delete.message.payload';
+import { ChatsService } from './chats.service';
+import { SendMessageDto } from '../dto/send.message.dto';
+import { EditMessageDto } from '../dto/edit.message.dto';
 
 @Injectable()
 export class MessagesService {
-  constructor(@InjectModel(Message.name) private readonly messagesModel: Model<Message>) {}
+  constructor(
+    @InjectModel(Message.name) private readonly messagesModel: Model<Message>,
+    private readonly chatsService: ChatsService,
+  ) {}
 
   async getByChatId(chatId: string) {
+    const chat = await this.chatsService.get(chatId);
+
+    if (!chat) {
+      throw new NotFoundException('Chat is not found');
+    }
+
     const messages = await this.messagesModel
       .find({ chat: chatId })
       .populate('user', '_id firstName secondName avatar');
@@ -18,32 +27,54 @@ export class MessagesService {
     return messages;
   }
 
-  async create(data: SendMessagePayload) {
-    const { userId, chatId, content } = data;
+  async create(chatId: string, userId: string, data: SendMessageDto) {
+    const chat = await this.chatsService.get(chatId);
+
+    if (!chat) {
+      throw new NotFoundException('Chat is not found');
+    }
 
     const message = new this.messagesModel({
       user: userId,
       chat: chatId,
-      content,
+      ...data,
     });
 
     return message.save();
   }
 
-  async edit(data: EditMessagePayload) {
-    const { messageId, content } = data;
+  async edit(chatId: string, messageId: string, data: EditMessageDto) {
+    const chat = await this.chatsService.get(chatId);
+
+    if (!chat) {
+      throw new NotFoundException('Chat is not found');
+    }
 
     const message = await this.messagesModel.findByIdAndUpdate(
       messageId,
-      { content },
+      { ...data },
       { new: true },
     );
+
+    if (!message) {
+      throw new NotFoundException('Message is not found');
+    }
 
     return message;
   }
 
-  async delete(data: DeleteMessagePayload) {
-    const message = await this.messagesModel.findByIdAndDelete(data.messageId);
+  async delete(chatId: string, messageId: string) {
+    const chat = await this.chatsService.get(chatId);
+
+    if (!chat) {
+      throw new NotFoundException('Chat is not found');
+    }
+
+    const message = await this.messagesModel.findByIdAndDelete(messageId);
+
+    if (!message) {
+      throw new NotFoundException('Message is not found');
+    }
 
     return message;
   }

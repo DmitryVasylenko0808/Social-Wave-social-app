@@ -2,11 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat } from '../schemas/chat.schema';
 import { Model } from 'mongoose';
-import { ChatCreatePayload } from '../types/chat.create.payload';
-import { ChatDeletePayload } from '../types/chat.delete.payload';
-import { ChatCreateDto } from '../dto/chat.create.dto';
 import { UsersService } from 'src/users/services/users.service';
-import { MessagesGateway } from '../messages.gateway';
+import { ChatCreateDto } from '../dto/chat.create.dto';
 
 @Injectable()
 export class ChatsService {

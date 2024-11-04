@@ -10,11 +10,6 @@ import {
 import { Socket, Server } from 'socket.io';
 import { ChatsService } from './services/chats.service';
 import { MessagesService } from './services/messages.service';
-import { ChatCreatePayload } from './types/chat.create.payload';
-import { ChatDeletePayload } from './types/chat.delete.payload';
-import { SendMessagePayload } from './types/send.message.payload';
-import { DeleteMessagePayload } from './types/delete.message.payload';
-import { EditMessagePayload } from './types/edit.message.payload';
 import { WsAuthService } from 'src/auth/services/ws.auth.service';
 
 @WebSocketGateway({ cors: '*' })
@@ -60,37 +55,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     console.log('disconnected');
   }
 
-  // @SubscribeMessage('chats:get')
-  // async handleGetChats(client: Socket, payload: { userId: string }) {
-  //   const chats = await this.chatsService.getByUserId(payload.userId);
-
-  //   client.emit('chats', chats);
-  // }
-
-  // @SubscribeMessage('chats:create')
-  // async handleCreateChat(client: Socket, payload: ChatCreatePayload) {
-  //   const createdChat = await this.chatsService.create(payload);
-
-  //   await this.updateChats(payload.members);
-
-  //   client.emit('chats:created', createdChat);
-  // }
-
-  // @SubscribeMessage('chats:delete')
-  // async handleDeleteChat(client: Socket, payload: ChatDeletePayload) {
-  //   const deletedChat = await this.chatsService.delete(payload);
-
-  //   if (!deletedChat) {
-  //     throw Error('Chat is not found');
-  //   }
-
-  //   await this.messagesService.deleteAllByChatId(payload.chatId);
-
-  //   const membersIds = deletedChat.members.map((m) => m.toString());
-
-  //   await this.updateChats(membersIds);
-  // }
-
   @SubscribeMessage('chats:join')
   handleJoinChat(client: Socket, payload: { chatId: string }) {
     client.join(payload.chatId);
@@ -99,65 +63,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @SubscribeMessage('chats:leave')
   handleLeaveChat(client: Socket, payload: { chatId: string }) {
     client.leave(payload.chatId);
-  }
-
-  @SubscribeMessage('messages:get')
-  async handleGetMessages(client: Socket, payload: { chatId: string }) {
-    const messages = await this.messagesService.getByChatId(payload.chatId);
-
-    client.emit('messages', messages);
-  }
-
-  @SubscribeMessage('messages:send')
-  async handleSendMessage(client: Socket, payload: SendMessagePayload) {
-    const { userId, chatId, content } = payload;
-
-    const chat = await this.chatsService.get(chatId);
-
-    if (!chat) {
-      throw Error('Chat is not found');
-    }
-
-    await this.messagesService.create({ userId, chatId, content });
-    await this.updateMessages(chatId);
-  }
-
-  @SubscribeMessage('messages:delete')
-  async handleDeleteMessage(client: Socket, payload: DeleteMessagePayload) {
-    const { chatId, messageId } = payload;
-
-    const chat = await this.chatsService.get(chatId);
-
-    if (!chat) {
-      throw Error('Chat is not found');
-    }
-
-    const deletedMessage = await this.messagesService.delete({ chatId, messageId });
-
-    if (!deletedMessage) {
-      throw Error('Message is not found');
-    }
-
-    await this.updateMessages(chatId);
-  }
-
-  @SubscribeMessage('messages:edit')
-  async handleEditMessage(client: Socket, payload: EditMessagePayload) {
-    const { chatId, messageId, content } = payload;
-
-    const chat = await this.chatsService.get(chatId);
-
-    if (!chat) {
-      throw Error('Chat is not found');
-    }
-
-    const editedMessage = await this.messagesService.edit({ chatId, messageId, content });
-
-    if (!editedMessage) {
-      throw Error('Message is not found');
-    }
-
-    await this.updateMessages(chatId);
   }
 
   async updateChats(firstUserId: string, secondUserId: string) {
