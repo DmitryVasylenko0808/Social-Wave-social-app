@@ -60,36 +60,36 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     console.log('disconnected');
   }
 
-  @SubscribeMessage('chats:get')
-  async handleGetChats(client: Socket, payload: { userId: string }) {
-    const chats = await this.chatsService.getByUserId(payload.userId);
+  // @SubscribeMessage('chats:get')
+  // async handleGetChats(client: Socket, payload: { userId: string }) {
+  //   const chats = await this.chatsService.getByUserId(payload.userId);
 
-    client.emit('chats', chats);
-  }
+  //   client.emit('chats', chats);
+  // }
 
-  @SubscribeMessage('chats:create')
-  async handleCreateChat(client: Socket, payload: ChatCreatePayload) {
-    const createdChat = await this.chatsService.create(payload);
+  // @SubscribeMessage('chats:create')
+  // async handleCreateChat(client: Socket, payload: ChatCreatePayload) {
+  //   const createdChat = await this.chatsService.create(payload);
 
-    await this.updateChats(payload.members);
+  //   await this.updateChats(payload.members);
 
-    client.emit('chats:created', createdChat);
-  }
+  //   client.emit('chats:created', createdChat);
+  // }
 
-  @SubscribeMessage('chats:delete')
-  async handleDeleteChat(client: Socket, payload: ChatDeletePayload) {
-    const deletedChat = await this.chatsService.delete(payload);
+  // @SubscribeMessage('chats:delete')
+  // async handleDeleteChat(client: Socket, payload: ChatDeletePayload) {
+  //   const deletedChat = await this.chatsService.delete(payload);
 
-    if (!deletedChat) {
-      throw Error('Chat is not found');
-    }
+  //   if (!deletedChat) {
+  //     throw Error('Chat is not found');
+  //   }
 
-    await this.messagesService.deleteAllByChatId(payload.chatId);
+  //   await this.messagesService.deleteAllByChatId(payload.chatId);
 
-    const membersIds = deletedChat.members.map((m) => m.toString());
+  //   const membersIds = deletedChat.members.map((m) => m.toString());
 
-    await this.updateChats(membersIds);
-  }
+  //   await this.updateChats(membersIds);
+  // }
 
   @SubscribeMessage('chats:join')
   handleJoinChat(client: Socket, payload: { chatId: string }) {
@@ -160,18 +160,16 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     await this.updateMessages(chatId);
   }
 
-  async updateChats(userIds: string[]) {
-    const [senderId, receiverId] = userIds;
+  async updateChats(firstUserId: string, secondUserId: string) {
+    const firstUserSocketId = this.usersMap.get(firstUserId);
+    const firstUserChats = await this.chatsService.getByUserId(firstUserId);
 
-    const senderSocketId = this.usersMap.get(senderId);
-    const senderChats = await this.chatsService.getByUserId(senderId);
+    this.wss.to(firstUserSocketId).emit('chats', firstUserChats);
 
-    this.wss.to(senderSocketId).emit('chats', senderChats);
+    const secondUserSocketId = this.usersMap.get(secondUserId);
+    const secondUserChats = await this.chatsService.getByUserId(secondUserId);
 
-    const receiverSocketId = this.usersMap.get(receiverId);
-    const receiverChats = await this.chatsService.getByUserId(receiverId);
-
-    this.wss.to(receiverSocketId).emit('chats', receiverChats);
+    this.wss.to(secondUserSocketId).emit('chats', secondUserChats);
   }
 
   async updateMessages(chatId: string) {

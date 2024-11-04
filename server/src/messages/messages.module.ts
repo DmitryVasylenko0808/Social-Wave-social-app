@@ -6,6 +6,8 @@ import { MessagesGateway } from './messages.gateway';
 import { ChatsService } from './services/chats.service';
 import { MessagesService } from './services/messages.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { ChatsController } from './chats.controller';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { AuthModule } from 'src/auth/auth.module';
       { name: Message.name, schema: MessageSchema },
     ]),
     AuthModule,
+    UsersModule,
   ],
   providers: [MessagesGateway, ChatsService, MessagesService],
+  controllers: [ChatsController],
 })
 export class MessagesModule {}

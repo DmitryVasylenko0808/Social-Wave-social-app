@@ -1,13 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat } from '../schemas/chat.schema';
 import { Model } from 'mongoose';
 import { ChatCreatePayload } from '../types/chat.create.payload';
 import { ChatDeletePayload } from '../types/chat.delete.payload';
+import { ChatCreateDto } from '../dto/chat.create.dto';
+import { UsersService } from 'src/users/services/users.service';
+import { MessagesGateway } from '../messages.gateway';
 
 @Injectable()
 export class ChatsService {
-  constructor(@InjectModel(Chat.name) private readonly chatModel: Model<Chat>) {}
+  constructor(
+    @InjectModel(Chat.name) private readonly chatModel: Model<Chat>,
+    private readonly usersService: UsersService,
+  ) {}
 
   async get(id: string) {
     const chat = await this.chatModel.findById(id);
@@ -25,22 +31,32 @@ export class ChatsService {
     return chats;
   }
 
-  async create(data: ChatCreatePayload) {
+  async create(userId: string, data: ChatCreateDto) {
+    const { targetUserId } = data;
+
+    await this.usersService.findOneById(targetUserId);
+
     const existedChat = await this.chatModel.findOne({
-      members: { $all: data.members },
+      members: { $all: [userId, targetUserId] },
     });
 
     if (existedChat) {
       return existedChat;
     }
 
-    const createdChat = new this.chatModel(data);
+    const createdChat = new this.chatModel({
+      members: [userId, targetUserId],
+    });
 
     return createdChat.save();
   }
 
-  async delete(data: ChatDeletePayload) {
-    const deletedChat = await this.chatModel.findByIdAndDelete(data.chatId);
+  async delete(id: string) {
+    const deletedChat = await this.chatModel.findByIdAndDelete(id);
+
+    if (!deletedChat) {
+      throw new NotFoundException('Chat is not found');
+    }
 
     return deletedChat;
   }

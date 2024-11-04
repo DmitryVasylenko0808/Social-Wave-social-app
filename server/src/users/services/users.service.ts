@@ -23,7 +23,7 @@ export class UsersService {
     const user = await this.userModel.findById(id, '-passwordHash');
 
     if (!user) {
-      throw new NotFoundException('user is not found');
+      throw new NotFoundException('User is not found');
     }
 
     return user;

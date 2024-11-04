@@ -14,7 +14,7 @@ export class WsAuthService {
   getSocketMiddleware(): SocketMiddleware {
     return async (socket: Socket, next) => {
       try {
-        const [type, token] = socket.handshake.auth?.token.split(' ') ?? [];
+        const [type, token] = socket.handshake.headers?.authorization?.split(' ') ?? [];
         const bearerToken = type === 'Bearer' ? token : null;
 
         if (!bearerToken) {
