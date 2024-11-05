@@ -9,6 +9,7 @@ export const en = {
         },
         sidebar: {
             home: "Home",
+            messages: "Messages",
             bookmarks: "Bookmarks",
             settings: "Settings",
             profile: "My Profile",
@@ -162,5 +163,23 @@ export const en = {
         },
         search: "Search...",
         userSuggestions: "Who to follow",
+        messages: {
+            title: "Messages",
+            placeholder: {
+                text: "Select the user you would like to chat with",
+                btn: "Start Messaging",
+            },
+            menu: {
+                deleteChat: "Delete Chat"
+            },
+            actions: {
+                delete: "Delete",
+                edit: "Edit"
+            },
+            editModal: {
+                title: "Editing message",
+                btn: "Edit"
+            }
+        }
     }
 }

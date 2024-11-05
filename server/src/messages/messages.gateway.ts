@@ -58,11 +58,13 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @SubscribeMessage('chats:join')
   handleJoinChat(client: Socket, payload: { chatId: string }) {
     client.join(payload.chatId);
+    console.log('joined', payload.chatId);
   }
 
   @SubscribeMessage('chats:leave')
   handleLeaveChat(client: Socket, payload: { chatId: string }) {
     client.leave(payload.chatId);
+    console.log('jeft', payload.chatId);
   }
 
   async updateChats(firstUserId: string, secondUserId: string) {

@@ -9,6 +9,7 @@ export const uk = {
         },
         sidebar: {
             home: "Головна",
+            messages: "Переписки",
             bookmarks: "Закладки",
             settings: "Налаштування",
             profile: "Профіль",
@@ -162,6 +163,23 @@ export const uk = {
         },
         search: "Пошук...",
         userSuggestions: "Рекомендації",
-
+        messages: {
+            title: "Переписки",
+            placeholder: {
+                text: "Оберіть с ким би Ви хотіли почати переписку",
+                btn: "Почати переписку",
+            },
+            menu: {
+                deleteChat: "Видалити чат"
+            },
+            actions: {
+                delete: "Видалити",
+                edit: "Редагувати"
+            },
+            editModal: {
+                title: "Редагування",
+                btn: "Редагувати"
+            }
+        }
     }
 }

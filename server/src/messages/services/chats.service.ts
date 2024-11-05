@@ -4,14 +4,12 @@ import { Chat } from '../schemas/chat.schema';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/services/users.service';
 import { ChatCreateDto } from '../dto/chat.create.dto';
-import { MessagesService } from './messages.service';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectModel(Chat.name) private readonly chatModel: Model<Chat>,
     private readonly usersService: UsersService,
-    private readonly messagesService: MessagesService,
   ) {}
 
   async get(id: string) {
@@ -56,8 +54,6 @@ export class ChatsService {
     if (!deletedChat) {
       throw new NotFoundException('Chat is not found');
     }
-
-    await this.messagesService.deleteAllByChatId(id);
 
     return deletedChat;
   }

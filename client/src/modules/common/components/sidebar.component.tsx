@@ -34,7 +34,7 @@ const SideBar = () => {
                   className="py-3 flex items-center gap-5"
                 >
                   <Mail />
-                  Messages
+                  {t("sidebar.messages")}
                 </NavLink>
               </ListItem>
               <ListItem>

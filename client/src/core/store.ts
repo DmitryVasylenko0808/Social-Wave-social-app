@@ -5,18 +5,16 @@ import { api } from "./api";
 import authSlice from "../modules/auth/store/auth.slice";
 import alertsSlice from "../modules/common/store/alerts.slice";
 import themeSlice from "../modules/common/store/theme.slice";
-import { messagesApi } from "../modules/messages/api/messages.api";
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
-    [messagesApi.reducerPath]: messagesApi.reducer,
     auth: authSlice,
     alerts: alertsSlice,
     theme: themeSlice,
   },
   middleware: (getDefaultMiddeware) =>
-    getDefaultMiddeware().concat(api.middleware).concat(messagesApi.middleware),
+    getDefaultMiddeware().concat(api.middleware),
 });
 
 setupListeners(store.dispatch);

@@ -2,28 +2,26 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "../../../common/hooks/useDebounce";
 import { usePage } from "../../../common/hooks/usePage";
+import { useLazySearchUsersQuery } from "../../../users/api/users.api";
 import { List, ListItem, Loader, Modal, TextField } from "../../../common/ui";
 import { ModalProps } from "../../../common/ui/modal.component";
-import { useLazySearchUsersQuery } from "../../../users/api/users.api";
-import { Search } from "lucide-react";
 import { InfiniteScroll } from "../../../common/components";
 import ChatCreateItem from "../chat.create.item";
-import { useCreateChatMutation } from "../../api/messages.api";
-import { useAuth } from "../../../auth/hooks/useAuth";
+import { Search } from "lucide-react";
 
-type CreateChatModalProps = ModalProps;
+type CreateChatModalProps = ModalProps & {
+  onCreateChat: (targetUserId: string) => void;
+};
 
-const CreateChatModal = ({ ...modalProps }: CreateChatModalProps) => {
-  const { user } = useAuth();
-
+const CreateChatModal = ({
+  onCreateChat,
+  ...modalProps
+}: CreateChatModalProps) => {
   const [search, setSearch] = useState<string>("");
   const debounced = useDebounce(search, 500);
-
   const { page, nextPage, setPage } = usePage();
   const [triggerSearchUser, { data: users, isFetching }] =
     useLazySearchUsersQuery();
-  const [triggerCreateChat] = useCreateChatMutation();
-
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -39,12 +37,6 @@ const CreateChatModal = ({ ...modalProps }: CreateChatModalProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  };
-
-  const handleCreateChat = (targetUserId: string) => {
-    triggerCreateChat({ members: [user.userId as string, targetUserId] })
-      .unwrap()
-      .then(() => modalProps.onClose());
   };
 
   const isShowLoader = isFetching && page === 1;
@@ -75,7 +67,7 @@ const CreateChatModal = ({ ...modalProps }: CreateChatModalProps) => {
                 <ListItem key={user._id}>
                   <ChatCreateItem
                     user={user}
-                    onClickCreateChat={() => handleCreateChat(user._id)}
+                    onClickCreateChat={() => onCreateChat(user._id)}
                   />
                 </ListItem>
               ))}

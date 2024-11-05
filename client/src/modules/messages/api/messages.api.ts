@@ -1,45 +1,43 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ServerSocketUrl } from "../../../core/constants";
 import { getSocket } from "../../../core/socket";
 import { GetChatsDto } from "./dto/get.chats.dto";
 import { GetMessagesDto } from "./dto/get.messages.dto";
+import { api } from "../../../core/api";
 
-type CreateChatPayload = {
-  members: string[];
+enum EVENTS {
+  CHATS = "chats",
+  MESSAGES = "messages",
+  JOIN_CHAT = "chats:join",
+  LEAVE_CHAT = "chats:leave",
+}
+
+type CreateChatParams = {
+  targetUserId: string;
 };
 
-type SendMessagePayload = {
-  userId: string;
+type SendMessageParams = {
   chatId: string;
   content: string;
 };
 
-type DeleteMessagePayload = {
+type DeleteMessageParams = {
   chatId: string;
   messageId: string;
 };
 
-type EditMessagePayload = {
+type EditMessageParams = {
   chatId: string;
   messageId: string;
   content: string;
 };
 
-export const messagesApi = createApi({
-  reducerPath: "messagesApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: ServerSocketUrl,
-  }),
+export const messagesApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getChats: builder.query<GetChatsDto, string>({
-      queryFn: (userId) => ({
-        data: [],
-      }),
-      keepUnusedDataFor: 0,
-      async onCacheEntryAdded(
-        userId,
+    getChats: builder.query<GetChatsDto, void>({
+      query: () => `/chats`,
+      onCacheEntryAdded: async (
+        args,
         { cacheDataLoaded, cacheEntryRemoved, updateCachedData }
-      ) {
+      ) => {
         try {
           await cacheDataLoaded;
 
@@ -49,95 +47,82 @@ export const messagesApi = createApi({
             socket.connect();
           }
 
-          socket.on("connect", () => {
-            console.log(userId, "connected");
-            socket.emit("chats:get", { userId });
-          });
-
-          socket.on("chats", (chats: GetChatsDto) => {
+          const handleChats = (res: GetChatsDto) => {
             updateCachedData((draft) => {
-              draft.splice(0, draft.length, ...chats);
+              draft.splice(0, draft.length, ...res);
             });
-          });
+          };
+
+          socket.on(EVENTS.CHATS, handleChats);
 
           await cacheEntryRemoved;
 
-          socket.off("connect");
-          socket.off("chats");
-          socket.off("messages");
-
+          socket.off(EVENTS.CHATS);
+          socket.off(EVENTS.MESSAGES);
           socket.disconnect();
         } catch {}
       },
     }),
-    createChat: builder.mutation<boolean, CreateChatPayload>({
-      queryFn: (createChatPayload) => {
-        const socket = getSocket();
-
-        return new Promise((resolve) => {
-          socket.emit("chats:create", createChatPayload);
-          resolve({ data: true });
-        });
-      },
+    createChat: builder.mutation<void, CreateChatParams>({
+      query: (body) => ({
+        url: "/chats",
+        method: "POST",
+        body,
+      }),
+    }),
+    deleteChat: builder.mutation<void, string>({
+      query: (chatId) => ({
+        url: `/chats/${chatId}`,
+        method: "DELETE",
+      }),
     }),
     getMessages: builder.query<GetMessagesDto, string>({
-      queryFn: (chatId) => ({ data: [] }),
+      query: (chatId) => `/chats/${chatId}/messages`,
       keepUnusedDataFor: 0,
-      async onCacheEntryAdded(
+      onCacheEntryAdded: async (
         chatId,
         { cacheDataLoaded, cacheEntryRemoved, updateCachedData }
-      ) {
+      ) => {
         try {
           await cacheDataLoaded;
 
           const socket = getSocket();
 
-          socket.emit("chats:join", { chatId });
-          socket.emit("messages:get", { chatId });
+          socket.emit(EVENTS.JOIN_CHAT, { chatId });
 
-          socket.on("messages", (messages: any[]) => {
+          const handleMessages = (res: GetMessagesDto) => {
             updateCachedData((draft) => {
-              draft.splice(0, draft.length, ...messages);
+              draft.splice(0, draft.length, ...res);
             });
-          });
+          };
+
+          socket.on(EVENTS.MESSAGES, handleMessages);
 
           await cacheEntryRemoved;
 
-          socket.emit("chats:leave", { chatId });
-        } catch {
-          console.log("throws");
-        }
+          socket.emit(EVENTS.LEAVE_CHAT, { chatId });
+        } catch {}
       },
     }),
-    sendMessage: builder.mutation<boolean, SendMessagePayload>({
-      queryFn: (sendMessagePayload) => {
-        const socket = getSocket();
-
-        return new Promise((resolve) => {
-          socket.emit("messages:send", sendMessagePayload);
-          resolve({ data: true });
-        });
-      },
+    sendMessage: builder.mutation<void, SendMessageParams>({
+      query: ({ chatId, ...body }) => ({
+        url: `/chats/${chatId}/messages`,
+        method: "POST",
+        body,
+      }),
     }),
-    deleteMessage: builder.mutation<boolean, DeleteMessagePayload>({
-      queryFn: (deleteMessagePayload) => {
-        const socket = getSocket();
-
-        return new Promise((resolve) => {
-          socket.emit("messages:delete", deleteMessagePayload);
-          resolve({ data: true });
-        });
-      },
+    editMessage: builder.mutation<void, EditMessageParams>({
+      query: ({ chatId, messageId, ...body }) => ({
+        url: `/chats/${chatId}/messages/${messageId}`,
+        method: "PATCH",
+        body,
+      }),
     }),
-    editMessage: builder.mutation<boolean, EditMessagePayload>({
-      queryFn: (editMessagePayload) => {
-        const socket = getSocket();
-
-        return new Promise((resolve) => {
-          socket.emit("messages:edit", editMessagePayload);
-          resolve({ data: true });
-        });
-      },
+    deleteMessage: builder.mutation<void, DeleteMessageParams>({
+      query: ({ chatId, messageId }) => ({
+        url: `/chats/${chatId}/messages/${messageId}`,
+        method: "DELETE",
+      }),
     }),
   }),
 });
@@ -145,10 +130,9 @@ export const messagesApi = createApi({
 export const {
   useGetChatsQuery,
   useCreateChatMutation,
+  useDeleteChatMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
   useDeleteMessageMutation,
   useEditMessageMutation,
-
-  useLazyGetMessagesQuery,
 } = messagesApi;

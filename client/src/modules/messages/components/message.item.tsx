@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { cn } from "../../../utils/cn";
 import { Message } from "../api/dto/get.messages.dto";
+import { cn } from "../../../utils/cn";
 
 type MessageItemProps = {
   message: Message;
@@ -22,7 +21,8 @@ const MessageItem = ({
   });
 
   const messageClasses = cn("py-3 px-4 max-w-[90%] rounded-2xl", {
-    "ml-4 bg-secondary-50 rounded-bl-none": variant === "other",
+    "ml-4 bg-secondary-50 rounded-bl-none dark:bg-dark-200 dark:text-white":
+      variant === "other",
     "mr-4 bg-primary-200 text-white rounded-br-none cursor-pointer":
       variant === "user",
   });

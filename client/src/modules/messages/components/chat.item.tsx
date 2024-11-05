@@ -1,8 +1,8 @@
-import { userAvatarsUrl } from "../../../core/constants";
-import { cn } from "../../../utils/cn";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { Avatar } from "../../common/ui";
+import { userAvatarsUrl } from "../../../core/constants";
 import { Chat } from "../api/dto/get.chats.dto";
+import { cn } from "../../../utils/cn";
 
 type ChatItemProps = {
   chat: Chat;

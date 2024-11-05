@@ -44,6 +44,7 @@ export class ChatsController {
   @Delete(':chatId')
   async deleteChat(@Param('chatId') chatId: string) {
     const chat = await this.chatsService.delete(chatId);
+    await this.messagesService.deleteAllByChatId(chatId);
 
     await this.messagesGateway.updateChats(chat.members[0].toString(), chat.members[1].toString());
 

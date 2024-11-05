@@ -1,8 +1,7 @@
+import { memo } from "react";
+import Avatar from "../../common/ui/avatar.component";
 import { userAvatarsUrl } from "../../../core/constants";
 import { User } from "../../users/api/dto/get.users.dto";
-import { Link } from "react-router-dom";
-import Avatar from "../../common/ui/avatar.component";
-import { memo } from "react";
 
 type ChatCreateItemProps = {
   user: User;

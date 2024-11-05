@@ -1,10 +1,10 @@
-import { SendHorizontal } from "lucide-react";
-import { TextField, Button } from "../../common/ui";
-import { z } from "zod";
 import { useSendMessageMutation } from "../api/messages.api";
 import { useForm } from "react-hook-form";
+import { useAlerts } from "../../common/hooks/useAlerts";
+import { TextField, Button, Loader } from "../../common/ui";
+import { SendHorizontal } from "lucide-react";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../../auth/hooks/useAuth";
 
 const sendMessageSchema = z.object({
   content: z.string().min(1, "Text is required"),
@@ -17,9 +17,10 @@ type MessageFormProps = {
 };
 
 const MessageForm = ({ chatId }: MessageFormProps) => {
-  const { user } = useAuth();
+  const alerts = useAlerts();
   const [triggerSendMessage, { isLoading: isSending }] =
     useSendMessageMutation();
+
   const {
     register,
     handleSubmit,
@@ -30,11 +31,12 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
   });
 
   const submitHandler = (data: MessageFormFields) => {
-    triggerSendMessage({ userId: user.userId as string, chatId, ...data })
+    triggerSendMessage({ chatId, ...data })
       .unwrap()
       .then(() => {
         reset();
-      });
+      })
+      .catch((err) => alerts.error(err.data.message));
   };
 
   return (
@@ -49,8 +51,17 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
           placeholder="Type a message"
           error={errors.content?.message}
         />
-        <Button type="submit" variant="primary" className="min-w-max">
-          <SendHorizontal />
+        <Button
+          type="submit"
+          variant="primary"
+          className="min-w-max"
+          disabled={isSending}
+        >
+          {isSending ? (
+            <Loader variant="secondary" size="small" />
+          ) : (
+            <SendHorizontal />
+          )}
         </Button>
       </form>
     </div>
