@@ -35,8 +35,6 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const userId = client['userId'];
 
     this.usersMap.set(userId as string, client.id);
-
-    console.log('connected');
   }
 
   handleDisconnect(client: Socket) {
@@ -51,20 +49,16 @@ export class MessagesGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 
     this.usersMap.delete(userId);
-
-    console.log('disconnected');
   }
 
   @SubscribeMessage('chats:join')
   handleJoinChat(client: Socket, payload: { chatId: string }) {
     client.join(payload.chatId);
-    console.log('joined', payload.chatId);
   }
 
   @SubscribeMessage('chats:leave')
   handleLeaveChat(client: Socket, payload: { chatId: string }) {
     client.leave(payload.chatId);
-    console.log('jeft', payload.chatId);
   }
 
   async updateChats(firstUserId: string, secondUserId: string) {
