@@ -17,13 +17,13 @@ const SideBar = () => {
   const { t } = useTranslation();
 
   return (
-    <aside className="min-w-[180px] min-h-[calc(100vh-90px)] pr-6 border-r border-secondary-50 dark:border-dark-200">
+    <aside className="min-w-[180px] min-h-[calc(100vh-90px)] pr-6 border-r border-secondary-50 dark:border-dark-200 max-lg:min-w-max max-md:hidden">
       <div className="sticky top-0 pt-5">
         <List className="gap-0 text-base text-secondary-100 font-medium">
           <ListItem>
             <NavLink to="/" className="py-3 flex items-center gap-5">
               <House />
-              {t("sidebar.home")}
+              <span className="max-lg:hidden">{t("sidebar.home")}</span>
             </NavLink>
           </ListItem>
           {isAuthenticated && (
@@ -34,7 +34,7 @@ const SideBar = () => {
                   className="py-3 flex items-center gap-5"
                 >
                   <Mail />
-                  {t("sidebar.messages")}
+                  <span className="max-lg:hidden">{t("sidebar.messages")}</span>
                 </NavLink>
               </ListItem>
               <ListItem>
@@ -43,7 +43,9 @@ const SideBar = () => {
                   className="py-3 flex items-center gap-5"
                 >
                   <Bookmark />
-                  {t("sidebar.bookmarks")}
+                  <span className="max-lg:hidden">
+                    {t("sidebar.bookmarks")}
+                  </span>
                 </NavLink>
               </ListItem>
               <ListItem>
@@ -52,7 +54,7 @@ const SideBar = () => {
                   className="py-3 flex items-center gap-5"
                 >
                   <Settings />
-                  {t("sidebar.settings")}
+                  <span className="max-lg:hidden">{t("sidebar.settings")}</span>
                 </NavLink>
               </ListItem>
               <ListItem>
@@ -61,7 +63,7 @@ const SideBar = () => {
                   className="py-3 flex items-center gap-5"
                 >
                   <UserRound />
-                  {t("sidebar.profile")}
+                  <span className="max-lg:hidden">{t("sidebar.profile")}</span>
                 </NavLink>
               </ListItem>
             </>
@@ -71,14 +73,14 @@ const SideBar = () => {
             <ListItem>
               <Button variant="tertiary" onClick={logOut}>
                 <LogOut />
-                {t("sidebar.logOutBtn")}
+                <span className="max-lg:hidden">{t("sidebar.logOutBtn")}</span>
               </Button>
             </ListItem>
           ) : (
             <ListItem>
               <Button as="link" variant="tertiary" to="/auth/sign-in">
                 <LogIn />
-                {t("sidebar.signInBtn")}
+                <span className="max-lg:hidden">{t("sidebar.signInBtn")}</span>
               </Button>
             </ListItem>
           )}

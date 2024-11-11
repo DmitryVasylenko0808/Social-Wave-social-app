@@ -42,15 +42,23 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
   const isFollowed = data?.followers.includes(user.userId as string);
 
   return (
-    <div className="flex items-center gap-7">
+    <div className="flex items-center gap-7 max-md:w-full max-md:flex-col max-md:gap-3">
       {!isCurrentUserProfile && (
         <>
           {!isFollowed ? (
-            <Button variant="primary" onClick={handleClickFollow}>
+            <Button
+              variant="primary"
+              className="max-md:w-full"
+              onClick={handleClickFollow}
+            >
               {t("profile.actions.followBtn")}
             </Button>
           ) : (
-            <Button variant="secondary" onClick={handleClickUnfollow}>
+            <Button
+              variant="secondary"
+              className="max-md:w-full"
+              onClick={handleClickUnfollow}
+            >
               {t("profile.actions.unfollowBtn")}
             </Button>
           )}
@@ -58,7 +66,8 @@ const ProfileActions = ({ data, userId }: ProfileActionsProps) => {
       )}
       {isCurrentUserProfile && (
         <Link
-          className="px-4 py-2.5 inline-flex items-center gap-3.5 bg-labelFill text-base font-bold text-primary-200 border border-primary-200 rounded-3xl dark:bg-dark-200"
+          className="px-4 py-2.5 inline-flex items-center justify-center gap-3.5 bg-labelFill text-base font-bold text-primary-200 border border-primary-200 rounded-3xl 
+          dark:bg-dark-200 max-md:w-full"
           to={`/users/${data?._id}/edit`}
         >
           <PenLine size={20} />

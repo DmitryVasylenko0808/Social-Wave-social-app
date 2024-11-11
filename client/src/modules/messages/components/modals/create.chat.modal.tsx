@@ -43,7 +43,7 @@ const CreateChatModal = ({
 
   return (
     <Modal {...modalProps}>
-      <div className="w-[460px]">
+      <div className="w-[460px] max-md:w-full">
         <TextField
           placeholder={t("search")}
           leftAddon={

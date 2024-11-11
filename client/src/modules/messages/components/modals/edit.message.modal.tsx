@@ -51,14 +51,22 @@ const EditMessageModal = ({
 
   return (
     <Modal title={t("messages.editModal.title")} {...modalProps}>
-      <form className="w-[540px]" onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className="w-[540px] max-md:w-full"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <TextField
           {...register("content")}
-          className="mb-5"
+          className="mb-5 max-md:mb-7"
           error={errors.content?.message}
         />
         <div className="flex justify-end">
-          <Button type="submit" variant="primary" disabled={isLoading}>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={isLoading}
+            className="max-md:w-full"
+          >
             {isLoading ? (
               <Loader variant="secondary" size="small" />
             ) : (

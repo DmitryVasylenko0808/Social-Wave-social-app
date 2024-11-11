@@ -9,8 +9,12 @@ const ArticleModal = () => {
   const goBackAfterDelete = () => navigate(-1);
 
   return (
-    <Modal onClose={handleClickClose} open>
-      <div className="w-[620px]">
+    <Modal
+      className="max-md:max-h-screen max-md:rounded-none"
+      onClose={handleClickClose}
+      open
+    >
+      <div className="w-[620px] max-md:w-full">
         <ArticleDetails afterDelete={goBackAfterDelete} />
         <ArticleCommentForm />
         <ArticleComments />

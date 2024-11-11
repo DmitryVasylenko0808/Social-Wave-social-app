@@ -41,7 +41,7 @@ const ArticleCommentForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
+    <form onSubmit={handleSubmit(submitHandler)} className="max-md:mb-4">
       <TextArea
         className="mb-4 bg-white"
         rows={3}
@@ -50,7 +50,12 @@ const ArticleCommentForm = () => {
         {...register("text")}
       />
       <div className="flex justify-end items-center">
-        <Button type="submit" variant="primary" disabled={isLoading}>
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={isLoading}
+          className="max-md:w-full"
+        >
           {isLoading ? (
             <Loader size="small" variant="secondary" />
           ) : (

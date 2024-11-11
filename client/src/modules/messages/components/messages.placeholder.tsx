@@ -11,7 +11,7 @@ const MessagesPlaceholder = ({
   const { t } = useTranslation();
 
   return (
-    <div className="flex-auto flex justify-center items-center bg-secondary-50 dark:bg-dark-200">
+    <div className="flex-auto flex justify-center items-center bg-secondary-50 dark:bg-dark-200 max-md:hidden">
       <div>
         <h3 className="mb-4 text-lg font-medium text-secondary-100">
           {t("messages.placeholder.text")}

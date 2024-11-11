@@ -78,7 +78,7 @@ const EditArticleModal = ({
   return (
     <Modal title={t("editArticle.title")} {...modalProps}>
       {isLoading && (
-        <div className="min-w-[560px]">
+        <div className="min-w-[560px] max-lg:w-full">
           <Loader
             position="center"
             size="big"
@@ -88,7 +88,10 @@ const EditArticleModal = ({
         </div>
       )}
       {data && (
-        <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
+        <form
+          className="w-modal max-lg:w-full"
+          onSubmit={handleSubmit(submitHandler)}
+        >
           <TextArea
             className="mb-8"
             rows={8}

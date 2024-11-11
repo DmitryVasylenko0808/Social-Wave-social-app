@@ -53,7 +53,10 @@ const EditCommentModal = ({
 
   return (
     <Modal title={t("editComment.title")} {...modalProps}>
-      <form className="w-modal" onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className="w-modal max-lg:w-full"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <TextArea
           className="mb-8"
           rows={4}

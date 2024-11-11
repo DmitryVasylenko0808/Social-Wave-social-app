@@ -23,7 +23,7 @@ const Profile = () => {
     <div className="mb-12">
       <ProfileBackground data={data} />
       <div className="px-6">
-        <div className="relative bottom-12 flex items-center justify-between">
+        <div className="relative bottom-12 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-5">
           <ProfileInfo data={data} />
           <ProfileActions data={data} userId={userId} />
         </div>

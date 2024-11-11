@@ -48,7 +48,10 @@ const ArticleQuoteModal = ({
 
   return (
     <Modal title={t("articleQuote.title")} {...modalProps}>
-      <form className="w-[620px]" onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className="w-[620px] max-md:w-full"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <div className="mb-8 flex flex-col gap-5">
           <TextArea
             placeholder={t("articleQuote.placeholder")}
