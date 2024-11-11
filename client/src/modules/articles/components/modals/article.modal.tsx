@@ -10,7 +10,7 @@ const ArticleModal = () => {
 
   return (
     <Modal
-      className="max-md:max-h-screen max-md:rounded-none"
+      className="max-md:min-h-screen max-md:rounded-none"
       onClose={handleClickClose}
       open
     >
