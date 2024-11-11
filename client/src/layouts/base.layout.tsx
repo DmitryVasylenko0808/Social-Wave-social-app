@@ -16,7 +16,7 @@ const BaseLayout = () => {
       <main>
         <Container className="flex">
           <SideBar />
-          <section className="flex-auto border-r border-secondary-50 dark:border-dark-200">
+          <section className="min-h-[calc(100vh-90px)] flex-auto border-r border-secondary-50 dark:border-dark-200">
             <Suspense fallback={<Loader className="py-12" position="center" />}>
               <Outlet />
             </Suspense>
